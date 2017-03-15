@@ -4,7 +4,9 @@ import io.khasang.moika.config.AppConfig;
 import io.khasang.moika.config.HibernateConfig;
 import io.khasang.moika.config.application.WebConfig;
 import io.khasang.moika.dao.OrdermDao;
+import io.khasang.moika.dao.OrdermDetailDao;
 import io.khasang.moika.entity.Orderm;
+import io.khasang.moika.entity.OrdermDetail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -20,6 +23,8 @@ import java.util.List;
 public class OrdermDaoImplTest {
     @Autowired
     OrdermDao ordermDao;
+    @Autowired
+    OrdermDetailDao ordermDetailDao;
 
     @Test
     public void commonOrderm() throws Exception {
@@ -29,7 +34,17 @@ public class OrdermDaoImplTest {
         ordermDao.addOrderm(orderm);
         orderm = ordermDao.getOrderm(1l);
         orderm.setNumber("11");
-        ordermDao.updateOrderm(orderm);
+        orderm=ordermDao.updateOrderm(orderm);
+
+        OrdermDetail ordermDetail = new OrdermDetail();
+        ordermDetail.setSumOfWork(new BigDecimal(111));
+        ordermDetail.setQuantity(new BigDecimal(11));
+
+        ordermDetail.setSumOfWork(new BigDecimal(2000));
+        ordermDetail.setQuantity(new BigDecimal(2));
+        ordermDetail.setOrderm(orderm);
+        ordermDetail = ordermDetailDao.addOrdermDetail(ordermDetail);
+
         orderm =new Orderm("33");
         orderm =ordermDao.addOrderm(orderm);
         ordermDao.deleteOrderm(orderm);

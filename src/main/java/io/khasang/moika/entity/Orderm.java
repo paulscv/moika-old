@@ -1,7 +1,9 @@
 package io.khasang.moika.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Orderm {
@@ -16,7 +18,8 @@ public class Orderm {
     private Date executiontionDate;
     private boolean is_prepaid;
     private boolean is_made;
-
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrdermDetail> ordersDetails = new ArrayList<>();
     public Orderm() {
     }
 
