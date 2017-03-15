@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface OrdermDetailDao {
-    OrdermDetail addOrdermDetail(OrdermDetail ordermDetail);
+    OrdermDetail addOrdermDetail(OrdermDetail ordermDetail, long idOrderm);
     OrdermDetail updateOrdermDetail(OrdermDetail ordermDetail);
     void deleteOrdermDetailk(OrdermDetail ordermDetail);
     OrdermDetail getOrdermDetail(long id);

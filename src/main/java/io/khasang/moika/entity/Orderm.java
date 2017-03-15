@@ -20,6 +20,7 @@ public class Orderm {
     private boolean is_made;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrdermDetail> ordersDetails = new ArrayList<>();
+
     public Orderm() {
     }
 
@@ -75,4 +76,11 @@ public class Orderm {
         this.is_made = is_made;
     }
 
+    public List<OrdermDetail> getOrdersDetails() {
+        return ordersDetails;
+    }
+
+    public void setOrdersDetails(List<OrdermDetail> ordersDetails) {
+        this.ordersDetails = ordersDetails;
+    }
 }

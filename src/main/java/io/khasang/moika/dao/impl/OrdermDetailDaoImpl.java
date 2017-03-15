@@ -1,6 +1,7 @@
 package io.khasang.moika.dao.impl;
 
 import io.khasang.moika.dao.OrdermDetailDao;
+import io.khasang.moika.entity.Orderm;
 import io.khasang.moika.entity.OrdermDetail;
 import io.khasang.moika.entity.Work;
 import org.hibernate.Session;
@@ -26,8 +27,13 @@ public class OrdermDetailDaoImpl implements OrdermDetailDao {
     }
 
     @Override
-    public OrdermDetail addOrdermDetail(OrdermDetail ordermDetail) {
-        sessionFactory.getCurrentSession().save(ordermDetail);
+    public OrdermDetail addOrdermDetail(OrdermDetail ordermDetail, long idOrderm) {
+        Session session =sessionFactory.getCurrentSession();
+        session.save(ordermDetail);
+
+        Orderm orderm =(Orderm) session.get(Orderm.class, idOrderm);
+        orderm.getOrdersDetails().add(ordermDetail);
+        session.save(orderm);
         return ordermDetail;
     }
 

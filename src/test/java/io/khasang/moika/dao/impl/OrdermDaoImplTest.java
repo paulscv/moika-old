@@ -39,15 +39,17 @@ public class OrdermDaoImplTest {
         OrdermDetail ordermDetail = new OrdermDetail();
         ordermDetail.setSumOfWork(new BigDecimal(111));
         ordermDetail.setQuantity(new BigDecimal(11));
+        ordermDetail = ordermDetailDao.addOrdermDetail(ordermDetail,orderm.getId());
 
         ordermDetail.setSumOfWork(new BigDecimal(2000));
         ordermDetail.setQuantity(new BigDecimal(2));
         ordermDetail.setOrderm(orderm);
-        ordermDetail = ordermDetailDao.addOrdermDetail(ordermDetail);
-
+        ordermDetail = ordermDetailDao.addOrdermDetail(ordermDetail,orderm.getId());
+        List<OrdermDetail> l= orderm.getOrdersDetails();
+        ordermDao.deleteOrderm(orderm);
         orderm =new Orderm("33");
         orderm =ordermDao.addOrderm(orderm);
         ordermDao.deleteOrderm(orderm);
-        List<Orderm> l =ordermDao.getAllOrderm();
+        List<Orderm> list =ordermDao.getAllOrderm();
     }
 }
