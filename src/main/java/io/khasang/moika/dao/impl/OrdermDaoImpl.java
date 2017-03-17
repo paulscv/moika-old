@@ -2,6 +2,7 @@ package io.khasang.moika.dao.impl;
 
 import io.khasang.moika.dao.OrdermDao;
 import io.khasang.moika.entity.Orderm;
+import io.khasang.moika.entity.OrdermDetail;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
