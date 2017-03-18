@@ -42,5 +42,9 @@ public class OrdermController {
         ordermAccessService.addOrderm(orderm);
         return "redirect:/orderm/list";
     }
+    @RequestMapping(value = "/ya2", method = RequestMethod.GET)
+    public String showMap(Model model) {
+        return "yandex2";
+    }
 
 }
