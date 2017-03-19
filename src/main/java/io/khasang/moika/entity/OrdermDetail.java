@@ -22,7 +22,7 @@ public class OrdermDetail {
     }
 
     @ManyToOne
-    @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "ORDER_ID_FK"))
+    @JoinColumn(name = "orderm_id", foreignKey = @ForeignKey(name = "ORDER_ID_FK"))
     private Orderm orderm;
 //    @ManyToOne
 //    @JoinColumn(name = "work_id", foreignKey = @ForeignKey(name = "WORK_ID_FK"))

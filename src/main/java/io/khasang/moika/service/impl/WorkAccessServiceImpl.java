@@ -19,23 +19,23 @@ public class WorkAccessServiceImpl implements WorkAccessService {
     }
 
     @Override
-    public void addWork(Work work) {
-        workDao.addWork(work);
+    public Work addWork(Work work) {
+        return workDao.create(work);
     }
 
     @Override
-    public void updateWork(Work work) {
-        workDao.updateWork(work);
+    public Work updateWork(Work work) {
+        return workDao.update(work);
     }
 
     @Override
-    public void deleteWork(Work work) {
-        workDao.deleteWork(work);
+    public Work deleteWork(Work work) {
+        return workDao.delete(work);
     }
 
     @Override
     public Work getWork(long id) {
-        return workDao.getWork(id);
+        return workDao.get(id);
     }
 
     @Override
@@ -45,6 +45,6 @@ public class WorkAccessServiceImpl implements WorkAccessService {
 
     @Override
     public List<Work> getAllWork() {
-        return workDao.getAllWork();
+        return workDao.getAll();
     }
 }
