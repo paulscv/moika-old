@@ -1,16 +1,20 @@
 package io.khasang.moika.entity;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Orderm {
+public class Orderm extends ABaseMoikaEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(length = 15, unique = true,nullable = false)
+    @NaturalId(mutable = true)
     private String number;
     @Temporal(TemporalType.DATE)
     private Date registrationDate;

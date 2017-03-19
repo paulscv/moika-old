@@ -6,7 +6,6 @@ import io.khasang.moika.config.application.WebConfig;
 import io.khasang.moika.dao.OrdermDao;
 import io.khasang.moika.dao.OrdermDetailDao;
 import io.khasang.moika.entity.Orderm;
-import io.khasang.moika.entity.OrdermDetail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,27 +27,17 @@ public class OrdermDaoImplTest {
     @Test
     public void commonOrderm() throws Exception {
         Orderm orderm =new Orderm("1");
-        ordermDao.addOrderm(orderm);
+        ordermDao.create(orderm);
         orderm =new Orderm("2");
-        ordermDao.addOrderm(orderm);
-        orderm = ordermDao.getOrderm(1l);
-        orderm.setNumber("11");
-        orderm=ordermDao.updateOrderm(orderm);
-
-        OrdermDetail ordermDetail = new OrdermDetail();
-        ordermDetail.setSumOfWork(new BigDecimal(111));
-        ordermDetail.setQuantity(new BigDecimal(11));
-        ordermDetail = ordermDetailDao.addOrdermDetail(ordermDetail,orderm.getId());
-
-        ordermDetail.setSumOfWork(new BigDecimal(2000));
-        ordermDetail.setQuantity(new BigDecimal(2));
-        ordermDetail.setOrderm(orderm);
-        ordermDetail = ordermDetailDao.addOrdermDetail(ordermDetail,orderm.getId());
-        List<OrdermDetail> l= orderm.getOrdersDetails();
-        ordermDao.deleteOrderm(orderm);
-        orderm =new Orderm("33");
-        orderm =ordermDao.addOrderm(orderm);
-        ordermDao.deleteOrderm(orderm);
-        List<Orderm> list =ordermDao.getAllOrderm();
+        ordermDao.create(orderm);
+        orderm =new Orderm("3");
+        ordermDao.create(orderm);
+        long id = orderm.getId();
+        orderm = ordermDao.getOrderm("2");
+        orderm.setIs_made(true);
+        orderm = ordermDao.update(orderm);
+        List<Orderm> list =ordermDao.getAll();
+        orderm = ordermDao.getOrderm("3");
+        orderm = ordermDao.delete(orderm);
     }
 }

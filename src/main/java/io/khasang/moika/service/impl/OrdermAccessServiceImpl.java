@@ -16,26 +16,26 @@ public class OrdermAccessServiceImpl implements OrdermAccessService {
     OrdermDao ordermDao;
     @Override
     public Orderm addOrderm(Orderm orderm) {
-        return ordermDao.addOrderm(orderm);
+        return ordermDao.create(orderm);
     }
 
     @Override
     public Orderm updateOrderm(Orderm orderm) {
-        return ordermDao.updateOrderm(orderm);
+        return ordermDao.update(orderm);
     }
 
     @Override
     public void deleteOrderm(Orderm orderm) {
-        ordermDao.deleteOrderm(orderm);
+        ordermDao.delete(orderm);
     }
 
     @Override
     public Orderm getOrderm(long id) {
-        return ordermDao.getOrderm(id);
+        return ordermDao.get(id);
     }
 
     @Override
     public List<Orderm> getAllOrderm() {
-        return ordermDao.getAllOrderm();
+        return ordermDao.getAll();
     }
 }
