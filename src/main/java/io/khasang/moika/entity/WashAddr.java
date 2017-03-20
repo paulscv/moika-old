@@ -14,12 +14,13 @@ import java.math.BigDecimal;
 public class WashAddr extends ABaseMoikaEntity {
 
     @Id
-    @Column(name = "id_addr")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_addr", columnDefinition = "serial")
+   // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "city")
-    private String city;
+    @ManyToOne
+    @JoinColumn(name = "id_city")
+    private City city;
 
     @Column(name = "street")
     private String street;
@@ -52,11 +53,11 @@ public class WashAddr extends ABaseMoikaEntity {
         this.id = id;
     }
 
-    public String getCity() {
+    public City getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(City city) {
         this.city = city;
     }
 

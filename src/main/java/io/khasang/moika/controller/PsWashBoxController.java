@@ -1,9 +1,9 @@
 package io.khasang.moika.controller;
 
+import io.khasang.moika.entity.BoxStatus;
+import io.khasang.moika.entity.BoxType;
 import io.khasang.moika.entity.WashBox;
-import io.khasang.moika.model.CreateTable;
 import io.khasang.moika.service.PskvorWashBoxDaoService;
-import io.khasang.moika.service.impl.PskvorDataAccessServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +17,11 @@ import java.util.List;
 
 @Controller
 public class PsWashBoxController {
-    @Autowired
-    CreateTable createTable;
-    @Autowired
-    PskvorDataAccessServiceImpl pskvorDataAccessService;
+
     @Autowired
     PskvorWashBoxDaoService pskvorWashBoxDaoService;
+
+
 
     @RequestMapping(value = "/washBoxlist", method = RequestMethod.GET)
     public String getWashBoxList(Model model) {
@@ -107,12 +106,30 @@ public class PsWashBoxController {
         return "ps-dao-carwashbox";
     }
 
-    @RequestMapping(value = "/facilityBoxes/{id}", method = RequestMethod.GET)
-    public String getFacilityBoxes(@PathVariable(value = "id") String inputId, Model model) {
-        model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
-        List<WashBox> washBoxList = pskvorWashBoxDaoService.getWashBoxesOnFacility(Integer.valueOf(inputId));
-        model.addAttribute("boxlist", washBoxList);
-        model.addAttribute("nrows", washBoxList.size() + " rows affected");
-        return "ps-dao-carwashbox";
+    @RequestMapping(value = "/boxStatus/list/", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public List<BoxStatus> getBoxStatusList(@RequestBody BoxStatus boxStatus) {
+        return pskvorWashBoxDaoService.getWashBoxesStatuses();//"ps-dao-carwashfacilities";
     }
+
+    @RequestMapping(value = "/boxType/list/", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public List<BoxType> getBoxTypesList(@RequestBody BoxType boxtypel) {
+        return pskvorWashBoxDaoService.getWashBoxesTypes();//"ps-dao-carwashfacilities";
+    }
+
+    @RequestMapping(value = "/boxStatus/{code}/", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public BoxStatus getBoxStatusByCode(@PathVariable(value = "code") String code) {
+        return pskvorWashBoxDaoService.getWashBoxesStatusByCode(code);//"ps-dao-carwashfacilities";
+    }
+
+    @RequestMapping(value = "/boxType/{code}/", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public BoxType getBoxTypesList(@PathVariable(value = "code") String code) {
+        return pskvorWashBoxDaoService.getWashBoxesTypeByCode(code);//"ps-dao-carwashfacilities";
+    }
+
+
+
 }

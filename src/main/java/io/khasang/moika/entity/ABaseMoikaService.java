@@ -13,21 +13,21 @@ public abstract class ABaseMoikaService extends ABaseMoikaEntity {
     @GeneratedValue(strategy = GenerationType.AUTO) //не IDENTITY, а тот что в таблицах
     private int id;
 
-    @Column(name = "id_fclt")
+    @Column(name = "id_fclt", insertable = false, updatable = false)
     private int idFacility;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "id_fclt", foreignKey = @ForeignKey(name = "fk_service_id_fclt"), insertable = false, updatable = false)
     private WashFacility washFacility;
 
-    @Column(name = "id_type", updatable = false)
+    @Column(name = "id_type", insertable = false, updatable = false)
     private int idType;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "id_type", foreignKey = @ForeignKey(name = "fk_service_type"), insertable = false, updatable = false)
     private ServiceType serviceTypeEntity;
 
-    @Column(name = "id_status")
+    @Column(name = "id_status",insertable = false, updatable = false)
     private Short idStatus;
 
     @ManyToOne(cascade = CascadeType.REFRESH)

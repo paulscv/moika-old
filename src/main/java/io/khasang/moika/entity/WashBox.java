@@ -1,5 +1,7 @@
 package io.khasang.moika.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity(name = "wash_boxes")
@@ -14,25 +16,26 @@ public class WashBox  extends ABaseMoikaEntity {
     private int idFacility;
     @ManyToOne
     @JoinColumn(name = "id_fclt", insertable=false, updatable=false )
+    @JsonBackReference
     private WashFacility washFacility;
 
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     private String boxName;
 
     @Column(name = "descr")
     private String description;
 
 
- //   @Column(name = "id_type", insertable=false, updatable=false)
- //   private int idType;
+    @Column(name = "id_type", insertable=false, updatable=false)
+    private int idType;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinColumn( name = "id_type")//, foreignKey = @ForeignKey(name = "fk_box_type"), insertable=false, updatable=false )
     private BoxType boxTypeEntity;
 
 
- //   @Column(name = "id_status", insertable=false, updatable=false)
- //   private Short idStatus;
+    @Column(name = "id_status", insertable=false, updatable=false)
+    private Short idStatus;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "id_status")//, insertable=false, updatable=false )
     private BoxStatus boxStatusEntity;
@@ -51,18 +54,18 @@ public class WashBox  extends ABaseMoikaEntity {
     }
 
     public int getIdFacility() {
-        return washFacility.getId();
+        return idFacility;//washFacility.getId();
     }
 
     public void setIdFacility(int idFacility) {
         this.idFacility = idFacility;
     }
-/*
+
     public int getIdType() {
         return idType;
     }
 
-    public void setIdtype(int id_type) {
+    public void setIdType(int id_type) {
         this.idType = id_type;
     }
 
@@ -74,7 +77,7 @@ public class WashBox  extends ABaseMoikaEntity {
         this.idStatus = boxStatus;
     }
 
-*/
+
     public String getBoxName() {
         return boxName;
     }
@@ -110,10 +113,12 @@ public class WashBox  extends ABaseMoikaEntity {
 
     public void setBoxTypeEntity(BoxType boxTypeEntity) {
         this.boxTypeEntity = boxTypeEntity;
+        this.setIdType(boxTypeEntity.getId());
     }
 
     public void setBoxStatusEntity(BoxStatus boxStatusEntity) {
         this.boxStatusEntity = boxStatusEntity;
+        this.setIdStatus((short) boxStatusEntity.getId());
     }
 
     @Override

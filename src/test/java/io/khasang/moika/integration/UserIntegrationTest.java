@@ -1,21 +1,15 @@
-package io.khasang.moika.service.impl;
+package io.khasang.moika.integration;
 
 
-import io.khasang.moika.entity.Role;
 import io.khasang.moika.entity.User;
-import io.khasang.moika.service.UserService;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
 
 public class UserIntegrationTest {
 

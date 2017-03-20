@@ -6,7 +6,6 @@ import io.khasang.moika.dao.MoikaServiceDao;
 import io.khasang.moika.entity.ABaseMoikaServiceAdditionalInfo;
 import io.khasang.moika.entity.IBaseMoikaServiceAddInfo;
 import io.khasang.moika.entity.MoikaService;
-import io.khasang.moika.util.DataAccessUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,7 @@ public class MoikaServiceDaoImpl extends MoikaDaoCrudImpl<MoikaService> implemen
         List<? extends IBaseMoikaServiceAddInfo> addServiceInfoList = entity.getServiceAddInfo();
         for (IBaseMoikaServiceAddInfo child : addServiceInfoList) {
             BaseMoikaConcreatServiceDao concreatServiceDao = moikaServiceAddInfoDaoFabrica.
-                    getMoikaConcreatServiceDao(entity.getId(), entity.getTypeCode());
+                    getMoikaConcreatServiceDao(entity.getTypeCode());
             concreatServiceDao.delete((ABaseMoikaServiceAdditionalInfo) child);
         }
         getCurrentSession().delete(entity);
@@ -59,7 +58,8 @@ public class MoikaServiceDaoImpl extends MoikaDaoCrudImpl<MoikaService> implemen
         getCurrentSession().save(entity);
         for (IBaseMoikaServiceAddInfo child : addServiceInfoList) {
             BaseMoikaConcreatServiceDao concreatServiceDao = moikaServiceAddInfoDaoFabrica.
-                    getMoikaConcreatServiceDao(entity.getId(), entity.getTypeCode());
+                    getMoikaConcreatServiceDao(entity.getTypeCode());
+            ((ABaseMoikaServiceAdditionalInfo)child).setIdService(entity.getId());
             concreatServiceDao.create((ABaseMoikaServiceAdditionalInfo) child);
         }
         //DRS session.flush();

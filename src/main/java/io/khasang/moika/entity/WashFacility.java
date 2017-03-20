@@ -1,5 +1,7 @@
 package io.khasang.moika.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +19,18 @@ public class WashFacility  extends ABaseMoikaEntity  {
     private int  idManager;
     @Column(name = "name")
     private String  name ;
-    @Column(name = "id_addr")
-    private int  idAddr;
     @Column(name = "descr")
     private String  description;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(name = "id_addr")
+    private int  idAddr;
+    @OneToOne
+    @JoinColumn(name = "id_addr", insertable = false, updatable = false)
+    private WashAddr facilityAddr;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_fclt", referencedColumnName = "id_fclt")
+    @JsonManagedReference
     private List<WashBox> washBoxes = new ArrayList<>();
 
 
@@ -64,6 +71,15 @@ public class WashFacility  extends ABaseMoikaEntity  {
 
     public void setIdAddr(int idAddr) {
         this.idAddr = idAddr;
+    }
+
+
+    public WashAddr getFacilityAddr() {
+        return facilityAddr;
+    }
+
+    public void setFacilityAddr(WashAddr facilityAddr) {
+        this.facilityAddr = facilityAddr;
     }
 
     public String getDescription() {
@@ -114,7 +130,7 @@ public class WashFacility  extends ABaseMoikaEntity  {
                 ", idNet=" + idNet +
                 ", idManager=" + idManager +
                 ", name='" + name + '\'' +
-                ", idAddr=" + idAddr +
+                ", facilityAddr=" + facilityAddr.toString() + '\''+
                 ", description='" + description + '\'' +
                 ", washBoxes=" + sb.toString() +
                 '}';

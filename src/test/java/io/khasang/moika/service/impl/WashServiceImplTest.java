@@ -2,12 +2,11 @@ package io.khasang.moika.service.impl;
 
 
 import io.khasang.moika.config.application.WebConfig;
+import io.khasang.moika.dao.CarTypeDao;
 import io.khasang.moika.dao.MoikaDaoException;
+import io.khasang.moika.dao.ServiceStatusDao;
 import io.khasang.moika.dao.ServiceTypeDao;
-import io.khasang.moika.entity.IBaseMoikaServiceAddInfo;
-import io.khasang.moika.entity.MoikaService;
-import io.khasang.moika.entity.ServiceType;
-import io.khasang.moika.entity.WashService;
+import io.khasang.moika.entity.*;
 import io.khasang.moika.service.MoikaServiceDataAccessService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,7 +31,11 @@ public class WashServiceImplTest {
     MoikaServiceDataAccessService moikaService;
     @Autowired
     ServiceTypeDao serviceTypeDao;
+    @Autowired
+    ServiceStatusDao serviceStatusDao;
 
+    @Autowired
+    CarTypeDao carTypeDao;
 
 
 
@@ -76,24 +79,26 @@ public class WashServiceImplTest {
         MoikaService service = new MoikaService(); // подготовили объект для тестирования
 
         service.setName(serviceName);
-        service.setIdFacility(1);
+        service.setIdFacility(3);
         service.setDescription("к нам на полставки устроился Йода");
-        service.setIdType(1);
-        ServiceType stEntity = serviceTypeDao.get(service.getIdType());
+        ServiceType stEntity = serviceTypeDao.getEntityByCode("WASH");
         service.setServiceTypeEntity(stEntity);
+        ServiceStatus stsEntity  = serviceStatusDao.getEntityByCode("PLAN");
         service.setIdStatus((short) 1);
 
+        CarType carType = carTypeDao.getEntityByCode("CAR");
         List<IBaseMoikaServiceAddInfo> serviceList = new ArrayList<>();
         WashService serviceAddInfo = new WashService();
-        serviceAddInfo.setIdCarType(1);
-        serviceAddInfo.setServiceCost(new BigDecimal("3500"));
-        serviceAddInfo.setServiceDuration(5);
+        serviceAddInfo.setCarTypeEntity(carType);
+        serviceAddInfo.setServiceCost(new BigDecimal("3500.00"));
+        serviceAddInfo.setServiceDuration(10);
         serviceList.add(serviceAddInfo);
 
+        carType = carTypeDao.getEntityByCode("SUV");
         serviceAddInfo = new WashService();
-        serviceAddInfo.setIdCarType(2);
-        serviceAddInfo.setServiceCost(new BigDecimal("5500"));
-        serviceAddInfo.setServiceDuration(10);
+        serviceAddInfo.setCarTypeEntity(carType);
+        serviceAddInfo.setServiceCost(new BigDecimal("5500.00"));
+        serviceAddInfo.setServiceDuration(20);
         serviceList.add(serviceAddInfo);
 
         service.setServiceAddInfo(serviceList);
@@ -121,8 +126,8 @@ public class WashServiceImplTest {
             }
         }
         Assert.assertTrue("Service types list not contain name \"Ручная мойка машины\"", isWashCode);
-        Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not cost", new BigDecimal("420.00").setScale(2), cost);
-        Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not last", 300, dur);
+        Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not cost", new BigDecimal("3500.00").setScale(2), cost.setScale(2));
+        Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not last", 10, dur);
     }
 }
 
