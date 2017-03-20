@@ -132,7 +132,7 @@ public class WashFacilityIntegrationalTest {
                 HttpMethod.GET,
                 httpEntity,
                 new ParameterizedTypeReference<List<WashFacility>>() {
-                }, id);
+                });
         List<WashFacility> resList = resultAll.getBody();
         Assert.assertFalse("Request body does not contain WashFacilities", resList.isEmpty());
 

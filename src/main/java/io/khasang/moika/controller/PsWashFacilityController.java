@@ -2,7 +2,6 @@ package io.khasang.moika.controller;
 
 import io.khasang.moika.entity.WashBox;
 import io.khasang.moika.entity.WashFacility;
-import io.khasang.moika.model.CreateTable;
 import io.khasang.moika.service.PskvorWashFacilityDaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,8 +16,7 @@ import java.util.List;
 
 @Controller
 public class PsWashFacilityController {
-    @Autowired
-    CreateTable createTable;
+
 
     @Autowired
     PskvorWashFacilityDaoService pskvorWashFacilityDaoService;
@@ -37,14 +35,14 @@ public class PsWashFacilityController {
     @ResponseBody
     public WashFacility addWashFacility(@RequestBody WashFacility washFacility, Model model) {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
-        pskvorWashFacilityDaoService.addWashFacility(washFacility);
+        washFacility = pskvorWashFacilityDaoService.addWashFacility(washFacility);
         return washFacility; //"ps-dao-carwashfacilities";
     }
 
     @RequestMapping(value = "/washFacility/update", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public Object updateWashFacility(@RequestBody WashFacility washFacility) {
-        pskvorWashFacilityDaoService.updateWashFacility(washFacility);
+        washFacility =  pskvorWashFacilityDaoService.updateWashFacility(washFacility);
         return washFacility;
     }
 

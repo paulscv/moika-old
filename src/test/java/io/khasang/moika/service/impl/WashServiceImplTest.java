@@ -37,7 +37,8 @@ public class WashServiceImplTest {
     @Autowired
     CarTypeDao carTypeDao;
 
-
+    final String serviceName = "Мойка силой мысли";
+    final String testDescr = "к нам на полставки устроился Йода";
 
     @Test
     @Transactional
@@ -75,12 +76,12 @@ public class WashServiceImplTest {
     @Test
     @Transactional
     public void testAddWashService() {
-        final String serviceName = "Мойка силой мысли";
+
         MoikaService service = new MoikaService(); // подготовили объект для тестирования
 
         service.setName(serviceName);
         service.setIdFacility(3);
-        service.setDescription("к нам на полставки устроился Йода");
+        service.setDescription(testDescr);
         ServiceType stEntity = serviceTypeDao.getEntityByCode("WASH");
         service.setServiceTypeEntity(stEntity);
         ServiceStatus stsEntity  = serviceStatusDao.getEntityByCode("PLAN");
