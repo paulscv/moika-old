@@ -7,7 +7,7 @@
 <h3>Пожалуйста, введите корректные данные!</h3>
 <table>
     <tr>
-        <td><a href="/orderm/add">Повторить ввод</a></td>
+        <td><a href="/orderm/add/">Повторить ввод</a></td>
     </tr>
 </table>
 </body>

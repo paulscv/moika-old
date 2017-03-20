@@ -56,4 +56,8 @@ public class YandexMapController {
 
         return "redirect:/yandexmap/list/";
     }
+    @RequestMapping(value = "ya2/", method = RequestMethod.GET)
+    public String showMap(Model model) {
+        return "yandex2";
+    }
 }

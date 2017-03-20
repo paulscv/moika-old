@@ -16,35 +16,30 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/orderm")
+@RequestMapping("orderm/")
 public class OrdermController {
     @Autowired
     OrdermAccessService ordermAccessService;
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "list/", method = RequestMethod.GET)
     public String List(Model model) {
         List<Orderm> listOrderm = ordermAccessService.getAllOrderm();
         model.addAttribute("listOrderm", listOrderm);
         model.addAttribute("nrows", "Количество заказов " + listOrderm.size());
         return "orderm-list";
     }
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    @RequestMapping(value = "add/", method = RequestMethod.GET)
     public ModelAndView showForm() {
         return new ModelAndView("orderm-edit-view-form", "orderm", new Orderm());
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "add/", method = RequestMethod.POST)
     public String submit(@ModelAttribute("orderm") final Orderm orderm,
                          final BindingResult result, final ModelMap model) {
         if (result.hasErrors()) {
             return "error";
         }
         ordermAccessService.addOrderm(orderm);
-        return "redirect:/orderm/list";
+        return "redirect:/orderm/list/";
     }
-    @RequestMapping(value = "/ya2", method = RequestMethod.GET)
-    public String showMap(Model model) {
-        return "yandex2";
-    }
-
 }
