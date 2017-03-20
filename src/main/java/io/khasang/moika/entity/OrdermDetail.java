@@ -3,8 +3,8 @@ package io.khasang.moika.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Entity
-public class OrdermDetail {
+@Entity(name = "ordermdetail")
+public class OrdermDetail extends ABaseMoikaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,9 +24,9 @@ public class OrdermDetail {
     @ManyToOne
     @JoinColumn(name = "orderm_id", foreignKey = @ForeignKey(name = "ORDER_ID_FK"))
     private Orderm orderm;
-//    @ManyToOne
-//    @JoinColumn(name = "work_id", foreignKey = @ForeignKey(name = "WORK_ID_FK"))
-//    private Work work;
+    @ManyToOne
+    @JoinColumn(name = "work_id", foreignKey = @ForeignKey(name = "WORK_ID_FK"))
+    private Work work;
 
     public OrdermDetail() {
     }

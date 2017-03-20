@@ -27,7 +27,11 @@ public class Orderm extends ABaseMoikaEntity implements Serializable {
 
     public Orderm() {
     }
-
+    public OrdermDetail addOrdermDetail(OrdermDetail ordermDetail){
+        ordermDetail.setOrderm(this);
+        ordersDetails.add(ordermDetail);
+        return ordermDetail;
+    }
     public Orderm(String number) {
         this.number = number;
     }
