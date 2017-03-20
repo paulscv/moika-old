@@ -7,6 +7,6 @@ import io.khasang.moika.entity.BoxType;
  * @author Skvortsov Pavel
  *
  */
-public interface BoxTypeDao extends IMoikaDaoCrud<BoxType> {
+public interface BoxTypeDao extends BaseMoikaTypeDao<BoxType> {
 
 }

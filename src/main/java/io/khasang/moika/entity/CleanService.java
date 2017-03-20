@@ -1,7 +1,6 @@
 package io.khasang.moika.entity;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity(name = "clean_Services")
 @IdClass(CleanServicePk.class)
@@ -10,11 +9,11 @@ public class CleanService extends ABaseMoikaServiceAdditionalInfo {
     @Column(name = "id_service")
     private int id;
 
-    public int getId() {
+    public int getIdService() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setIdService(int id) {
         this.id = id;
     }
     @Id

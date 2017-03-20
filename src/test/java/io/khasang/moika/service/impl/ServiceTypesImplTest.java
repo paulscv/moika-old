@@ -45,4 +45,18 @@ public class ServiceTypesImplTest {
         }
         Assert.assertTrue("Service types list not contain type code WASH",isCode);
     }
+
+    @Test
+    @Transactional
+    public void testGetServiceTypeByCode(){
+        ServiceType servicetype = null;
+        try {
+            servicetype = serviceTypesService.getServiceTypeByCode("WASH");
+        } catch (MoikaDaoException e) {
+            Assert.fail( e.getMessage());
+        }
+        Assert.assertNotNull("Service status  is null",servicetype);
+        Assert.assertTrue("Service status not code ON",servicetype.getTypeCode().equals("WASH"));
+    }
+
 }

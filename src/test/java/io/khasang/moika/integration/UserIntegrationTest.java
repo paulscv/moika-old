@@ -18,8 +18,11 @@ import java.util.Map;
 public class UserIntegrationTest {
 
     static final Logger LOGGER = LoggerFactory.getLogger(UserIntegrationTest.class);
-    DataAccessUtil dataAccessUtil = new DataAccessUtil();
 
+//    @Autowired
+//    UserService userService;
+
+//    @Ignore
     @Test
     public void createUser() {
 
@@ -160,6 +163,6 @@ public class UserIntegrationTest {
         Assert.assertEquals("Дублин", resultUpdUser.getLastName());
         Assert.assertNotNull(resultUpdUser.getId());
     }
-
-
+    
+    
 }

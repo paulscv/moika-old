@@ -29,10 +29,10 @@ public class MoikaServiceAddInfoDaoFabrica {
     }
 
     public List<IBaseMoikaServiceAddInfo> getListOfServiceAddInfo(int idService, String codeTypeService){
-       return getMoikaConcreatServiceDao(idService,codeTypeService).getConcreatServiceById(idService);
+       return getMoikaConcreatServiceDao(codeTypeService).getConcreatServiceById(idService);
     }
 
-    public BaseMoikaConcreatServiceDao getMoikaConcreatServiceDao(int idService, String codeTypeService){
+    public BaseMoikaConcreatServiceDao getMoikaConcreatServiceDao( String codeTypeService){
         BaseMoikaConcreatServiceDao concreatServiceDao = null;
         switch ( codeTypeService ) {
             case "WASH":

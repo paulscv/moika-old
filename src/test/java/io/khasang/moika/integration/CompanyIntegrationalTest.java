@@ -17,15 +17,15 @@ public class CompanyIntegrationalTest {
 
     @Ignore
     @Before
-    public void initTests(){
-    System.out.println("Tests are beginning...");
+    public void initTests() {
+        System.out.println("Tests are beginning...");
     }
 
     @Ignore
     @Test
     @Transactional
     @Rollback
-    public void createCompany(){
+    public void createCompany() {
         HttpHeaders headers = new HttpHeaders(); //использовать именно из org.springframework.http.HttpHeaders
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         Company company = new Company(); // подготовили класс для тестирования
@@ -37,7 +37,7 @@ public class CompanyIntegrationalTest {
                 "http://localhost:8080/company/add",
                 HttpMethod.POST,
                 httpEntity,
-                Company.class ).getBody();
+                Company.class).getBody();
 
         Assert.assertNotNull(resultCompany);
         Assert.assertEquals("Рога и копыта", resultCompany.getName());
@@ -45,7 +45,7 @@ public class CompanyIntegrationalTest {
 
     @Ignore
     @Test
-    public void getCompanyById(){
+    public void getCompanyById() {
         HttpHeaders headers = new HttpHeaders(); //использовать именно из org.springframework.http.HttpHeaders
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
 
@@ -57,7 +57,7 @@ public class CompanyIntegrationalTest {
                 "http://localhost:8080//company/{id}",
                 HttpMethod.GET,
                 httpEntity,
-                Company.class, id ).getBody();
+                Company.class, id).getBody();
 
         Assert.assertNotNull(resultCompany);
         Assert.assertEquals("Рога и копыта", resultCompany.getName());

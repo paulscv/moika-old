@@ -42,6 +42,20 @@ public class ServiceStatusImplTest {
                 isCode = true;
             }
         }
-        Assert.assertTrue("Service status list not contain status code ON",isCode);
+        Assert.assertTrue("Service status list not contain status code WORKING",isCode);
+    }
+
+
+    @Test
+    @Transactional
+    public void testGetServiceStatusByCode(){
+        ServiceStatus serviceStatus = null;
+        try {
+            serviceStatus = serviceStatusService.getServiceStatusByCode("ON");
+        } catch (MoikaDaoException e) {
+            Assert.fail( e.getMessage());
+        }
+        Assert.assertNotNull("Service status  is null",serviceStatus);
+        Assert.assertTrue("Service status not code ON",serviceStatus.getStatusCode().equals("ON"));
     }
 }

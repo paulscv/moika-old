@@ -1,7 +1,8 @@
 package io.khasang.moika.entity;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity(name = "complex_services")
 public class ComplexService extends ABaseMoikaServiceAdditionalInfo {
@@ -10,11 +11,11 @@ public class ComplexService extends ABaseMoikaServiceAdditionalInfo {
     @Column(name = "id_service")
     private int id;
 
-    public int getId() {
+    public int getIdService() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setIdService(int id) {
         this.id = id;
     }
 
