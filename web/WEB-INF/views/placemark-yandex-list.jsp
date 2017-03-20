@@ -14,7 +14,7 @@
         <td>Широта</td>
         <td>Долгота</td>
         <td>Подсказка</td>
-        <td>Текст</td>
+        <td>Описание</td>
         ,
 
     </tr>
@@ -32,7 +32,7 @@
 <h3>${nrows}</h3>
 <table>
     <tr>
-        <td><a href="/orderm/add">Новый заказ</a></td>
+        <td><a href="/yandexmap/add/">Новое место на карте</a></td>
     </tr>
 </table>
 

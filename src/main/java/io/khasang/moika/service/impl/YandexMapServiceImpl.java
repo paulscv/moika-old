@@ -16,6 +16,15 @@ public class YandexMapServiceImpl implements YandexMapService {
     @Autowired
     YandexMapDAO yandexMapDAO;
 
+    public YandexMapServiceImpl() {
+    }
+
+
+    @Override
+    public PlacemarkYandex add(PlacemarkYandex placemarkYandex) {
+        return yandexMapDAO.create(placemarkYandex);
+    }
+
     @Override
     public List<PlacemarkYandex> getAllPlacemark() {
         return yandexMapDAO.getAll();
