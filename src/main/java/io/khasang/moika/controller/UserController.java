@@ -18,21 +18,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintValidatorFactory;
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.validation.Validator;
-import javax.validation.groups.Default;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Контроллер интерфейсов пользователя
@@ -41,8 +37,8 @@ import java.util.Set;
  * @since 2017-03-01
  */
 
-@RequestMapping(path = "/user")
-@RestController
+@Controller
+@RequestMapping(path = "/users")
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
     @Autowired
@@ -63,7 +59,7 @@ public class UserController {
     }
 
     //TODO Возможно стоит добавить функционал подтверждения регистрации через email (?!phone?!)
-    @RequestMapping(value = "/reg", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @PostMapping()
     @ResponseBody
     public Object createUser(@RequestBody @Valid User user, BindingResult result) {
         if (result.hasErrors()) {
@@ -76,11 +72,11 @@ public class UserController {
 
     @RequestMapping("/getallusers")
     @ResponseBody
-    public List<User> user (){
+    public List<User> user() {
         return userService.getAllUsers();
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/login", produces = "application/json;charset=UTF-8")
     @ResponseBody
     public Object loginUser(@RequestBody User user) {
         //возвращаем null если пользователь уже залогирован
@@ -141,7 +137,7 @@ public class UserController {
         return new ResponseEntity(userForUpdate, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "/{id}")
     @ResponseBody
     public Object getUser(@PathVariable("id") long id) {
         User user = userService.findById(id);
@@ -156,33 +152,51 @@ public class UserController {
         return user;
     }
 
-    @PostMapping(value = "/util", produces = "application/json;charset=UTF-8")
-    public Object utilUser(@RequestBody Map<String, String> param) {
-        //TODO переделать на работу с javax.validation.Validator и создать две доп. аннотации
-        boolean result = false;
+    @PostMapping(path = "/eee", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public User test123(@RequestBody Object user, BindingResult result) {
+        return new User();
+    }
 
-        User userToCheck = null;
-        if(param.containsKey("id")) {
-            Long userId;
-            try {
-                userId = Long.parseLong(param.get("id"));
-            }catch(NumberFormatException e){
-                return new ResponseEntity("Unable to parse given user ID " + param.get("id"), HttpStatus.NOT_FOUND);
+
+    @PostMapping(value = "/validation",
+            produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public Map<String, Object> validation(
+            @RequestBody User userToCheck,
+            @RequestParam(defaultValue = "") String fieldName,
+            BindingResult result) {
+
+        Set<ConstraintViolation<User>> violations = validator.validate(userToCheck);
+
+        Map<String, List<String>> errors = new HashMap<>();
+        for (ConstraintViolation cv : violations) {
+
+            String violatedPathName = cv.getPropertyPath().toString();
+
+            if (!fieldName.equals("") && !violatedPathName.equals(fieldName)) {
+                continue;
             }
 
-            userToCheck = userService.findById(userId);
-
-            if(userToCheck == null){
-                return new ResponseEntity("No User found for ID " + userId, HttpStatus.NOT_FOUND);
-            }
-
-        }else{
-            userToCheck = new User();
+            errors.compute(cv.getPropertyPath().toString(), (k, v) -> {
+                if (v == null) {
+                    v = new ArrayList<>();
+                }
+                v.add(cv.getMessage());
+                return v;
+            });
         }
 
-        Set<ConstraintViolation<User>> errors = validator.validate(userToCheck);
-
-        return new ResponseEntity(errors, HttpStatus.OK);
+        if (errors.isEmpty()) {
+            return Collections.singletonMap("success", true);
+        } else {
+            if(fieldName.equals("")) {
+                return Collections.singletonMap("error", errors);
+            }else{
+                return Collections.singletonMap("error",
+                        errors.get(fieldName).stream().collect(Collectors.joining("; ")));
+            }
+        }
     }
 
     //Функции управления ролями

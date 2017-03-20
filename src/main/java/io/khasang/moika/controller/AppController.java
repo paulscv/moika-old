@@ -39,7 +39,7 @@ public class AppController {
 
     }
 
-    @RequestMapping("/")
+    @GetMapping("/")
     @AddMenuPath(name = "hello")
     public String hello(Model model) {
         User user = getCurrentUser();

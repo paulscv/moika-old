@@ -2,6 +2,7 @@ package io.khasang.moika.integration;
 
 
 import io.khasang.moika.entity.User;
+import io.khasang.moika.util.DataAccessUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -10,6 +11,9 @@ import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class UserIntegrationTest {
 
@@ -83,13 +87,54 @@ public class UserIntegrationTest {
 
     }
 
+
+    @Test
+    public void getUser() {
+
+        User resultUser = new RestTemplate().getForObject("http://localhost:8080/users/{id}", User.class, 1L);
+
+        Assert.assertNotNull(resultUser);
+        Assert.assertEquals("Дублин", resultUser.getLastName());
+    }
+
+    @Test
+    public void testUser123() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+        HttpEntity httpEntity = new HttpEntity<>(Collections.singletonMap("email", "aaaa"), headers);
+
+        Object result = new RestTemplate().postForObject("http://localhost:8080/users/eee", httpEntity, List.class);
+        System.out.println(result.getClass().getSimpleName());
+        System.out.println(result.toString());
+    }
+
+    @Test
+    public void userJSR303ValidationTest() {
+
+        User testUser = new User();
+        testUser.setId(0);
+        testUser.setLastName("Дублин");
+        testUser.setLogin("rostislav");
+        testUser.setEmail("crm_guru@mail.ru");
+        testUser.setPhone("123111");
+
+        ResponseEntity resultUserEntity = new RestTemplate().postForEntity(
+                "http://localhost:8080/users/validation",
+                dataAccessUtil.getHttpEntityForJSON(testUser),
+                Map.class);
+
+        System.out.println(resultUserEntity.getBody().toString());
+    }
+
+
     @Test
     public void updateUser() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<User> responseEntity = restTemplate.exchange(
-                "http://localhost:8085/user/{id}",
+                "http://localhost:8080/user/{id}",
                 HttpMethod.GET,
                 null,
                 User.class,
@@ -104,13 +149,13 @@ public class UserIntegrationTest {
         User resultUpdUser = null;
         try {
             resultUpdUser = restTemplate.exchange
-                    ("http://localhost:8085/user/update/{id}",
+                    ("http://localhost:8080/user/update/{id}",
                             HttpMethod.PUT,
                             httpEntity,
                             User.class,
                             resultUser.getId())
                     .getBody();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             throw e;
         }

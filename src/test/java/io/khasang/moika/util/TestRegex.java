@@ -2,7 +2,9 @@ package io.khasang.moika.util;
 
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TestRegex {
@@ -19,5 +21,21 @@ public class TestRegex {
         Map<String,Object> map = new HashMap<>();
         map.put("odin","dvar");
         System.out.println("key: odin"+"  val: "+map.get("odin").toString());
+    }
+
+    @Test
+    public void jSessionIdExtraction(){
+
+        List<String> setCookies = Arrays.asList(new String[]{
+                "Как мало денег",
+                "JSESSIONID=69EC996846355734788F6D9D721C8359; Path=/; HttpOnly",
+                "Но жизнь прекрасна!"});
+
+
+            String jsessionId = jsessionId = setCookies.stream().filter((a)->a.startsWith("JSESSIONID="))
+                    .map(s -> s.substring(0, s.indexOf(";"))).findAny().orElse("");
+
+        System.out.println(jsessionId);
+
     }
 }

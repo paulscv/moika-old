@@ -26,7 +26,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/company/**").permitAll()
                 //добавлен для тестирования validator'ов
                 //.antMatchers("/client/**").permitAll()
-                .antMatchers("/user/create*").permitAll()
+                .antMatchers("/users/**").permitAll()
+                .antMatchers("/users/create*").permitAll()
 
                 .antMatchers("/create*").access("hasAnyRole('ADMIN')")
                 .antMatchers("/admin/**").access("hasAnyRole('ADMIN','USER')")

@@ -6,22 +6,23 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Аннотация валидатора уникальности Email данного пользователя.
+ * Аннотация валидатора уникальности Login данного пользователя.
  * @author Rostislav Dublin
- * @since 2017-03-15
+ * @since 2017-03-18
  */
 
 @Target({TYPE, ANNOTATION_TYPE })
 @Retention(RUNTIME)
-@Constraint(validatedBy = UserEmailUniqueValidator.class)
+@Constraint(validatedBy = UserLoginUniqueValidator.class)
 @Documented
-public @interface UserEmailUnique {
+public @interface UserLoginUnique {
 
-    String MESSAGE = "{user.email.not_unique.message}";
+    static String MESSAGE = "{user.login.not_unique.message}";
 
     String message() default MESSAGE;
 
