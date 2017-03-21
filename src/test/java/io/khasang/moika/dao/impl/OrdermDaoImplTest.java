@@ -4,6 +4,7 @@ import io.khasang.moika.config.AppConfig;
 import io.khasang.moika.config.HibernateConfig;
 import io.khasang.moika.config.application.WebConfig;
 import io.khasang.moika.dao.OrdermDao;
+import io.khasang.moika.dao.OrdermDetailDao;
 import io.khasang.moika.entity.Orderm;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,19 +21,23 @@ import java.util.List;
 public class OrdermDaoImplTest {
     @Autowired
     OrdermDao ordermDao;
+    @Autowired
+    OrdermDetailDao ordermDetailDao;
 
     @Test
     public void commonOrderm() throws Exception {
         Orderm orderm =new Orderm("1");
-        ordermDao.addOrderm(orderm);
+        ordermDao.create(orderm);
         orderm =new Orderm("2");
-        ordermDao.addOrderm(orderm);
-        orderm = ordermDao.getOrderm(1l);
-        orderm.setNumber("11");
-        ordermDao.updateOrderm(orderm);
-        orderm =new Orderm("33");
-        orderm =ordermDao.addOrderm(orderm);
-        ordermDao.deleteOrderm(orderm);
-        List<Orderm> l =ordermDao.getAllOrderm();
+        ordermDao.create(orderm);
+        orderm =new Orderm("3");
+        ordermDao.create(orderm);
+        long id = orderm.getId();
+        orderm = ordermDao.getOrderm("2");
+        orderm.setIs_made(true);
+        orderm = ordermDao.update(orderm);
+        List<Orderm> list =ordermDao.getAll();
+        orderm = ordermDao.getOrderm("3");
+        orderm = ordermDao.delete(orderm);
     }
 }

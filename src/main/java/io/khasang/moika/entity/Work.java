@@ -1,24 +1,29 @@
 package io.khasang.moika.entity;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-public class Work {
+public class Work extends ABaseMoikaEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(length = 80, unique = true,nullable = false)
+    @NaturalId(mutable = true)
     private String name;
     @Column(length = 15, scale =2, unique = true,nullable = false)
     private BigDecimal price;
 /*
 время в минутах для проведения работ в боксе
 */
-
     private int timeInBox;
-//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<OrdermDetail> ordersDetails = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrdermDetail> ordersDetails = new ArrayList<>();
 
     public Work() {
     }
