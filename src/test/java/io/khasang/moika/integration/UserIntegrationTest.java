@@ -2,7 +2,6 @@ package io.khasang.moika.integration;
 
 
 import io.khasang.moika.entity.User;
-import io.khasang.moika.util.DataAccessUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -13,7 +12,6 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class UserIntegrationTest {
 
@@ -119,12 +117,12 @@ public class UserIntegrationTest {
         testUser.setEmail("crm_guru@mail.ru");
         testUser.setPhone("123111");
 
-        ResponseEntity resultUserEntity = new RestTemplate().postForEntity(
-                "http://localhost:8080/users/validation",
-                dataAccessUtil.getHttpEntityForJSON(testUser),
-                Map.class);
+//        ResponseEntity resultUserEntity = new RestTemplate().postForEntity(
+//                "http://localhost:8080/users/validation",
+//                dataAccessUtil.getHttpEntityForJSON(testUser),
+//                Map.class);
 
-        System.out.println(resultUserEntity.getBody().toString());
+//        System.out.println(resultUserEntity.getBody().toString());
     }
 
 

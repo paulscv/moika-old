@@ -1,7 +1,7 @@
 package io.khasang.moika.validator.user;
 
 import io.khasang.moika.entity.User;
-import io.khasang.moika.entity.User_;
+//import io.khasang.moika.entity.User_;
 import io.khasang.moika.service.UserService;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +56,9 @@ public class UserLoginUniqueValidator implements ConstraintValidator<UserLoginUn
 
         if (!isValid) {
             constraintContext.disableDefaultConstraintViolation();
-            constraintContext
-                    .buildConstraintViolationWithTemplate(UserLoginUnique.MESSAGE)
-                    .addPropertyNode(User_.login.getName()).addConstraintViolation();
+//            constraintContext
+//                    .buildConstraintViolationWithTemplate(UserLoginUnique.MESSAGE)
+//                    .addPropertyNode(User_.login.getName()).addConstraintViolation();
         }
 
         return isValid;
