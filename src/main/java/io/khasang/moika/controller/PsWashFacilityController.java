@@ -22,13 +22,13 @@ public class PsWashFacilityController {
     PskvorWashFacilityDaoService pskvorWashFacilityDaoService;
 
     @RequestMapping(value = "/washFacilitylist", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    @ResponseBody
+    //@ResponseBody
     public Object getWashFacilityList(Model model) {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         List<WashFacility> washFacilityList = pskvorWashFacilityDaoService.getAllWashFacilities();
         model.addAttribute("fcltlist", washFacilityList);
         model.addAttribute("nrows", washFacilityList.size() + " rows affected");
-        return washFacilityList; // "ps-dao-carwashfacilities";
+        return "ps-dao-carwashfacilities"; //washFacilityList;
     }
 
     @RequestMapping(value = "/washFacility/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")

@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,8 +20,10 @@ public class UserIntegrationTest {
 
     static final Logger LOGGER = LoggerFactory.getLogger(UserIntegrationTest.class);
 
-//    @Autowired
-//    UserService userService;
+   // @Autowired
+   // UserService userService;
+    @Autowired
+    DataAccessUtil dataAccessUtil;
 
 //    @Ignore
     @Test

@@ -1,17 +1,10 @@
 package io.khasang.moika.integration;
 
-import io.khasang.moika.dao.BoxStatusDao;
-import io.khasang.moika.dao.BoxTypeDao;
-import io.khasang.moika.dao.WashAddrDao;
-import io.khasang.moika.entity.BoxStatus;
-import io.khasang.moika.entity.BoxType;
-import io.khasang.moika.entity.WashBox;
-import io.khasang.moika.entity.WashFacility;
+import io.khasang.moika.entity.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.test.annotation.Rollback;
@@ -23,14 +16,15 @@ import java.util.List;
 
 public class WashFacilityIntegrationalTest {
 
-    @Autowired
+ /*   @Autowired
     BoxStatusDao boxStatusDao;
 
     @Autowired
     BoxTypeDao boxTypeDao;
 
     @Autowired
-    WashAddrDao washAddr;
+    WashAddrDao washAddrDao;
+    */
 
     @Ignore
     @Before
@@ -62,7 +56,9 @@ public class WashFacilityIntegrationalTest {
         fclt.setName(fcltName);
         fclt.setIdNet(1);
         fclt.setDescription("RESTовая тестовая мойка");
-        fclt.setFacilityAddr(washAddr.get(1));;
+        WashAddr addr =  new WashAddr();
+        addr.setCity(new City("Москва"));
+        fclt.setFacilityAddr(addr);
 
         httpEntity = new HttpEntity<>(boxStatus, headers); //подготовили запрос для BoxStatus
         boxStatus = restTemplate.exchange(

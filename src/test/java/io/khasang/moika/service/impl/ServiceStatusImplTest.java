@@ -30,7 +30,7 @@ public class ServiceStatusImplTest {
     public void testGetServiceStatusList(){
         List<ServiceStatus> serviceStatusList = null;
         try {
-            serviceStatusList = serviceStatusService.getAllServiceStatuses();
+            serviceStatusList = serviceStatusService.getAllStatuses();
         } catch (MoikaDaoException e) {
             Assert.fail( e.getMessage());
         }
@@ -51,7 +51,7 @@ public class ServiceStatusImplTest {
     public void testGetServiceStatusByCode(){
         ServiceStatus serviceStatus = null;
         try {
-            serviceStatus = serviceStatusService.getServiceStatusByCode("ON");
+            serviceStatus = (ServiceStatus)serviceStatusService.getStatusByCode("ON");
         } catch (MoikaDaoException e) {
             Assert.fail( e.getMessage());
         }

@@ -7,6 +7,6 @@ import io.khasang.moika.entity.SalonMaterial;
  * @author Skvortsov Pavel
  *
  */
-public interface SalonMaterialDao extends IMoikaDaoCrud<SalonMaterial> {
+public interface SalonMaterialDao extends  BaseMoikaTypeDao<SalonMaterial> {
 
 }

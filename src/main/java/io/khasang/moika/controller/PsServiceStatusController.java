@@ -3,8 +3,6 @@ package io.khasang.moika.controller;
 import io.khasang.moika.dao.MoikaDaoException;
 import io.khasang.moika.entity.ServiceStatus;
 import io.khasang.moika.service.MoikaServiceStatusService;
-import io.khasang.moika.service.MoikaServiceTypesService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +26,7 @@ public class PsServiceStatusController {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         List<ServiceStatus> serviceStatusList = null;
         try {
-            serviceStatusList = serviceStatusService.getAllServiceStatuses();
+            serviceStatusList = serviceStatusService.getAllStatuses();
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
@@ -42,7 +40,7 @@ public class PsServiceStatusController {
     public Object addServiceStatus(@RequestBody ServiceStatus serviceStatus, Model model) {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         try {
-            serviceStatusService.addServiceStatus(serviceStatus);
+            serviceStatusService.addStatus(serviceStatus);
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
@@ -57,7 +55,7 @@ public class PsServiceStatusController {
     @ResponseBody
     public Object updateServiceStatus(@RequestBody ServiceStatus serviceStatus) {
         try {
-            serviceStatusService.updateServiceStatus(serviceStatus);
+            serviceStatusService.updateStatus(serviceStatus);
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
@@ -68,7 +66,7 @@ public class PsServiceStatusController {
     public String getServiceStatus(@PathVariable(value = "id") String inputId, Model model) {
         ServiceStatus serviceStatus = null;
         try {
-            serviceStatus = serviceStatusService.getServiceStatusByID(Integer.valueOf(inputId));
+            serviceStatus = (ServiceStatus)serviceStatusService.getStatusByID(Integer.valueOf(inputId));
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
@@ -87,14 +85,14 @@ public class PsServiceStatusController {
     public String deleteServiceStatus(@PathVariable(value = "id") String inputId, HttpServletResponse response) {
         ServiceStatus serviceStatus = null;
         try {
-            serviceStatus = serviceStatusService.getServiceStatusByID(Integer.valueOf(inputId));
+            serviceStatus = (ServiceStatus)serviceStatusService.getStatusByID(Integer.valueOf(inputId));
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
         if (serviceStatus != null) {
             int id = serviceStatus.getId();
             try {
-                serviceStatusService.deleteServiceStatus(serviceStatus);
+                serviceStatusService.deleteStatus(serviceStatus);
             } catch (MoikaDaoException e) {
                 e.printStackTrace();
             }
@@ -107,7 +105,7 @@ public class PsServiceStatusController {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         ServiceStatus serviceStatus = null;
         try {
-            serviceStatus = serviceStatusService.getServiceStatusByCode(code);
+            serviceStatus = (ServiceStatus)serviceStatusService.getStatusByCode(code);
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }

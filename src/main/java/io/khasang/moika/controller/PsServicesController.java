@@ -89,7 +89,7 @@ public class PsServicesController {
         List<ServiceType> allServicesTypes = new ArrayList<>();
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         try {
-            allServicesTypes = moikaServiceTypes.getAllServiceTypes();
+            allServicesTypes = moikaServiceTypes.getAllTypes();
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
@@ -104,7 +104,7 @@ public class PsServicesController {
         List<ServiceStatus> serviceStatus = new ArrayList<>();
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         try {
-            serviceStatus = moikaServiceStatus.getAllServiceStatuses();
+            serviceStatus = moikaServiceStatus.getAllStatuses();
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }

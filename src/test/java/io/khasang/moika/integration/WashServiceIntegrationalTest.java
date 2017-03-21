@@ -22,20 +22,27 @@ public class WashServiceIntegrationalTest {
 
 
     @Autowired
-    MoikaServiceDataAccessService moikaService;
+    private MoikaServiceDataAccessService moikaService;
     @Autowired
-    ServiceStatusDao serviceStatusDao;
+    private ServiceStatusDao serviceStatusDao;
     @Autowired
-    ServiceTypeDao serviceTypeDao;
+    private ServiceTypeDao serviceTypeDao;
     @Autowired
-    CarTypeDao carTypeDao;
+    private CarTypeDao carTypeDao;
 
-    final String serviceName = "Мойка силой мысли";
-    final String testDescr = "к нам на полставки устроился Йода";
+    private final String serviceName = "Мойка силой мысли";
+    private final String testDescr = "к нам на полставки устроился Йода";
 
-    final String serviceTypeCode = "WASH";
-    final String carTypeCode1 = "CAR";
-    final String carTypeCode2 = "SUV";
+    private final String serviceTypeCode = "WASH";
+    private final String serviceStatusCode = "PLAN";
+    private final String carTypeCode1 = "CAR";
+    private final String carTypeCode2 = "SUV";
+
+    private final class TestResult{
+        boolean isWashCode = false;
+        BigDecimal cost = null;
+        int duration = 0;
+    }
 
     @Ignore
     @Before
@@ -64,11 +71,11 @@ public class WashServiceIntegrationalTest {
 
         httpEntity = new HttpEntity<>(serviceStatus, headers); //подготовили запрос для BoxStatus
         serviceStatus = restTemplate.exchange(
-                "http://localhost:8080/serviceStatus/{id}/",
+                "http://localhost:8080/MoikaService/serviceStatus/{id}/",
                 HttpMethod.GET,
                 httpEntity,
-                ServiceStatus.class,"PLAN").getBody();
-        Assert.assertNotNull("Could not get service status PLAN !",serviceStatus);
+                ServiceStatus.class,serviceStatusCode).getBody();
+        Assert.assertNotNull("Could not get service status "+serviceStatusCode+"!",serviceStatus);
         service.setIdStatus((short)serviceStatus.getId());
         service.setServiceStatusEntity(serviceStatus);
 
@@ -78,8 +85,8 @@ public class WashServiceIntegrationalTest {
                 "http://localhost:8080/serviceType/{code}/",
                 HttpMethod.GET,
                 httpEntity,
-                ServiceType.class,"WASH").getBody();
-        Assert.assertNotNull("Could not get service type  WASH",serviceType);
+                ServiceType.class,serviceTypeCode).getBody();
+        Assert.assertNotNull("Could not get service type "+serviceTypeCode,serviceType);
         service.setServiceTypeEntity(serviceType);
 
 
@@ -89,8 +96,8 @@ public class WashServiceIntegrationalTest {
                 "http://localhost:8080/carType/{code}/",
                 HttpMethod.GET,
                 httpEntity,
-                CarType.class,"CAR").getBody();
-        Assert.assertNotNull("Could not get car type CAR",serviceType);
+                CarType.class,carTypeCode1).getBody();
+        Assert.assertNotNull("Could not get car type "+carTypeCode1,serviceType);
         serviceAddInfo.setCarTypeEntity(carType);
         serviceAddInfo.setServiceCost(new BigDecimal("3500.00"));
         serviceAddInfo.setServiceDuration(10);
@@ -101,14 +108,12 @@ public class WashServiceIntegrationalTest {
                 "http://localhost:8080/carType/{code}/",
                 HttpMethod.GET,
                 httpEntity,
-                CarType.class,"SUB").getBody();
-        Assert.assertNotNull("Could not get car type CAR",serviceType);
-        carType = carTypeDao.getEntityByCode("SUV");
+                CarType.class,carTypeCode2).getBody();
+        Assert.assertNotNull("Could not get car type "+carTypeCode2,serviceType);
         serviceAddInfo.setCarTypeEntity(carType);
         serviceAddInfo.setServiceCost(new BigDecimal("5500.00"));
         serviceAddInfo.setServiceDuration(20);
         serviceList.add(serviceAddInfo);
-
 
         service.setServiceAddInfo(serviceList);
 
@@ -118,27 +123,43 @@ public class WashServiceIntegrationalTest {
         } catch (MoikaDaoException e) {
             Assert.fail(e.getMessage());
         }
-        Assert.assertNotNull("Wash servise is null", testService);
-        boolean isWashCode = false;
-        BigDecimal cost = null;
-        int dur = 0;
+        Assert.assertNotNull("Wash service is null", testService);
+
+        TestResult testResult = new TestResult();
+
         if (testService.getName().equalsIgnoreCase(serviceName)) {
             List<IBaseMoikaServiceAddInfo> addInfo = testService.getServiceAddInfo();
-            Assert.assertEquals("Was service  list not contain ", 2, addInfo.size());
-            isWashCode = true;
-            for (IBaseMoikaServiceAddInfo serviceInfo : addInfo) {
-                if (((WashService) serviceInfo).getCarTypeEntity().getTypeCode().equals("CAR")) {
-                    cost = serviceInfo.getServiceCost();
-                    dur = serviceInfo.getServiceDuration();
-                    break;
-                }
-            }
+            Assert.assertEquals("Wash service list not contain ", 2, addInfo.size());
+            testResult.isWashCode = true;
+            testResult = fillTestServiceAddInfo(testResult, addInfo, carTypeCode1 );
         }
-        Assert.assertTrue("Service types list not contain name \"Мойка силой мысли\"", isWashCode);
-        Assert.assertEquals("Service types list  name \"Мойка силой мысли\" not cost", new BigDecimal("3500.00").setScale(2), cost.setScale(2));
-        Assert.assertEquals("Service types list  name \"Мойка силой мысли\" not last", 10, dur);
+        Assert.assertTrue("Service types list not contain name \"Мойка силой мысли\"", testResult.isWashCode);
+        Assert.assertEquals("Service types list  name \"Мойка силой мысли\" not cost", new BigDecimal("3500.00").setScale(2),testResult. cost.setScale(2));
+        Assert.assertEquals("Service types list  name \"Мойка силой мысли\" not last", 10, testResult.duration);
     }
 
+    private TestResult fillTestResult(List<MoikaService> serviceList, int serviceId, String carTypeCode){
+        TestResult testResult = new TestResult();
+        for (MoikaService item : serviceList) {
+            if (item.getId() == serviceId) {
+                testResult.isWashCode = true;
+                List<IBaseMoikaServiceAddInfo> addInfo = item.getServiceAddInfo();
+                testResult = fillTestServiceAddInfo(testResult, addInfo, carTypeCode);
+            }
+        }
+        return  testResult;
+    }
+
+    private TestResult fillTestServiceAddInfo(TestResult testResult, List<IBaseMoikaServiceAddInfo> addInfo, String carTypeCode){
+        for (IBaseMoikaServiceAddInfo serviceInfo : addInfo) {
+            if (((WashService) serviceInfo).getCarTypeEntity().getTypeCode().equals(carTypeCode)) {
+                testResult.cost = serviceInfo.getServiceCost();
+                testResult.duration = serviceInfo.getServiceDuration();
+                break;
+            }
+        }
+        return testResult;
+    }
 
     @Test
     public void getWashServiceList() {
@@ -149,7 +170,7 @@ public class WashServiceIntegrationalTest {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<List<MoikaService>> resultAll = restTemplate.exchange(
-                "http://localhost:8080/washFacilitylist/",
+                "http://localhost:8080/MoikaService/washServiceList",
                 HttpMethod.GET,
                 httpEntity,
                 new ParameterizedTypeReference<List<MoikaService>>() {
@@ -159,25 +180,12 @@ public class WashServiceIntegrationalTest {
 
         Assert.assertNotNull("Service  list is null", serviceList);
         Assert.assertFalse("Service  list is empty", serviceList.isEmpty());
-        boolean isWashCode = false;
-        BigDecimal cost = null;
-        int dur = 0;
-        for (MoikaService item : serviceList) {
-            if (item.getId() == 11) {
-                isWashCode = true;
-                List<IBaseMoikaServiceAddInfo> addInfo = item.getServiceAddInfo();
-                for (IBaseMoikaServiceAddInfo serviceInfo : addInfo) {
-                    if (((WashService) serviceInfo).getCarTypeEntity().getTypeCode().equals("CAR")) {
-                        cost = serviceInfo.getServiceCost();
-                        dur = serviceInfo.getServiceDuration();
-                        break;
-                    }
-                }
-            }
-        }
-        Assert.assertTrue("Service types list not contain name \"Ручная мойка машины\"", isWashCode);
-        Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not cost", new BigDecimal("420.00").setScale(2), cost);
-        Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not last", 300, dur);
+
+        TestResult testResult = fillTestResult( serviceList, 11, carTypeCode1);
+
+        Assert.assertTrue("Service types list not contain name \"Ручная мойка машины\"", testResult.isWashCode);
+        Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not cost", new BigDecimal("420.00").setScale(2), testResult.cost);
+        Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not last", 300, testResult.duration);
     }
 
     @Test
@@ -190,35 +198,21 @@ public class WashServiceIntegrationalTest {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<List<MoikaService>> resultAll = restTemplate.exchange(
-                "http://localhost:8080/washFacility/{id}/",
+                "http://localhost:8080/MoikaService/washFacility/{id}/",
                 HttpMethod.GET,
                 httpEntity,
                 new ParameterizedTypeReference<List<MoikaService>>() {
                 }, 8);
 
         List<MoikaService> serviceList = resultAll.getBody();
-        Assert.assertNotNull("Reques body is incorrect", resultAll);
+        Assert.assertNotNull("Request body is incorrect", resultAll);
         Assert.assertNotNull("Service  list is null", serviceList);
         Assert.assertFalse("Service  list is empty", serviceList.isEmpty());
 
-        boolean isWashCode = false;
-        BigDecimal cost = null;
-        int dur = 0;
-        for (MoikaService item : serviceList) {
-            if (item.getId() == 11) {
-                isWashCode = true;
-                List<IBaseMoikaServiceAddInfo> addInfo = item.getServiceAddInfo();
-                for (IBaseMoikaServiceAddInfo serviceInfo : addInfo) {
-                    if (((WashService) serviceInfo).getCarTypeEntity().getTypeCode().equals("CAR")) {
-                        cost = serviceInfo.getServiceCost();
-                        dur = serviceInfo.getServiceDuration();
-                        break;
-                    }
-                }
-            }
-        }
-        Assert.assertTrue("Service types list not contain name \"Ручная мойка машины\"", isWashCode);
-        Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not cost", new BigDecimal("420.00").setScale(2), cost);
-        Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not last", 300, dur);
+        TestResult testResult = fillTestResult( serviceList, 11, carTypeCode1);
+
+        Assert.assertTrue("Service types list not contain name \"Ручная мойка машины\"", testResult.isWashCode);
+        Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not cost", new BigDecimal("420.00").setScale(2), testResult.cost);
+        Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not last", 300, testResult.duration);
     }
 }

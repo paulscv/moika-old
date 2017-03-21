@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Transactional
-@Repository("serviveStatusDao")
+@Repository("serviceStatusDao")
 public class ServiceStatusDaoImpl extends AllStatusDaoImpl<ServiceStatus> implements ServiceStatusDao {
 
     public ServiceStatusDaoImpl() {

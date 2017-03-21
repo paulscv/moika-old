@@ -41,14 +41,17 @@ public class MoikaServiceDaoImpl extends MoikaDaoCrudImpl<MoikaService> implemen
 
     @Override
     public MoikaService delete(MoikaService entity) throws MoikaDaoException {
-        List<? extends IBaseMoikaServiceAddInfo> addServiceInfoList = entity.getServiceAddInfo();
-        for (IBaseMoikaServiceAddInfo child : addServiceInfoList) {
-            BaseMoikaConcreatServiceDao concreatServiceDao = moikaServiceAddInfoDaoFabrica.
-                    getMoikaConcreatServiceDao(entity.getTypeCode());
-            concreatServiceDao.delete((ABaseMoikaServiceAdditionalInfo) child);
+        MoikaService checkEntity = get(entity.getId());
+        if (entity!= null) {
+            List<? extends IBaseMoikaServiceAddInfo> addServiceInfoList = checkEntity.getServiceAddInfo();
+            for (IBaseMoikaServiceAddInfo child : addServiceInfoList) {
+                BaseMoikaConcreatServiceDao concreatServiceDao = moikaServiceAddInfoDaoFabrica.
+                        getMoikaConcreatServiceDao(entity.getTypeCode());
+                concreatServiceDao.delete((ABaseMoikaServiceAdditionalInfo) child);
+            }
+            getCurrentSession().delete(entity);
         }
-        getCurrentSession().delete(entity);
-        return entity;
+        return checkEntity;
     }
 
 
@@ -65,6 +68,28 @@ public class MoikaServiceDaoImpl extends MoikaDaoCrudImpl<MoikaService> implemen
         //DRS session.flush();
         return entity;
     }
+
+    @Override
+    public MoikaService update(MoikaService entity) throws MoikaDaoException {
+        MoikaService checkEntity = get(entity.getId());
+        //удалили существующие
+        List<? extends IBaseMoikaServiceAddInfo> addServiceInfoList = checkEntity.getServiceAddInfo();
+        for (IBaseMoikaServiceAddInfo child : addServiceInfoList) {
+            BaseMoikaConcreatServiceDao concreatServiceDao = moikaServiceAddInfoDaoFabrica.
+                    getMoikaConcreatServiceDao(entity.getTypeCode());
+            concreatServiceDao.delete((ABaseMoikaServiceAdditionalInfo) child);
+        }
+        //добавили заменяемые
+        addServiceInfoList = entity.getServiceAddInfo();
+        for (IBaseMoikaServiceAddInfo child : addServiceInfoList) {
+            BaseMoikaConcreatServiceDao concreatServiceDao = moikaServiceAddInfoDaoFabrica.
+                    getMoikaConcreatServiceDao(entity.getTypeCode());
+            concreatServiceDao.create((ABaseMoikaServiceAdditionalInfo) child);
+        }
+        getCurrentSession().update(entity);
+        return entity;
+    }
+
 
     @Override
     public MoikaService get(long id) throws MoikaDaoException {

@@ -9,7 +9,7 @@ public class City extends ABaseMoikaEntity {
     @Id
     @Column(name = "id_city", columnDefinition = "serial")
     private long id;
-    @Column
+    @Column(name = "name", nullable = false)
     private String name;
     @Column
     private String region;
@@ -18,6 +18,9 @@ public class City extends ABaseMoikaEntity {
     public City() {
     }
 
+    public City(String city) {
+        name = city;
+    }
     public long getId() {
         return id;
     }

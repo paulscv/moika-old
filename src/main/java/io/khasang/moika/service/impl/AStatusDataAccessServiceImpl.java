@@ -30,13 +30,13 @@ public abstract class AStatusDataAccessServiceImpl<T extends ABaseMoikaStatusRef
     }
 
     @Override
-    public ABaseMoikaStatusReference addStatus(ABaseMoikaStatusReference entity) throws MoikaDaoException {
-        return (ABaseMoikaStatusReference) statusDao.create(entity);
+    public T addStatus(ABaseMoikaStatusReference entity) throws MoikaDaoException {
+        return (T) statusDao.create(entity);
     }
 
     @Override
-    public ABaseMoikaStatusReference updateStatus(ABaseMoikaStatusReference entity) throws MoikaDaoException {
-        return (ABaseMoikaStatusReference) statusDao.update(entity);
+    public T updateStatus(ABaseMoikaStatusReference entity) throws MoikaDaoException {
+        return (T) statusDao.update(entity);
     }
 
     @Override
@@ -50,17 +50,17 @@ public abstract class AStatusDataAccessServiceImpl<T extends ABaseMoikaStatusRef
     }
 
     @Override
-    public ABaseMoikaStatusReference getStatusByID(int id) throws MoikaDaoException {
-        return (ABaseMoikaStatusReference) statusDao.get(id);
+    public T getStatusByID(int id) throws MoikaDaoException {
+        return (T) statusDao.get(id);
     }
 
     @Override
-    public ABaseMoikaStatusReference getStatusByCode(String code) throws MoikaDaoException {
-        return statusDao.getEntityByCode(code);
+    public T getStatusByCode(String code) throws MoikaDaoException {
+        return (T)statusDao.getEntityByCode(code);
     }
 
     @Override
-    public List<ABaseMoikaStatusReference> getAllStatuses() throws MoikaDaoException {
+    public List<T> getAllStatuses() throws MoikaDaoException {
         return statusDao.getAll();
     }
 }
