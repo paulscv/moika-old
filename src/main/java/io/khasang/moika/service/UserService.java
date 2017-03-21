@@ -11,6 +11,8 @@ import io.khasang.moika.entity.Role;
 import io.khasang.moika.entity.User;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface UserService {
 
@@ -48,6 +50,12 @@ public interface UserService {
 
     /**
      * Создать учетную запись пользователя
+     *
+     */
+    public List<User> getAllUsers();
+
+    /**
+     * Создать учетную запись пользователя
      * с бозавой ролью ROLE_CLIENT
      * @param user - Данные в объекте user
      */
@@ -68,21 +76,22 @@ public interface UserService {
     User updateUser(User user);
 
     /**
-     * Проверить является ли данный логин пользователя свободным
+     * Проверить, является ли данный логин пользователя занятым
      *
      * @param login - Логин пользолвателя
+     * @param exceptUser - не считать логин занятым, если он занят указанным пользователем
      * @return возвращает булевое значение, true - если данный логин свободен, false - если нет
      */
-    boolean isLoginFree(String login);
+    boolean isLoginUsed(String login, User exceptUser);
 
     /**
-     * Проверить является ли данный email пользователя свободным
+     * Проверить является ли данный email пользователя занятым
      *
      * @param email - Логин пользолвателя
+     * @param exceptUser - не считать email занятым, если он занят указанным пользователем
      * @return возвращает булевое значение, true - если данный email свободен, false - если нет
      */
-    boolean isEmailFree(String email);
-
+    boolean isEmailUsed(String email, User exceptUser);
     /**
      * Вернуть закодированную версию исходного пароля.
      *

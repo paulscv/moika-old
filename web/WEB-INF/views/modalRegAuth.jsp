@@ -136,15 +136,16 @@
                 setStatusElement('#regInputFirstName', 'error', 'Строка не должна быть пустой!');
             }
         });
-        setActiveFormInput('<c:url value="/user/util"/>', '#regInputEmail');
-        setActiveFormInput('<c:url value="/user/util"/>', '#regInputLogin');
+        setActiveFormInput('<c:url value="/users/validation"/>', '#regInputEmail');
+        setActiveFormInput('<c:url value="/users/validation"/>', '#regInputLogin');
+        setActiveFormInput('<c:url value="/users/validation"/>', '#regInputPhone');
 
         $("#loginBtn").click(function () {
             var jsonData = parseFormToJSON('#loginForm');
             $.ajax({
                 method: "POST",
                 contentType: 'application/json;charset=UTF-8',
-                url:"<c:url value="/user/login"/>",//TODO добавить актуальные url
+                url:"<c:url value="/users/login"/>",//TODO добавить актуальные url
                 data: jsonData,
                 success: function (data) {
                     if (data.redirect) {
@@ -164,7 +165,7 @@
                 $.ajax({
                     method: "POST",
                     contentType: 'application/json;charset=UTF-8',
-                    url:"<c:url value="/user/reg"/>",//TODO добавить актуальные url
+                    url:"<c:url value="/users"/>",//TODO добавить актуальные url
                     data: jsonData,
                     success: function (data) {
                         if (data.redirect) {

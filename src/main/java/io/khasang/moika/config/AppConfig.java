@@ -2,12 +2,15 @@ package io.khasang.moika.config;
 
 import io.khasang.moika.model.CreateTable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @Configuration
 //@EnableCaching
@@ -47,4 +50,30 @@ public class AppConfig {
         return new CreateTable(jdbcTemplate());
     }
 
+
+    /**
+     * DRS JSR380(JSR303) Validator setup
+     *
+     * @return validator
+     */
+    @Bean
+    public javax.validation.Validator localValidatorFactoryBean() {
+        LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
+        validator.setValidationMessageSource(messageSource());
+        return validator;
+    }
+
+    /**
+     * DRS JSR380(JSR303) Validator message sources location  setup
+     *
+     * @return message sources location
+     */
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setUseCodeAsDefaultMessage(false);
+        messageSource.setBasename("messages/messages");
+        return messageSource;
+    }
 }

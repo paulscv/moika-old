@@ -20,7 +20,6 @@ import java.util.List;
 @Repository("company")
 public class CompanyDaoImpl extends MoikaDaoCrudImpl<Company> implements CompanyDao {
 
-
     @Override
     public Company getCompanyByName(String name) {
         Criteria criteria = sessionFactory.getCurrentSession().

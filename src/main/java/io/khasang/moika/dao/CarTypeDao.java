@@ -1,10 +1,8 @@
 package io.khasang.moika.dao;
 
 import io.khasang.moika.entity.CarType;
-
-import java.util.List;
 /**
- * Интерфейс DAO для тпоа автомашин
+ * Интерфейс DAO для типов автомашин
  * @author Skvortsov Pavel
  *
  */

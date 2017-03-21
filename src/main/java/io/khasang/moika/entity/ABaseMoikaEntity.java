@@ -8,5 +8,5 @@ import java.io.Serializable;
  */
 @MappedSuperclass
 public abstract class ABaseMoikaEntity implements Serializable{
-    private static final long serialVersionUID = 1L;
+   // private static final long serialVersionUID = 1L;
 }

@@ -1,6 +1,5 @@
 package io.khasang.moika.dao.impl;
 
-import com.sun.istack.internal.NotNull;
 import io.khasang.moika.dao.RoleDAO;
 import io.khasang.moika.dao.UserDAO;
 import io.khasang.moika.entity.Role;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -82,5 +82,20 @@ public class UserDAOImpl extends MoikaDaoCrudImpl<User> implements UserDAO {
 
         return grantedAuthoritySet;
     }
+
+    /**
+     * CriteriaBuilder cb = this.em.getCriteriaBuilder();
+     // create the query
+     CriteriaQuery<Author> q = cb.createQuery(Author.class);
+
+     // set the root class
+     Root<Author> a = q.from(Author.class);
+
+     // use metadata class to define the where clause
+     q.where(cb.like(a.get(Author_.firstName), "J%"));
+
+     // perform query
+     this.em.createQuery(q).getResultList();
+     */
 
 }

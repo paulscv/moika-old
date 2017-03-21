@@ -3,7 +3,6 @@ package io.khasang.moika.controller;
 import io.khasang.moika.entity.Car;
 import io.khasang.moika.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,30 +45,38 @@ public class CarController {
     }
     /**
      * Возвращение автомобиля по номеру
-     * @param carNumber автомобиль для добавления
+     * @param carNumber номер автомобиля
      * @return  автомобили
      */
-    //TODO: реализовать
+
     @RequestMapping(value = "/car/number/{number}",
             method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     public String getCarByNumber(Model model, @PathVariable("number") String carNumber){
         model.addAttribute("cars", carService.getCarByNumber(carNumber));
         return "cars";
     }
+    /**
+     * Возвращение автомобиля по модели
+     * @param model модель автмобиля
+     * @return  автомобили
+     */
 
-    //TODO: реализовать
     @RequestMapping(value = "/car/model/{model}",
             method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     public String getCarByModel(Model model, @PathVariable("model") String carModel){
-        model.addAttribute("cars", carService.getCarByNumber(carModel));
+        model.addAttribute("cars", carService.getCarByModel(carModel));
         return "cars";
     }
+    /**
+     * Возвращение автомобиля по типу кузова
+     * @param carType тип кузова
+     * @return  автомобили
+     */
 
-    //TODO: реализовать
     @RequestMapping(value = "/car/type/{type}",
             method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     public String getCarByType(Model model, @PathVariable("type") String carType) {
-        model.addAttribute("cars", carService.getCarByNumber(carType));
+        model.addAttribute("cars", carService.getCarByType(carType));
         return "cars";
     }
 

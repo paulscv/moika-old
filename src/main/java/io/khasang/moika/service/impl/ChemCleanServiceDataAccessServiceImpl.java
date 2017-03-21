@@ -1,6 +1,6 @@
 package io.khasang.moika.service.impl;
 
-import io.khasang.moika.dao.BaseMoikaServiceDao;
+import io.khasang.moika.dao.BaseMoikaConcreatServiceDao;
 import io.khasang.moika.dao.ChemCleanServiceDao;
 import io.khasang.moika.entity.ChemCleanService;
 import io.khasang.moika.service.ChemCleanServiceDataAccessService;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service(value = "chemCleanServiceDataAccessService")
 @Transactional
-public class ChemCleanServiceDataAccessServiceImpl extends AMoikaServiceDataAccessServiceImpl<ChemCleanService> implements ChemCleanServiceDataAccessService {
+public class ChemCleanServiceDataAccessServiceImpl extends AMoikaConcreatServiceDataAccessServiceImpl<ChemCleanService> implements ChemCleanServiceDataAccessService {
     @Autowired
     ChemCleanServiceDao chemCleanServiceDao;
 
@@ -19,9 +19,9 @@ public class ChemCleanServiceDataAccessServiceImpl extends AMoikaServiceDataAcce
     }
 
     @Autowired
-    public ChemCleanServiceDataAccessServiceImpl(@Qualifier("chemCleanServiceDao") BaseMoikaServiceDao<ChemCleanService> baseMoikaServiceDao) {
-        super(baseMoikaServiceDao);
-        this.chemCleanServiceDao = (ChemCleanServiceDao) baseMoikaServiceDao;
+    public ChemCleanServiceDataAccessServiceImpl(@Qualifier("chemCleanServiceDao") BaseMoikaConcreatServiceDao<ChemCleanService> baseMoikaConcreatServiceDao) {
+        super(baseMoikaConcreatServiceDao);
+        this.chemCleanServiceDao = (ChemCleanServiceDao) baseMoikaConcreatServiceDao;
     }
 
 }

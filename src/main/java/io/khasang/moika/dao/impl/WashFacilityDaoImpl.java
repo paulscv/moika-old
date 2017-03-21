@@ -1,16 +1,9 @@
 package io.khasang.moika.dao.impl;
 
 
-import io.khasang.moika.dao.IMoikaDaoCrud;
 import io.khasang.moika.dao.WashFacilityDao;
-import io.khasang.moika.entity.WashBox;
 import io.khasang.moika.entity.WashFacility;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,9 +15,11 @@ public class WashFacilityDaoImpl extends MoikaDaoCrudImpl<WashFacility> implemen
 
     @Override
     public List<WashFacility> getWashFacilitiesOnNet(int idNet) {
-        return null;
+        Query query  = sessionFactory.getCurrentSession().createQuery("from wash_facilities where idNet = ?");
+        query.setParameter(0, idNet);
+        return query.list();
     }
-
+/*
     @Override
     public List<WashBox> getWashBoxesOnFacility(WashFacility washFacility) {
         Query query  = sessionFactory.getCurrentSession().createQuery("from wash_boxes where idFacility = ?");
@@ -38,4 +33,5 @@ public class WashFacilityDaoImpl extends MoikaDaoCrudImpl<WashFacility> implemen
         query.setParameter(0, idFacility);
         return query.list();
     }
+    */
 }

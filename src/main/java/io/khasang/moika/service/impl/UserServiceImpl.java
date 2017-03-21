@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -52,6 +53,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getAllUsers(){
+        return userDAO.getAll();
+    }
+
+    @Override
     public User createClientUser(User user) {
         Role role = roleDAO.findByName("ROLE_CLIENT");
         user.setRoles(Collections.singleton(role));
@@ -71,13 +77,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isLoginFree(String login) {
-        return userDAO.findByLogin(login) == null;
+    public boolean isLoginUsed(String login, User exceptUser) {
+        User foundUser = userDAO.findByLogin(login);
+        return foundUser != null && (exceptUser == null || foundUser.getId() != exceptUser.getId());
     }
 
     @Override
-    public boolean isEmailFree(String email) {
-        return userDAO.findByEmail(email) == null;
+    public boolean isEmailUsed(String email, User exceptUser) {
+        User foundUser = userDAO.findByEmail(email);
+        return foundUser != null && (exceptUser == null || foundUser.getId() != exceptUser.getId());
     }
 
     @Override

@@ -7,6 +7,7 @@ import io.khasang.moika.util.DataAccessUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.ParameterizedType;
@@ -16,11 +17,15 @@ import java.util.Map;
 
 
 @Transactional
+@Repository
 public abstract class MoikaDaoCrudImpl<T extends ABaseMoikaEntity> implements IMoikaDaoCrud<T> {
-
+    @Autowired
     protected DataAccessUtil dataAccessUtil;
+    @Autowired
     protected SessionFactory sessionFactory;
+
     protected Class<? extends T> daoType;
+
 
     /**
      * By defining this class as abstract, we prevent Spring from creating
@@ -35,6 +40,13 @@ public abstract class MoikaDaoCrudImpl<T extends ABaseMoikaEntity> implements IM
         daoType = (Class) pt.getActualTypeArguments()[0];
     }
 
+    public MoikaDaoCrudImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    public Class<? extends T> getDaoType() {
+        return daoType;
+    }
 
     public SessionFactory getSessionFactory() {
         return sessionFactory;
@@ -43,6 +55,11 @@ public abstract class MoikaDaoCrudImpl<T extends ABaseMoikaEntity> implements IM
     @Autowired
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    @Override
+    public Session getCurrentSession() {
+        return this.sessionFactory.getCurrentSession();
     }
 
     public DataAccessUtil getDataAccessUtil() {
@@ -57,6 +74,7 @@ public abstract class MoikaDaoCrudImpl<T extends ABaseMoikaEntity> implements IM
     @Override
     public T create(T entity) throws MoikaDaoException {
         getCurrentSession().save(entity);
+     //   getCurrentSession().flush();
         return entity;
     }
 
@@ -87,12 +105,13 @@ public abstract class MoikaDaoCrudImpl<T extends ABaseMoikaEntity> implements IM
     }
 
     @Override
+    public T get(int id) throws MoikaDaoException {
+        return getCurrentSession().get(daoType, id);
+    }
+
+    @Override
     public List<T> getAll() throws MoikaDaoException {
         return dataAccessUtil.getQueryOfEntity((Class<T>) daoType).getResultList();
     }
 
-    @Override
-    public Session getCurrentSession() {
-        return sessionFactory.getCurrentSession();
-    }
 }

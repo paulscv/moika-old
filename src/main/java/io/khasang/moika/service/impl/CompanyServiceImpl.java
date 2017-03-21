@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service("CompanyServiceImpl")
@@ -22,12 +21,6 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     public void addCompany(Company company) {
-        if(company.getName().startsWith("a")){
-            company.setAmount(BigDecimal.valueOf(100L));
-        }
-        if(company.getName().startsWith("b")){
-            company.setAmount(BigDecimal.valueOf(50L));
-        }
         try {
             companyDao.create(company);
         } catch (MoikaDaoException e) {
@@ -44,7 +37,7 @@ public class CompanyServiceImpl implements CompanyService {
         }
     }
 
-    public Company getCompanyById(int id) {
+    public Company getCompanyById(long id) {
         try {
             return companyDao.get(id);
         } catch (MoikaDaoException e) {
@@ -63,7 +56,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void deleteCompany(int id) {
+    public void deleteCompany(long id) {
         Company company = new Company();
         company.setId(id);
         try {

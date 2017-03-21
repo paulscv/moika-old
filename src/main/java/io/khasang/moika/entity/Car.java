@@ -17,6 +17,7 @@ import java.util.List;
 public class Car extends ABaseMoikaEntity {
 
     @Id
+    @Column(name = "id_car")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "id_car_type")

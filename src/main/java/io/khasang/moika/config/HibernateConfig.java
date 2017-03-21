@@ -18,6 +18,7 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import javax.validation.Validator;
 import java.util.Properties;
 
 @Configuration
@@ -34,11 +35,12 @@ public class HibernateConfig {
 
     @Bean
     @Autowired
-    public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
+    public LocalSessionFactoryBean sessionFactory(DataSource dataSource, Validator validator) {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
         sessionFactory.setPackagesToScan("io.khasang.moika.entity");
         sessionFactory.setHibernateProperties(hibernateProperties());
+        sessionFactory.getHibernateProperties().put("javax.persistence.validation.factory", validator);
         return sessionFactory;
     }
 
@@ -61,6 +63,7 @@ public class HibernateConfig {
     public HibernateTransactionManager transactionManager(SessionFactory s) {
         HibernateTransactionManager txManager = new HibernateTransactionManager();
         txManager.setSessionFactory(s);
+        txManager.setNestedTransactionAllowed(true);
         return txManager;
     }
 

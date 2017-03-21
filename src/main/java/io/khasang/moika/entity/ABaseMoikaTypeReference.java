@@ -24,13 +24,13 @@ public abstract class ABaseMoikaTypeReference extends ABaseMoikaEntity {
     public ABaseMoikaTypeReference() {
     }
 
-    public ABaseMoikaTypeReference(String typeCode) {
-        this.code = typeCode;
+    public ABaseMoikaTypeReference(String code) {
+        this.code = code;
     }
 
-    public ABaseMoikaTypeReference(String typeCode, String typeName) {
-        this.code = typeCode;
-        this.name = typeName;
+    public ABaseMoikaTypeReference(String code, String name) {
+        this.code = code;
+        this.name = name;
     }
 
     public int getId() {
@@ -41,16 +41,16 @@ public abstract class ABaseMoikaTypeReference extends ABaseMoikaEntity {
         return this.code;
     }
 
-    public void setTypeCode(String typeCode) {
-        this.code = typeCode;
+    public void setTypeCode(String code) {
+        this.code = code;
     }
 
     public String getTypeName() {
         return this.name;
     }
 
-    public void setTypeName(String typeName) {
-        this.name = typeName;
+    public void setTypeName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {

@@ -1,8 +1,12 @@
 package io.khasang.moika.service.impl;
 
 
+import io.khasang.moika.dao.BoxStatusDao;
+import io.khasang.moika.dao.BoxTypeDao;
 import io.khasang.moika.dao.MoikaDaoException;
 import io.khasang.moika.dao.WashBoxDao;
+import io.khasang.moika.entity.BoxStatus;
+import io.khasang.moika.entity.BoxType;
 import io.khasang.moika.entity.WashBox;
 import io.khasang.moika.service.PskvorWashBoxDaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,10 @@ import java.util.List;
 public class PskvorWashBoxDaoServiceImpl implements PskvorWashBoxDaoService {
     @Autowired
     private WashBoxDao washBoxDao;
+    @Autowired
+    private BoxStatusDao boxStatusDao;
+    @Autowired
+    private BoxTypeDao boxTypeDao;
 
     public PskvorWashBoxDaoServiceImpl() {
     }
@@ -107,4 +115,43 @@ public class PskvorWashBoxDaoServiceImpl implements PskvorWashBoxDaoService {
         }
     }
 
+
+    @Override
+    public List<BoxStatus> getWashBoxesStatuses() {
+        try {
+            return boxStatusDao.getAll();
+        } catch (MoikaDaoException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public BoxStatus getWashBoxesStatusByCode(String code) {
+        try {
+            return boxStatusDao.getEntityByCode(code);
+        } catch (MoikaDaoException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<BoxType> getWashBoxesTypes() {
+        try {
+            return boxTypeDao.getAll();
+        } catch (MoikaDaoException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    @Override
+    public BoxType getWashBoxesTypeByCode(String code) {
+        try {
+            return boxTypeDao.getEntityByCode(code);
+        } catch (MoikaDaoException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -7,6 +7,6 @@ import io.khasang.moika.entity.CleanService;
  * @author Skvortsov Pavel
  *
  */
-public interface CleanServiceDao extends BaseMoikaServiceDao<CleanService>{
+public interface CleanServiceDao extends BaseMoikaConcreatServiceDao<CleanService> {
 
 }

@@ -29,16 +29,16 @@ public abstract class ABaseMoikaStatusReference extends ABaseMoikaEntity {
         return code;
     }
 
-    public void setStatusCode(String statusCode) {
-        this.code = statusCode;
+    public void setStatusCode(String code) {
+        this.code = code;
     }
 
     public String getStatusName() {
         return this.name;
     }
 
-    public void setStatusName(String statusName) {
-        this.name = statusName;
+    public void setStatusName(String name) {
+        this.name = name;
     }
 
     @Override

@@ -7,6 +7,7 @@ import io.khasang.moika.entity.WashService;
  * @author Skvortsov Pavel
  *
  */
-public interface WashServiceDao  extends BaseMoikaServiceDao<WashService>{
+public interface WashServiceDao  extends BaseMoikaConcreatServiceDao<WashService> {
+
 
 }

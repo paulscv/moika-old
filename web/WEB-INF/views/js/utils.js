@@ -21,10 +21,11 @@ function setActiveFormInput(toURL, selector, result) {
         console.log("I am acting for: " + value);
         if (value) {
             var sendObj = {};
-            sendObj[$(selector).attr('name')] = value;
+            var attrName = $(selector).attr('name');
+            sendObj[attrName] = value;
             $.ajax({
                 method: "POST",
-                url: toURL,
+                url: toURL+"?fieldName="+attrName,
                 contentType: "application/json;charset=UTF-8",
                 data: JSON.stringify(sendObj),
                 success: function (data) {
@@ -39,7 +40,7 @@ function setActiveFormInput(toURL, selector, result) {
                         }
                         //TODO Возможно сюда стоит вставлять сообение с сервера?!
                         setStatusElement(selector, 'error',
-                            data.error?data.error:'Введенные Вами данные уже кем-то используюься, введите другое значение');
+                            data.error?data.error:'Введенные Вами данные уже кем-то используются, введите другое значение');
                     }
                 }
             });

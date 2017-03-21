@@ -1,19 +1,22 @@
 package io.khasang.moika.entity;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity(name = "clean_Services")
-@AttributeOverrides({
-        @AttributeOverride(name = "id", column = @Column(name = "id_service")),
-        @AttributeOverride(name = "name", column = @Column(name = "name")),
-        @AttributeOverride(name = "idFacility", column = @Column(name = "id_fclt")),
-        @AttributeOverride(name = "idType", column = @Column(name = "id_type")),
-        @AttributeOverride(name = "idStatus", column = @Column(name = "id_status")),
-        @AttributeOverride(name = "description", column = @Column(name = "description"))
-})
+@IdClass(CleanServicePk.class)
 public class CleanService extends ABaseMoikaServiceAdditionalInfo {
+    @Id
+    @Column(name = "id_service")
+    private int id;
 
+    public int getIdService() {
+        return id;
+    }
+
+    public void setIdService(int id) {
+        this.id = id;
+    }
+    @Id
     @Column(name = "id_dirt_type")
     private int idDirtType;
     @ManyToOne
@@ -22,6 +25,7 @@ public class CleanService extends ABaseMoikaServiceAdditionalInfo {
 
 
     public CleanService() {
+        //setAdditionalServiceInfo(dirtTypeEntity.getTypeName());
     }
 
     public int getidDirtType() {

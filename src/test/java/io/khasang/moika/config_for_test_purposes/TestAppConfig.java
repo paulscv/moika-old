@@ -8,6 +8,11 @@ import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
+
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 /**
  * @author Rostislav Dublin
@@ -20,7 +25,8 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
                 "io.khasang.moika.config",
                 "io.khasang.moika.dao",
                 "io.khasang.moika.service",
-                "io.khasang.moika.validator",
+                "io.khasang.moika.validator.**",
+                "io.khasang.moika.validator.user",
                 "io.khasang.moika.util"
         },
         excludeFilters = {
@@ -61,46 +67,17 @@ public class TestAppConfig {
         jdbcTemplate.setDataSource(dataSource());
         return jdbcTemplate;
     }
-/*
-    @Bean
-    public CreateTable createTable() {
-        return new CreateTable(jdbcTemplate());
-    }
-
-    @Bean
-    public MadvDataAcces madvDataAcces() {
-        return new MadvDataAccesImpl(jdbcTemplate());
-    }
-
-    @Bean
-    public MadvDataAccesService madvDataAccesService() {
-        return new MadvDataAccesServiceImpl(madvDataAcces());
-    }
-
- DRS 2017-03-01 см. новую реализацию (с опорой на сущности User и Role) в классе UserDetailsServiceImpl.
-    @Bean
-    public UserDetailsService userDetailsService() {
-        JdbcDaoImpl jdbcImpl = new JdbcDaoImpl();
-        jdbcImpl.setDataSource(dataSource());
-        jdbcImpl.setUsersByUsernameQuery(environment.getRequiredProperty("usersByQuery"));
-        jdbcImpl.setAuthoritiesByUsernameQuery(environment.getRequiredProperty("rolesByQuery"));
-        return jdbcImpl;
-    }
 
 
     @Bean
-    public PskvorDataAccess pskvorDataAccess() {
-        return new PskvorDataAccessJdbcImpl(jdbcTemplate());
+    public Validator validator() {
+        return new LocalValidatorFactoryBean();
     }
-
+/* DRS
     @Bean
-    public PskvorDataAccessService pskvorDataAccessService() {
-        return new PskvorDataAccessService(pskvorDataAccess());
-    }
-
-    @Bean
-    public CompanyService companyService() {
-        return new CompanyServiceImpl();
-    }
-    */
+    public MethodValidationPostProcessor methodValidationPostProcessor() {
+        MethodValidationPostProcessor methodValidationPostProcessor = new MethodValidationPostProcessor();
+        methodValidationPostProcessor.setValidator(validator());
+        return methodValidationPostProcessor;
+    }*/
 }

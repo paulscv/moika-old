@@ -1,12 +1,12 @@
 package io.khasang.moika.service;
 
 import io.khasang.moika.dao.MoikaDaoException;
-import io.khasang.moika.entity.BaseMoikaService;
+import io.khasang.moika.entity.ABaseMoikaService;
 
 import java.util.List;
 
 
-public interface ServiceDataAccessService<T extends BaseMoikaService> {
+public interface ServiceDataAccessService<T extends ABaseMoikaService> {
         T addService(T service) throws MoikaDaoException;
         void updateService(T service) throws MoikaDaoException;
         void deleteService(T service) throws MoikaDaoException;

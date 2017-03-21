@@ -7,6 +7,6 @@ import io.khasang.moika.entity.PolishService;
  * @author Skvortsov Pavel
  *
  */
-public interface PolishServiceDao extends BaseMoikaServiceDao<PolishService>{
+public interface PolishServiceDao extends BaseMoikaConcreatServiceDao<PolishService> {
 
 }

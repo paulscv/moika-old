@@ -1,6 +1,9 @@
 package io.khasang.moika.entity;
 
+import io.khasang.moika.validator.user.UserEmailUnique;
+import io.khasang.moika.validator.user.UserLoginUnique;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,11 +14,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import static io.khasang.moika.util.DataValidationPatterns.EMAIL_PATTERN;
 import static io.khasang.moika.util.DataValidationPatterns.PHONE_NUMBER_PATTERN;
-import static javax.swing.text.StyleConstants.Size;
 
 @Entity
+@UserLoginUnique
+@UserEmailUnique
 @Table(name = "users")
 public class User extends ABaseMoikaEntity implements Serializable {
 
@@ -25,7 +28,7 @@ public class User extends ABaseMoikaEntity implements Serializable {
     private long id;
 
     @NotNull
-    @Size(min = 4, max = 16)
+    @Size(min = 3, max = 16)
     @NaturalId(mutable = true)
     @Column(name = "login", nullable = false, unique = true)
     private String login;
@@ -55,12 +58,12 @@ public class User extends ABaseMoikaEntity implements Serializable {
     private Date birthday;
 
     @NotNull
-    @Pattern(regexp = PHONE_NUMBER_PATTERN)
-    @Size(min = 1, max = 32)
+    @Pattern(regexp = PHONE_NUMBER_PATTERN, message = "{phone.not_10digits.message}")
     private String phone;
 
     @NotNull
-    @Pattern(regexp = EMAIL_PATTERN)
+    //@Pattern(regexp = EMAIL_PATTERN)
+    @Email
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -154,5 +157,21 @@ public class User extends ABaseMoikaEntity implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", roles=" + roles +
+                ", enabled=" + enabled +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthday=" + birthday +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

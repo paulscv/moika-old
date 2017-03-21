@@ -7,6 +7,6 @@ import io.khasang.moika.entity.ChemCleanService;
  * @author Skvortsov Pavel
  *
  */
-public interface ChemCleanServiceDao extends BaseMoikaServiceDao<ChemCleanService>{
+public interface ChemCleanServiceDao extends BaseMoikaConcreatServiceDao<ChemCleanService> {
 
 }

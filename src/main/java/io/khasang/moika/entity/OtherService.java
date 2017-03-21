@@ -5,18 +5,30 @@ import javax.persistence.*;
 @Entity(name = "other_services")
 public class OtherService extends ABaseMoikaServiceAdditionalInfo {
 
-    @Column(name = "add_info")
-    private String AddInfop;
+    @Id
+    @Column(name = "id_service")
+    private int id;
 
+    public int getIdService() {
+        return id;
+    }
+
+    public void setIdService(int id) {
+        this.id = id;
+    }
+    @Column(name = "add_info")
+    private String addInfo;
 
     public OtherService() {
+        //setAdditionalServiceInfo(addInfo);
     }
 
-    public String getAddInfop() {
-        return AddInfop;
+    public String getAddInfo() {
+        return this.addInfo;
     }
 
-    public void setAddInfop(String addInfop) {
-        AddInfop = addInfop;
+    public void setAddInfo(String addInfo) {
+        this.addInfo = addInfo;
+        setAdditionalServiceInfo(addInfo);
     }
 }

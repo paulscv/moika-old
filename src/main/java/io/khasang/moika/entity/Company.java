@@ -7,15 +7,12 @@ import javax.persistence.Id;
 import java.math.BigDecimal;
 
 @Entity(name = "company")
-public class Company  extends ABaseMoikaEntity {
+public class Company extends ABaseMoikaEntity {
+    BigDecimal amount;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+    private long id;
     private String name;
-
-    BigDecimal amount = new BigDecimal("0.00");
-
     private String description;
 
     public Company() {
@@ -25,7 +22,7 @@ public class Company  extends ABaseMoikaEntity {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

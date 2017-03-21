@@ -17,50 +17,36 @@ import java.util.List;
 @Controller
 public class PsServicesController {
     @Autowired
-    AllServiceDataAccessService allService;
+    MoikaServiceDataAccessService allService;
     @Autowired
     WashServiceDataAccessService washService;
     @Autowired
     MoikaServiceTypesService moikaServiceTypes;
     @Autowired
     MoikaServiceStatusService moikaServiceStatus;
-    @Autowired
-    BaseMoikaServiceDataAccessService baseService;
+
 
     @RequestMapping(value = "/baseServiceList", method = RequestMethod.GET)
     public String getBaseServiceList(Model model) {
-        List<BaseMoikaService> baseServiceList = new ArrayList<>();
+        List<MoikaService> serviceList = new ArrayList<>();
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         try {
-            baseServiceList = baseService.getAllServices();
+            serviceList = allService.getAllServices();
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
-        model.addAttribute("servicelist", baseServiceList);
-        model.addAttribute("nrows", baseServiceList.size() + " rows affected");
+        model.addAttribute("servicelist", serviceList);
+        model.addAttribute("nrows", serviceList.size() + " rows affected");
         return "ps-dao-services";
     }
 
-    @RequestMapping(value = "/allServiceList", method = RequestMethod.GET)
-    public String getServiceList(Model model) {
-        List<AllService> allServicesList = new ArrayList<>();
-        model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
-        try {
-            allServicesList = allService.getAllServices();
-        } catch (MoikaDaoException e) {
-            e.printStackTrace();
-        }
-        model.addAttribute("servicelist", allServicesList);
-        model.addAttribute("nrows", allServicesList.size() + " rows affected");
-        return "ps-dao-wash-services";
-    }
 
     @RequestMapping(value = "/washServiceList", method = RequestMethod.GET)
     public String getWashServiceList(Model model) {
         List<WashService> washServicesList = new ArrayList<>();
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         try {
-            washServicesList = washService.getAllServices();
+            washServicesList = washService.getAllConcreatServices();
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
