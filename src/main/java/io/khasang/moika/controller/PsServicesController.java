@@ -1,10 +1,7 @@
 package io.khasang.moika.controller;
 
 import io.khasang.moika.dao.MoikaDaoException;
-import io.khasang.moika.entity.MoikaService;
-import io.khasang.moika.entity.ServiceStatus;
-import io.khasang.moika.entity.ServiceType;
-import io.khasang.moika.entity.WashService;
+import io.khasang.moika.entity.*;
 import io.khasang.moika.service.MoikaServiceDataAccessService;
 import io.khasang.moika.service.MoikaServiceStatusService;
 import io.khasang.moika.service.MoikaServiceTypesService;
@@ -69,20 +66,38 @@ public class PsServicesController {
         return moikaService; //"ps-dao-carwashfacilities";
     }
 
-    @RequestMapping(value = "/MoikaService/washServiceList", method = RequestMethod.GET)
-    public String getWashServiceList(Model model) {
+    @RequestMapping(value = "/MoikaService/washServiceList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public Object getWashServiceList(Model model) {
         List<WashService> washServicesList = new ArrayList<>();
+       // List<MoikaService> servicesList = new ArrayList<>();
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         try {
+           // washServicesList = allService.getServicesByType(1);
             washServicesList = washService.getAllConcreatServices();
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
         model.addAttribute("servicelist", washServicesList);
         model.addAttribute("nrows", washServicesList.size() + " rows affected");
-        return "ps-dao-wash-services";
+        return washServicesList; //"ps-dao-wash-services";
     }
 
+
+    @RequestMapping(value = "/MoikaService/washServiceListByService", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public Object getWashServiceListByService(Model model) {
+         List<MoikaService> servicesList = new ArrayList<>();
+        model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
+        try {
+            servicesList = allService.getServicesByType(1);
+        } catch (MoikaDaoException e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("servicelist", servicesList);
+        model.addAttribute("nrows", servicesList.size() + " rows affected");
+        return servicesList; //"ps-dao-wash-services";
+    }
 
     @RequestMapping(value = "/MoikaService/ServiceTypesList", method = RequestMethod.GET)
     public String getServiceTypeList(Model model) { //List<MoikaAllService>

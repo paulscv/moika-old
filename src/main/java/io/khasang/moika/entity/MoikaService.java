@@ -22,4 +22,5 @@ public class MoikaService extends ABaseMoikaService{
         this.serviceAddInfo.add(serviceAddInfo);
     }
 
+
 }

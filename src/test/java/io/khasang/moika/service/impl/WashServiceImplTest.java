@@ -8,6 +8,7 @@ import io.khasang.moika.dao.ServiceStatusDao;
 import io.khasang.moika.dao.ServiceTypeDao;
 import io.khasang.moika.entity.*;
 import io.khasang.moika.service.MoikaServiceDataAccessService;
+import io.khasang.moika.service.WashServiceDataAccessService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +36,9 @@ public class WashServiceImplTest {
     ServiceStatusDao serviceStatusDao;
 
     @Autowired
+    WashServiceDataAccessService washService;
+
+    @Autowired
     CarTypeDao carTypeDao;
 
     final String serviceName = "Мойка силой мысли";
@@ -42,7 +46,7 @@ public class WashServiceImplTest {
 
     @Test
     @Transactional
-    public void testWashServiceList() {
+    public void testWashServiceListFromService() {
         List<MoikaService> serviceList = null;
         try {
             serviceList = moikaService.getServicesByType(1);
@@ -72,63 +76,87 @@ public class WashServiceImplTest {
         Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not last", 300, dur);
     }
 
-
     @Test
     @Transactional
-    public void testAddWashService() {
-
-        MoikaService service = new MoikaService(); // подготовили объект для тестирования
-
-        service.setName(serviceName);
-        service.setIdFacility(3);
-        service.setDescription(testDescr);
-        ServiceType stEntity = serviceTypeDao.getEntityByCode("WASH");
-        service.setServiceTypeEntity(stEntity);
-        ServiceStatus stsEntity  = serviceStatusDao.getEntityByCode("PLAN");
-        service.setIdStatus((short) 1);
-
-        CarType carType = carTypeDao.getEntityByCode("CAR");
-        List<IBaseMoikaServiceAddInfo> serviceList = new ArrayList<>();
-        WashService serviceAddInfo = new WashService();
-        serviceAddInfo.setCarTypeEntity(carType);
-        serviceAddInfo.setServiceCost(new BigDecimal("3500.00"));
-        serviceAddInfo.setServiceDuration(10);
-        serviceList.add(serviceAddInfo);
-
-        carType = carTypeDao.getEntityByCode("SUV");
-        serviceAddInfo = new WashService();
-        serviceAddInfo.setCarTypeEntity(carType);
-        serviceAddInfo.setServiceCost(new BigDecimal("5500.00"));
-        serviceAddInfo.setServiceDuration(20);
-        serviceList.add(serviceAddInfo);
-
-        service.setServiceAddInfo(serviceList);
-
-        MoikaService testService = new MoikaService(); // подготовили объект для возврата
+    public void testWashServiceList() {
+        List<WashService> serviceList = null;
         try {
-            testService = moikaService.addService(service);
+            serviceList = washService.getConcreatServiceById(3);
         } catch (MoikaDaoException e) {
             Assert.fail(e.getMessage());
         }
-        Assert.assertNotNull("Wash servise is null", testService);
-        boolean isWashCode = false;
+        Assert.assertNotNull("Wash Service  list is null", serviceList);
+        Assert.assertFalse("Wash Service  list is empty", serviceList.isEmpty());
         BigDecimal cost = null;
         int dur = 0;
-        if (testService.getName().equalsIgnoreCase(serviceName)) {
-            List<IBaseMoikaServiceAddInfo> addInfo = testService.getServiceAddInfo();
-            Assert.assertEquals("Was service  list not contain ", 2, addInfo.size());
-            isWashCode = true;
-            for (IBaseMoikaServiceAddInfo serviceInfo : addInfo) {
-                if (((WashService) serviceInfo).getCarTypeEntity().getTypeCode().equals("CAR")) {
-                    cost = serviceInfo.getServiceCost();
-                    dur = serviceInfo.getServiceDuration();
-                    break;
+        for (WashService item : serviceList) {
+            Assert.assertTrue("Service types list not contain name \"Ручная мойка машины\"",
+                    item.getServiceEntity().getTypeCode().equalsIgnoreCase("WASH"));
+            if (item.getCarTypeEntity().getTypeCode().equals("CAR")) {
+                cost = item.getServiceCost();
+                dur = item.getServiceDuration();
+            }
+            Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not cost", new BigDecimal("350.00").setScale(2), cost);
+            Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not last", 1200, dur);
+        }
+    }
+
+        @Test
+        @Transactional
+        public void testAddWashService () {
+
+            MoikaService service = new MoikaService(); // подготовили объект для тестирования
+
+            service.setName(serviceName);
+            service.setIdFacility(3);
+            service.setDescription(testDescr);
+            ServiceType stEntity = serviceTypeDao.getEntityByCode("WASH");
+            service.setServiceTypeEntity(stEntity);
+            ServiceStatus stsEntity = serviceStatusDao.getEntityByCode("PLAN");
+            service.setIdStatus((short) 1);
+
+            CarType carType = carTypeDao.getEntityByCode("CAR");
+            List<IBaseMoikaServiceAddInfo> serviceList = new ArrayList<>();
+            WashService serviceAddInfo = new WashService();
+            serviceAddInfo.setCarTypeEntity(carType);
+            serviceAddInfo.setServiceCost(new BigDecimal("3500.00"));
+            serviceAddInfo.setServiceDuration(10);
+            serviceList.add(serviceAddInfo);
+
+            carType = carTypeDao.getEntityByCode("SUV");
+            serviceAddInfo = new WashService();
+            serviceAddInfo.setCarTypeEntity(carType);
+            serviceAddInfo.setServiceCost(new BigDecimal("5500.00"));
+            serviceAddInfo.setServiceDuration(20);
+            serviceList.add(serviceAddInfo);
+
+            service.setServiceAddInfo(serviceList);
+
+            MoikaService testService = new MoikaService(); // подготовили объект для возврата
+            try {
+                testService = moikaService.addService(service);
+            } catch (MoikaDaoException e) {
+                Assert.fail(e.getMessage());
+            }
+            Assert.assertNotNull("Wash servise is null", testService);
+            boolean isWashCode = false;
+            BigDecimal cost = null;
+            int dur = 0;
+            if (testService.getName().equalsIgnoreCase(serviceName)) {
+                List<IBaseMoikaServiceAddInfo> addInfo = testService.getServiceAddInfo();
+                Assert.assertEquals("Was service  list not contain ", 2, addInfo.size());
+                isWashCode = true;
+                for (IBaseMoikaServiceAddInfo serviceInfo : addInfo) {
+                    if (((WashService) serviceInfo).getCarTypeEntity().getTypeCode().equals("CAR")) {
+                        cost = serviceInfo.getServiceCost();
+                        dur = serviceInfo.getServiceDuration();
+                        break;
+                    }
                 }
             }
+            Assert.assertTrue("Service types list not contain name \"Ручная мойка машины\"", isWashCode);
+            Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not cost", new BigDecimal("3500.00").setScale(2), cost.setScale(2));
+            Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not last", 10, dur);
         }
-        Assert.assertTrue("Service types list not contain name \"Ручная мойка машины\"", isWashCode);
-        Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not cost", new BigDecimal("3500.00").setScale(2), cost.setScale(2));
-        Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not last", 10, dur);
     }
-}
 

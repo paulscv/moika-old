@@ -162,7 +162,7 @@ public class WashServiceIntegrationalTest {
     }
 
     @Test
-    public void getWashServiceList() {
+    public void getWashServiceListByService() {
         HttpHeaders headers = new HttpHeaders(); //использовать именно из org.springframework.http.HttpHeaders
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
 
@@ -170,7 +170,7 @@ public class WashServiceIntegrationalTest {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<List<MoikaService>> resultAll = restTemplate.exchange(
-                "http://localhost:8080/MoikaService/washServiceList",
+                "http://localhost:8080/MoikaService/washServiceListbyService",
                 HttpMethod.GET,
                 httpEntity,
                 new ParameterizedTypeReference<List<MoikaService>>() {
@@ -186,6 +186,33 @@ public class WashServiceIntegrationalTest {
         Assert.assertTrue("Service types list not contain name \"Ручная мойка машины\"", testResult.isWashCode);
         Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not cost", new BigDecimal("420.00").setScale(2), testResult.cost);
         Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not last", 300, testResult.duration);
+    }
+
+    @Test
+    public void getWashServiceList() {
+        HttpHeaders headers = new HttpHeaders(); //использовать именно из org.springframework.http.HttpHeaders
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+        HttpEntity<List<WashService>> httpEntity = new HttpEntity<>(headers); //подготовили запрос
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<List<WashService>> resultAll = restTemplate.exchange(
+                "http://localhost:8080/MoikaService/washServiceList",
+                HttpMethod.GET,
+                httpEntity,
+                new ParameterizedTypeReference<List<WashService>>() {
+                });
+        List<WashService> serviceList = resultAll.getBody();
+        Assert.assertFalse("Request body does not contain Wash Services", serviceList.isEmpty());
+
+        Assert.assertNotNull("Service  list is null", serviceList);
+        Assert.assertFalse("Service  list is empty", serviceList.isEmpty());
+
+       // TestResult testResult = fillTestResult( serviceList, 11, carTypeCode1);
+
+    //    Assert.assertTrue("Service types list not contain name \"Ручная мойка машины\"", testResult.isWashCode);
+    //    Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not cost", new BigDecimal("420.00").setScale(2), testResult.cost);
+    //    Assert.assertEquals("Service types list  name \"Ручная мойка машины\" not last", 300, testResult.duration);
     }
 
     @Test
