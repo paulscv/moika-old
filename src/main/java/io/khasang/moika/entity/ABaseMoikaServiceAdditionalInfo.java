@@ -28,6 +28,9 @@ public abstract class ABaseMoikaServiceAdditionalInfo extends ABaseMoikaEntity i
     @Transient
     protected String AdditionalServiceInfo;
 
+    public abstract void setIdService(int Id);
+
+    public abstract int getIdService();
 
     public BigDecimal getServiceCost() {
         return serviceCost;

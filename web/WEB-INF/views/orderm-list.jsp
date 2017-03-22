@@ -30,7 +30,7 @@
 <h3>${nrows}</h3>
 <table>
     <tr>
-        <td><a href="/orderm/add">Новый заказ</a></td>
+        <td><a href="/orderm/add/">Новый заказ</a></td>
     </tr>
 </table>
 </body>

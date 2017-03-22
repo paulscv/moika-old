@@ -23,25 +23,22 @@ public class PsWashFacilityController {
     @Autowired
     PskvorWashFacilityDaoService pskvorWashFacilityDaoService;
 
-    @RequestMapping(value = "/washFacilitylist", method = RequestMethod.GET)
-    public String getWashFacilityList(Model model) {
+    @RequestMapping(value = "/washFacilitylist", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public Object getWashFacilityList(Model model) {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         List<WashFacility> washFacilityList = pskvorWashFacilityDaoService.getAllWashFacilities();
         model.addAttribute("fcltlist", washFacilityList);
         model.addAttribute("nrows", washFacilityList.size() + " rows affected");
-        return "ps-dao-carwashfacility";
+        return washFacilityList; // "ps-dao-carwashfacilities";
     }
 
     @RequestMapping(value = "/washFacility/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    //@ResponseBody
-    public Object addWashFacility(@RequestBody WashFacility washFacility, Model model) {
+    @ResponseBody
+    public WashFacility addWashFacility(@RequestBody WashFacility washFacility, Model model) {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         pskvorWashFacilityDaoService.addWashFacility(washFacility);
-        List<WashFacility> washFacilityList = new ArrayList<>();
-        washFacilityList.add(washFacility);
-        model.addAttribute("fcltlist", washFacilityList);
-        model.addAttribute("nrows", "ID: " + washFacility.getId() + " added");
-        return "ps-dao-carwashfacility";
+        return washFacility; //"ps-dao-carwashfacilities";
     }
 
     @RequestMapping(value = "/washFacility/update", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
@@ -51,19 +48,20 @@ public class PsWashFacilityController {
         return washFacility;
     }
 
-    @RequestMapping(value = "/washFacility/{id}", method = RequestMethod.GET)
-    public String getWashFacility(@PathVariable(value = "id") String idFclt, Model model) {
+    @RequestMapping(value = "/washFacility/{id}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public List<WashFacility> getWashFacility(@PathVariable(value = "id") String idFclt, Model model) {
         WashFacility washFacility = pskvorWashFacilityDaoService.getWashFacilityByID(Integer.valueOf(idFclt));
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
+        List<WashFacility> washFacilityList = new ArrayList<>();
         if (washFacility != null) {
-            List<WashFacility> washFacilityList = new ArrayList<>();
             washFacilityList.add(washFacility);
             model.addAttribute("fcltlist", washFacilityList);
         } else {model.addAttribute("nrows", "ID: "+idFclt + " doesn`t exists ");}
-        return "ps-dao-carwashfacility";
+        return washFacilityList;//"ps-dao-carwashfacilities";
     }
 
-    @RequestMapping(value = "/washFacilitiesonNet/{idNet}", method = RequestMethod.GET)
+    @RequestMapping(value = "/washFacilitiesOnNet/{idNet}", method = RequestMethod.GET)
     public String getWashFacilityesOnFacility(@PathVariable(value = "idNet") String idNet, @PathVariable(value = "boxName") String boxName,
                                          HttpServletResponse response, Model model) {
         List<WashFacility> washFacilityList = pskvorWashFacilityDaoService.getWashFacilitiesOnNet(Integer.valueOf(idNet));
@@ -71,7 +69,7 @@ public class PsWashFacilityController {
         if (washFacilityList != null) {
             model.addAttribute("fcltlist", washFacilityList);
         } else {model.addAttribute("nrows", "There are no: facilities on net Id: "+idNet);}
-        return "ps-dao-carwashfacility";
+        return "ps-dao-carwashfacilities";
     }
 
     @RequestMapping(value = "/washFacility/delete/{id}", method = RequestMethod.POST)
@@ -85,7 +83,7 @@ public class PsWashFacilityController {
         } else {return  String.valueOf(response.SC_NOT_FOUND);}
     }
 
-    @RequestMapping(value = "/FacilityBoxes/{idFclt}", method = RequestMethod.GET)
+    @RequestMapping(value = "/facilityBoxes/{idFclt}", method = RequestMethod.GET)
     public String getFacilityBoxes(@PathVariable(value = "idFclt") String idFclt, Model model) {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         List<WashBox> washBoxesList = pskvorWashFacilityDaoService.getWashBoxesOnFacility(Integer.valueOf(idFclt));

@@ -24,16 +24,19 @@ public class WorkDaoImplTest {
     @Test
     public void commonWork() throws Exception {
         Work work = new Work("Мытье кузова", new BigDecimal("333.333"), 30);
-        workDao.addWork(work);
+        workDao.create(work);
         work = new Work("Чистка салона",new BigDecimal("222.225"),0);
-        workDao.addWork(work);
-        work=workDao.getWork(1l);
+        workDao.create(work);
+        long id =work.getId();
+        work=workDao.getWork("Мытье кузова");
         work.setPrice(new BigDecimal("444"));
-        work=workDao.updateWork(work);
+        work=workDao.update(work);
         work = new Work("Массаж водителя",new BigDecimal("1000"),0);
-        workDao.addWork(work);
-        workDao.deleteWork(work);
-        List<Work> l = workDao.getAllWork();
+        workDao.create(work);
+        List<Work> l = workDao.getAll();
+        work =workDao.get(id);
+        work =workDao.getWork("Массаж водителя");
+        work = workDao.delete(work);
     }
 
 }

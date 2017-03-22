@@ -10,11 +10,11 @@ public class WashService extends ABaseMoikaServiceAdditionalInfo {
     @Column(name = "id_service")
     private int id;
 
-    public int getId() {
+    public int getIdService() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setIdService(int id) {
         this.id = id;
     }
 
@@ -22,7 +22,7 @@ public class WashService extends ABaseMoikaServiceAdditionalInfo {
     @Column(name = "id_type_car")
     private int idCarType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "id_type_car", foreignKey = @ForeignKey(name = "fk_car_type"), insertable = false, updatable = false)
     private CarType carTypeEntity;
 
@@ -44,6 +44,7 @@ public class WashService extends ABaseMoikaServiceAdditionalInfo {
 
     public void setCarTypeEntity(CarType carTypeEntity) {
         this.carTypeEntity = carTypeEntity;
+        this.setIdCarType(carTypeEntity.getId());
     }
 
 }

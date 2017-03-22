@@ -7,6 +7,6 @@ import io.khasang.moika.entity.BoxStatus;
  * @author Skvortsov Pavel
  *
  */
-public interface BoxStatusDao extends IMoikaDaoCrud<BoxStatus> {
+public interface BoxStatusDao extends BaseMoikaStatusDao<BoxStatus> {
 
 }

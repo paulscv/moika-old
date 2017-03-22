@@ -9,11 +9,11 @@ public class PolishService extends ABaseMoikaServiceAdditionalInfo {
     @Column(name = "id_service")
     private int id;
 
-    public int getId() {
+    public int getIdService() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setIdService(int id) {
         this.id = id;
     }
     @Column(name = "add_info")

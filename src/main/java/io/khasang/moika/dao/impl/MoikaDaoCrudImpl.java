@@ -3,16 +3,13 @@ package io.khasang.moika.dao.impl;
 import io.khasang.moika.dao.IMoikaDaoCrud;
 import io.khasang.moika.dao.MoikaDaoException;
 import io.khasang.moika.entity.ABaseMoikaEntity;
-import io.khasang.moika.entity.Company;
 import io.khasang.moika.util.DataAccessUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -20,6 +17,7 @@ import java.util.Map;
 
 
 @Transactional
+@Repository
 public abstract class MoikaDaoCrudImpl<T extends ABaseMoikaEntity> implements IMoikaDaoCrud<T> {
     @Autowired
     protected DataAccessUtil dataAccessUtil;
@@ -27,7 +25,6 @@ public abstract class MoikaDaoCrudImpl<T extends ABaseMoikaEntity> implements IM
     protected SessionFactory sessionFactory;
 
     protected Class<? extends T> daoType;
-
 
 
     /**
@@ -41,6 +38,10 @@ public abstract class MoikaDaoCrudImpl<T extends ABaseMoikaEntity> implements IM
         Type t = getClass().getGenericSuperclass();
         ParameterizedType pt = (ParameterizedType) t;
         daoType = (Class) pt.getActualTypeArguments()[0];
+    }
+
+    public MoikaDaoCrudImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     public Class<? extends T> getDaoType() {
@@ -58,7 +59,7 @@ public abstract class MoikaDaoCrudImpl<T extends ABaseMoikaEntity> implements IM
 
     @Override
     public Session getCurrentSession() {
-        return sessionFactory.getCurrentSession();
+        return this.sessionFactory.getCurrentSession();
     }
 
     public DataAccessUtil getDataAccessUtil() {
@@ -73,6 +74,7 @@ public abstract class MoikaDaoCrudImpl<T extends ABaseMoikaEntity> implements IM
     @Override
     public T create(T entity) throws MoikaDaoException {
         getCurrentSession().save(entity);
+     //   getCurrentSession().flush();
         return entity;
     }
 
@@ -99,6 +101,11 @@ public abstract class MoikaDaoCrudImpl<T extends ABaseMoikaEntity> implements IM
 
     @Override
     public T get(long id) throws MoikaDaoException {
+        return getCurrentSession().get(daoType, id);
+    }
+
+    @Override
+    public T get(int id) throws MoikaDaoException {
         return getCurrentSession().get(daoType, id);
     }
 

@@ -6,8 +6,9 @@ import java.util.List;
 @Entity(name = "service_types")
 public class ServiceType extends ABaseMoikaTypeReference {
 
-    @OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_type",  insertable = false, updatable = false)
+    //@OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="serviceTypeEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    //@JoinColumn(name = "id_type",  insertable = false, updatable = false)
     private List<MoikaService> moiksServices;
 
     public ServiceType() {

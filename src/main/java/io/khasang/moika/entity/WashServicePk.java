@@ -1,6 +1,7 @@
 package io.khasang.moika.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class WashServicePk implements Serializable{
 
@@ -46,6 +47,6 @@ public class WashServicePk implements Serializable{
     public int hashCode() {
         int result = getIdService();
         result = 31 * result + getIdCarType();
-        return result;
+        return Objects.hashCode(result);
     }
 }

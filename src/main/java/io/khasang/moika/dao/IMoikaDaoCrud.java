@@ -28,6 +28,7 @@ public interface IMoikaDaoCrud<T extends ABaseMoikaEntity> {
      * @return экземпляр сущности
      */
     T get(long id) throws MoikaDaoException;
+    T get(int id) throws MoikaDaoException;
 
     /**
      * Обновляет имеющуюся сущность в БД
