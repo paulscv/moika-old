@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -27,18 +28,17 @@ public class OrdermDetailDaoImplTest {
 
     @Test
     public void commonOrdersDetail() throws Exception {
-        Orderm orderm =new Orderm("1");
         OrdermDetail ordermDetail;
+        Orderm orderm =new Orderm("1");
+        ordermDao.create(orderm);
+        long id =orderm.getId();
 
         ordermDetail = new OrdermDetail( new BigDecimal("1"), new BigDecimal("1000"));
-        orderm.addOrdermDetail(ordermDetail);
+        ordermDetail.setOrderm(orderm);
         ordermDetailDao.create(ordermDetail);
         ordermDetail = new OrdermDetail( new BigDecimal("2"), new BigDecimal("2000"));
-        orderm.addOrdermDetail(ordermDetail);
+        ordermDetail.setOrderm(orderm);
         ordermDetailDao.create(ordermDetail);
-        ordermDao.create(orderm);
-
-//        List<OrdermDetail> l = ordermDetailDao.getOrdermDetailForOrderm(id);
+        List<OrdermDetail> l = ordermDetailDao.getOrdermDetailForOrderm(orderm);
     }
-
 }

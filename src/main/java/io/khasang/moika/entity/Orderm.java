@@ -4,9 +4,7 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 public class Orderm extends ABaseMoikaEntity implements Serializable {
@@ -22,15 +20,10 @@ public class Orderm extends ABaseMoikaEntity implements Serializable {
     private Date executiontionDate;
     private boolean is_prepaid;
     private boolean is_made;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrdermDetail> ordersDetails = new ArrayList<>();
+//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<OrdermDetail> ordersDetails = new ArrayList<>();
 
     public Orderm() {
-    }
-    public OrdermDetail addOrdermDetail(OrdermDetail ordermDetail){
-        ordermDetail.setOrderm(this);
-        ordersDetails.add(ordermDetail);
-        return ordermDetail;
     }
     public Orderm(String number) {
         this.number = number;
@@ -82,13 +75,5 @@ public class Orderm extends ABaseMoikaEntity implements Serializable {
 
     public void setIs_made(boolean is_made) {
         this.is_made = is_made;
-    }
-
-    public List<OrdermDetail> getOrdersDetails() {
-        return ordersDetails;
-    }
-
-    public void setOrdersDetails(List<OrdermDetail> ordersDetails) {
-        this.ordersDetails = ordersDetails;
     }
 }

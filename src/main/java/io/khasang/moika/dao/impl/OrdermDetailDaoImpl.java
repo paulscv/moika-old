@@ -1,8 +1,10 @@
 package io.khasang.moika.dao.impl;
 
 import io.khasang.moika.dao.OrdermDetailDao;
+import io.khasang.moika.entity.Orderm;
 import io.khasang.moika.entity.OrdermDetail;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +13,7 @@ import java.util.List;
 
 @Component
 @Transactional
-public class OrdermDetailDaoImpl  extends MoikaDaoCrudImpl<OrdermDetail> implements OrdermDetailDao {
+public class OrdermDetailDaoImpl extends MoikaDaoCrudImpl<OrdermDetail> implements OrdermDetailDao {
     private SessionFactory sessionFactory;
 
     public OrdermDetailDaoImpl() {
@@ -23,10 +25,10 @@ public class OrdermDetailDaoImpl  extends MoikaDaoCrudImpl<OrdermDetail> impleme
     }
 
     @Override
-    public List<OrdermDetail> getOrdermDetailForOrderm(long idOrder) {
-//        Query query  = sessionFactory.getCurrentSession().createQuery("from ordermdetail where Orderm = ?");
-//        query.setParameter(0, idOrder);
-        return null; //query.list();
+    public List<OrdermDetail> getOrdermDetailForOrderm(Orderm idOrder) {
+        Query query  = sessionFactory.getCurrentSession().createQuery(
+            "from ordermdetail where orderm = ?");
+        query.setParameter(0, idOrder);
+        return query.list();
     }
 }
-
