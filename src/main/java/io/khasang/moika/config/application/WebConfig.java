@@ -2,9 +2,11 @@ package io.khasang.moika.config.application;
 
 import io.khasang.moika.annotation.AddMenuPathAnnotationBeanPostProcessor;
 import io.khasang.moika.util.MenuMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.Validator;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -23,6 +25,9 @@ import org.springframework.web.servlet.view.JstlView;
         "io.khasang.moika.util"
 })
 public class WebConfig extends WebMvcConfigurerAdapter {
+
+    @Autowired
+    javax.validation.Validator validator;
 
     public WebConfig() {
 
@@ -57,4 +62,16 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/resources/**").addResourceLocations("/WEB-INF/views/resources/");
     }
 
+
+    /**
+     * DRS Это переопределение приведёт к тому, что бин mvcValidator, при помощи которого все MVC-контроллеры
+     * по-умолчанию валидируют объекты, передаваемые через параметры методов маппинга, аннотированные как @Valid,
+     * будет указывать на наш кастомный валидатор, настроенный в конфигурации приложения (см. класс AppConfig),
+     * а не на экземпляр по-умолчанию, который в противном случае автоматически создаётся в недрах Spring'а.
+     * @return
+     */
+    @Override
+    public Validator getValidator() {
+        return (Validator) validator;
+    }
 }

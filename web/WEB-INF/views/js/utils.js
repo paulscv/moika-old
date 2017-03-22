@@ -171,7 +171,7 @@ function setStatusElement(selector, status, msg) {
                     placement: 'auto',
                     trigger: 'hover'
                 });
-                $(selector).popover('show');
+                //$(selector).popover('show');
             }, 200);
             console.log("create popover");
             $(selector).addClass('popover-dismissible');

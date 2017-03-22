@@ -21,6 +21,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import javax.validation.groups.Default;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -154,6 +155,20 @@ public class UserServiceImplTest {
         //assertTrue(constraintViolations.size() > 0);
         //assertEquals("may not be null", constraintViolations.iterator().next().getMessage());
     }
+
+    @Test
+    public void userLoginValidationTest() {
+        User nextUser = new User();
+        nextUser.setLogin("");
+        Set<ConstraintViolation<User>> violations = validator.validateProperty(nextUser, "login");
+
+        nextUser.setLogin(null);
+        violations = validator.validateProperty(nextUser, "login");
+
+        LOGGER.debug("Next User created");
+        System.out.println(sessionFactory.getCurrentSession().getFlushMode());
+    }
+
 
 /*
     @Test
