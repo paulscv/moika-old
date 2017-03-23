@@ -49,5 +49,11 @@ public class CleanService extends ABaseMoikaServiceAdditionalInfo {
         this.dirtTypeEntity = dirtTypeEntity;
     }
 
-
+    @Override
+    public String getAdditionalServiceInfo() {
+        if (dirtTypeEntity != null ) {
+            AdditionalServiceInfo = dirtTypeEntity.getTypeName();
+        }
+        return AdditionalServiceInfo;
+    }
 }

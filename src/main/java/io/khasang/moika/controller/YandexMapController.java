@@ -35,8 +35,7 @@ public class YandexMapController {
     }
     @RequestMapping(value = "list/", method = RequestMethod.GET)
     public String List(Model model) {
-        List<PlacemarkYandex> placemarkYandexList = new ArrayList<>();
-        placemarkYandexList = yandexMapService.getAllPlacemark();
+        List<PlacemarkYandex> placemarkYandexList = yandexMapService.getAllPlacemark();
         model.addAttribute("placemarkYandexList", placemarkYandexList);
         model.addAttribute("nrows", "Количество мест на карте " + placemarkYandexList.size());
         return "placemark-yandex-list";

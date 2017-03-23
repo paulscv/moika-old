@@ -1,5 +1,8 @@
 package io.khasang.moika.dao;
 
+import io.khasang.moika.entity.City;
+import io.khasang.moika.entity.Coordinate;
+import io.khasang.moika.entity.WashAddr;
 import io.khasang.moika.entity.WashFacility;
 
 import java.util.List;
@@ -12,6 +15,7 @@ import java.util.List;
 public interface WashFacilityDao extends  IMoikaDaoCrud<WashFacility>{
 
     List<WashFacility> getWashFacilitiesOnNet(int idNet) throws MoikaDaoException;
-  //  List<WashBox> getWashBoxesOnFacility(WashFacility washFacility) throws MoikaDaoException;
-  //  List<WashBox> getWashBoxesOnFacility(int idFacility) throws MoikaDaoException;
+    List<WashFacility> getWashFacilitiesInCity(City city) throws MoikaDaoException;
+    WashFacility getWashFacilityByAddress(WashAddr washAddr) throws MoikaDaoException;
+    WashFacility getWashFacilityByCoords(Coordinate coordinate) throws MoikaDaoException;
 }

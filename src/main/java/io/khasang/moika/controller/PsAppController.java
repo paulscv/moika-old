@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * тестовые методы для запросов jdbc
+ * @author Pauls
+ */
 @Controller
 public class PsAppController {
     @Autowired
@@ -14,6 +18,11 @@ public class PsAppController {
     @Autowired
     PskvorDataAccessServiceImpl pskvorDataAccessService;
 
+    /**
+     * jdbc запрос к  статусам боксов
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/ps-queries", method = RequestMethod.GET)
     public String SelectAll(Model model) {
         String res = pskvorDataAccessService.select("public.box_status");

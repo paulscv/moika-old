@@ -14,13 +14,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Контроллек для стутусов моечных услуг
+ *
+ * @author Pauls
+ */
 @Controller
 public class PsServiceStatusController {
     @Autowired
     MoikaServiceStatusService serviceStatusService;
 
 
-
+    /**
+     * Список всех статусов услуг мойки
+     *
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/serviceStatuslist", method = RequestMethod.GET)
     public String getServiceStatusList(Model model) {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
@@ -35,6 +45,13 @@ public class PsServiceStatusController {
         return "ps-dao-service-status";
     }
 
+    /**
+     * Добавление статуса
+     *
+     * @param serviceStatus
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/serviceStatus/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     //@ResponseBody
     public Object addServiceStatus(@RequestBody ServiceStatus serviceStatus, Model model) {
@@ -51,6 +68,12 @@ public class PsServiceStatusController {
         return "ps-dao-service-status";
     }
 
+    /**
+     * обновление информации  статуса
+     *
+     * @param serviceStatus
+     * @return
+     */
     @RequestMapping(value = "/serviceStatus/update", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public Object updateServiceStatus(@RequestBody ServiceStatus serviceStatus) {
@@ -62,11 +85,18 @@ public class PsServiceStatusController {
         return serviceStatus;
     }
 
+    /**
+     * Статус по ID
+     *
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/serviceStatus/{id}", method = RequestMethod.GET)
-    public String getServiceStatus(@PathVariable(value = "id") String inputId, Model model) {
+    public String getServiceStatus(@PathVariable(value = "id") String id, Model model) {
         ServiceStatus serviceStatus = null;
         try {
-            serviceStatus = (ServiceStatus)serviceStatusService.getStatusByID(Integer.valueOf(inputId));
+            serviceStatus = (ServiceStatus) serviceStatusService.getStatusByID(Integer.valueOf(id));
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
@@ -75,17 +105,23 @@ public class PsServiceStatusController {
             List<ServiceStatus> serviceStatusList = new ArrayList<>();
             serviceStatusList.add(serviceStatus);
             model.addAttribute("retList", serviceStatusList);
-        } else {model.addAttribute("nrows", "ID: "+inputId + " doesn`t exists ");}
+        } else {model.addAttribute("nrows", "ID: " + id + " doesn`t exists ");}
         return "ps-dao-serivce-status";
     }
-    
+
+    /**
+     * Elfktybtс по ID
+     *
+     * @param inputId - id entity для удаления
+     * @return
+     */
 
     @RequestMapping(value = "/serviceStatus/delete/{id}", method = RequestMethod.POST)
     @ResponseBody
     public String deleteServiceStatus(@PathVariable(value = "id") String inputId, HttpServletResponse response) {
         ServiceStatus serviceStatus = null;
         try {
-            serviceStatus = (ServiceStatus)serviceStatusService.getStatusByID(Integer.valueOf(inputId));
+            serviceStatus = (ServiceStatus) serviceStatusService.getStatusByID(Integer.valueOf(inputId));
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
@@ -97,15 +133,22 @@ public class PsServiceStatusController {
                 e.printStackTrace();
             }
             return String.valueOf(response.SC_OK);
-        } else {return  String.valueOf(response.SC_NOT_FOUND);}
+        } else {return String.valueOf(response.SC_NOT_FOUND);}
     }
 
+    /**
+     * Статус по коду
+     *
+     * @param code
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/serviceStatus/{code}", method = RequestMethod.GET)
     public String getServiceStatusListbyType(@PathVariable(value = "type") String code, Model model) {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         ServiceStatus serviceStatus = null;
         try {
-            serviceStatus = (ServiceStatus)serviceStatusService.getStatusByCode(code);
+            serviceStatus = (ServiceStatus) serviceStatusService.getStatusByCode(code);
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
@@ -114,10 +157,8 @@ public class PsServiceStatusController {
             List<ServiceStatus> serviceStatusList = new ArrayList<>();
             serviceStatusList.add(serviceStatus);
             model.addAttribute("retList", serviceStatusList);
-        } else {model.addAttribute("nrows", "code: "+code + " doesn`t exists ");}
+        } else {model.addAttribute("nrows", "code: " + code + " doesn`t exists ");}
         return "ps-dao-serivce-status";
     }
-
-
 
 }

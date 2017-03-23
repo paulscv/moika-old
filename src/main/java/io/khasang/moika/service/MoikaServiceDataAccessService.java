@@ -15,7 +15,9 @@ public interface MoikaServiceDataAccessService {
     void updateService(MoikaService service)  throws MoikaDaoException;//Update
     MoikaService deleteService(MoikaService service)  throws MoikaDaoException; //Delete
     List<MoikaService> getAllServices()  throws MoikaDaoException;
-    List<MoikaService> getAllervicesByStatus(int IdStatus) throws MoikaDaoException;
-    List<MoikaService> getServicesByType(int IdType) throws MoikaDaoException;
+    List<MoikaService> getAllervicesByStatus(int idStatus) throws MoikaDaoException;
+    List<MoikaService> getAllervicesByStatus(String status) throws MoikaDaoException;
+    List<MoikaService> getServicesByType(int idType) throws MoikaDaoException;
+    List<MoikaService> getServicesByType(String code) throws MoikaDaoException;
     List<MoikaService> getActualServices() throws MoikaDaoException;
 }

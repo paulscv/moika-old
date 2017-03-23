@@ -2,36 +2,47 @@ package io.khasang.moika.controller;
 
 import io.khasang.moika.dao.MoikaDaoException;
 import io.khasang.moika.entity.*;
-import io.khasang.moika.service.MoikaServiceDataAccessService;
-import io.khasang.moika.service.MoikaServiceStatusService;
-import io.khasang.moika.service.MoikaServiceTypesService;
-import io.khasang.moika.service.WashServiceDataAccessService;
+import io.khasang.moika.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author Pauls
+ */
+
 @Controller
+@RequestMapping("/MoikaService/service")
 public class PsServicesController {
     @Autowired
     MoikaServiceDataAccessService allService;
     @Autowired
     WashServiceDataAccessService washService;
     @Autowired
+    PolishServiceDataAccessService polishService;
+    @Autowired
+    OtherServiceDataAccessService otherService;
+    @Autowired
+    CleanServiceDataAccessService cleanService;
+    @Autowired
+    ChemCleanServiceDataAccessService chemCleanService;
+    @Autowired
     MoikaServiceTypesService moikaServiceTypes;
     @Autowired
     MoikaServiceStatusService moikaServiceStatus;
 
-
-    @RequestMapping(value = "/MoikaService/allServiceList", method = RequestMethod.GET)
+    /**
+     * Запрос всех услуг автомойки
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/allServiceList", method = RequestMethod.GET)
     public String getBaseServiceList(Model model) {
         List<MoikaService> serviceList = new ArrayList<>();
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
@@ -45,52 +56,90 @@ public class PsServicesController {
         return "ps-dao-services";
     }
 
-    @RequestMapping(value = "/MoikaService/service/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    /**
+     * Добавление новой услуги
+     * @param moikaService
+     * @return
+     */
+    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public MoikaService addWashService(@RequestBody MoikaService moikaService) {
+    public MoikaService addMoikaService(@RequestBody MoikaService moikaService) {
         moikaService = allService.addService(moikaService);
         return moikaService; //"ps-dao-carwashfacilities";
     }
 
-    @RequestMapping(value = "/MoikaService/service/update", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    /**
+     * Обновление услуги
+     * @param moikaService
+     * @return
+     */
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public MoikaService updateWashService(@RequestBody MoikaService moikaService) {
         moikaService = allService.addService(moikaService);
         return moikaService; //"ps-dao-carwashfacilities";
     }
 
-    @RequestMapping(value = "/MoikaService/service/delete/{id}", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    /**
+     * Удаление услуги
+     * @param id - услуги
+     * @return
+     */
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public MoikaService deleteWashService(@RequestBody MoikaService moikaService) {
+    public MoikaService deleteWashService(@PathVariable(value = "id") int id) {
+        MoikaService moikaService = allService.getServiceById(id);
         moikaService = allService.addService(moikaService);
         return moikaService; //"ps-dao-carwashfacilities";
     }
 
-    @RequestMapping(value = "/MoikaService/washServiceList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    /**
+     *  Услуги конкретного вида услуг c подробностями во вложенных entity
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/concreatServiceList/{code}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public Object getWashServiceList(Model model) {
-        List<WashService> washServicesList = new ArrayList<>();
-       // List<MoikaService> servicesList = new ArrayList<>();
+    public Object getWashServiceList(@PathVariable(value = "code") String code, Model model) {
+        List<? extends IBaseMoikaServiceAddInfo> servicesList = new ArrayList<>();
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
-        try {
-           // washServicesList = allService.getServicesByType(1);
-            washServicesList = washService.getAllConcreatServices();
-        } catch (MoikaDaoException e) {
-            e.printStackTrace();
+        switch ( code ) {
+            case "WASH":
+                servicesList = washService.getAllConcreatServices();
+                break;
+            case "CLEAN":
+                servicesList = cleanService.getAllConcreatServices();
+                break;
+            case "CHEM_CLEAN":
+                servicesList = chemCleanService.getAllConcreatServices();
+                break;
+            case "POLISH":
+                servicesList = polishService.getAllConcreatServices();
+                break;
+            case "COMPLEX":
+                //servicesList = washService.getAllConcreatServices();
+                break;
+            case "OTHER":
+                servicesList = otherService.getAllConcreatServices();
+                break;
         }
-        model.addAttribute("servicelist", washServicesList);
-        model.addAttribute("nrows", washServicesList.size() + " rows affected");
-        return washServicesList; //"ps-dao-wash-services";
+        model.addAttribute("servicelist", servicesList);
+        model.addAttribute("nrows", servicesList.size() + " rows affected");
+        return servicesList; //"ps-dao-wash-services";
     }
 
-
-    @RequestMapping(value = "/MoikaService/washServiceListByService", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    /**
+     * Услуги конкретного вида услуг с ценой и длительностью подробностями в виде строки
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/serviceListByCode/{code}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public Object getWashServiceListByService(Model model) {
-         List<MoikaService> servicesList = new ArrayList<>();
+    public Object getWashServiceListByService(@PathVariable(value = "code") String code, Model model) {
+        List<MoikaService> servicesList = new ArrayList<>();
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         try {
-            servicesList = allService.getServicesByType(1);
+            servicesList = allService.getServicesByType(code);
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
@@ -99,7 +148,52 @@ public class PsServicesController {
         return servicesList; //"ps-dao-wash-services";
     }
 
-    @RequestMapping(value = "/MoikaService/ServiceTypesList", method = RequestMethod.GET)
+    /**
+     * Услуги конкретного вида услуг с ценой и длительностью подробностями в виде строки
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/serviceListByStatus/{status}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public Object getWashServiceListByStatus(@PathVariable(value = "status") String status, Model model) {
+        List<MoikaService> servicesList = new ArrayList<>();
+        model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
+        try {
+            servicesList = allService.getAllervicesByStatus(status);
+        } catch (MoikaDaoException e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("servicelist", servicesList);
+        model.addAttribute("nrows", servicesList.size() + " rows affected");
+        return servicesList; //"ps-dao-wash-services";
+    }
+
+    /**
+     * Все действующие услуги
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/actualServiceList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public Object getActualServiceListByStatus( Model model) {
+        List<MoikaService> servicesList = new ArrayList<>();
+        model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
+        try {
+            servicesList = allService.getActualServices();
+        } catch (MoikaDaoException e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("servicelist", servicesList);
+        model.addAttribute("nrows", servicesList.size() + " rows affected");
+        return servicesList; //"ps-dao-wash-services";
+    }
+
+    /**
+     * Список типов услуг
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/ServiceTypesList", method = RequestMethod.GET)
     public String getServiceTypeList(Model model) { //List<MoikaAllService>
         List<ServiceType> allServicesTypes = new ArrayList<>();
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
@@ -113,8 +207,12 @@ public class PsServicesController {
         return "ps-dao-service-types";
     }
 
-
-    @RequestMapping(value = "/MoikaService/ServiceStatusList", method = RequestMethod.GET)
+    /**
+     * Список статусов услуг
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/ServiceStatusList", method = RequestMethod.GET)
     public String getServiceStatusList(Model model) { //List<MoikaAllService>
         List<ServiceStatus> serviceStatus = new ArrayList<>();
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));

@@ -19,7 +19,7 @@ public class WashAddr extends ABaseMoikaEntity {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_city")
+    @JoinColumn(name = "id_city", referencedColumnName = "id_city")
     private City city;
 
     @Column(name = "street")
@@ -31,18 +31,15 @@ public class WashAddr extends ABaseMoikaEntity {
     @Column(name = "letter")
     private String letter;
 
-    @Column(name = "latitude")
-    private BigDecimal latitude = new BigDecimal("0.0").setScale(5);
-
-    @Column(name = "longitude")
-    private BigDecimal longitude = new BigDecimal("0.0").setScale(5);
+    @Embedded
+    Coordinate coordinate;
 
     public WashAddr() {
     }
 
     public WashAddr(BigDecimal latitude, BigDecimal longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.coordinate.setLat(latitude);
+        this.coordinate.setLong(longitude);
     }
 
     public long getId() {
@@ -85,21 +82,6 @@ public class WashAddr extends ABaseMoikaEntity {
         this.letter = letter;
     }
 
-    public BigDecimal getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(BigDecimal latitude) {
-        this.latitude = latitude;
-    }
-
-    public BigDecimal getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(BigDecimal longitude) {
-        this.longitude = longitude;
-    }
 
     @Override
     public String toString() {
@@ -109,8 +91,8 @@ public class WashAddr extends ABaseMoikaEntity {
                 ", street='" + street + '\'' +
                 ", building='" + building + '\'' +
                 ", letter='" + letter + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
+                ", latitude=" + coordinate.getLat() +
+                ", longitude=" + coordinate.getLong() +
                 '}';
     }
 
@@ -122,15 +104,15 @@ public class WashAddr extends ABaseMoikaEntity {
         WashAddr washAddr = (WashAddr) o;
 
         if (getId() != washAddr.getId()) return false;
-        if (!getLatitude().equals(washAddr.getLatitude())) return false;
-        return getLongitude().equals(washAddr.getLongitude());
+        if (!coordinate.getLat().equals(washAddr.coordinate.getLat())) return false;
+        return coordinate.getLong().equals(washAddr.coordinate.getLong());
     }
 
     @Override
     public int hashCode() {
         int result = (int) (getId() ^ (getId() >>> 32));
-        result = 31 * result + getLatitude().hashCode();
-        result = 31 * result + getLongitude().hashCode();
+        result = 31 * result + coordinate.getLat().hashCode();
+        result = 31 * result + coordinate.getLong().hashCode();
         return result;
     }
 
