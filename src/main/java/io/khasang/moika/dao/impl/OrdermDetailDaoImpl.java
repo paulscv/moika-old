@@ -24,11 +24,21 @@ public class OrdermDetailDaoImpl extends MoikaDaoCrudImpl<OrdermDetail> implemen
     }
 
     @Override
+    public OrdermDetail create(Orderm orderm, OrdermDetail detail) {
+        orderm.getOrdersDetails().add(detail);
+        getCurrentSession().update(orderm);
+        return detail;
+    }
+
+    @Override
+    public OrdermDetail delete(Orderm orderm, OrdermDetail detail) {
+        orderm.getOrdersDetails().remove(detail);
+        getCurrentSession().update(orderm);
+        return null;
+    }
+
+    @Override
     public List<OrdermDetail> getOrdermDetailForOrderm(Orderm idOrder) {
         return idOrder.getOrdersDetails();
-//        Query query  = sessionFactory.getCurrentSession().createQuery(
-//            "from ordermdetail where orderm = ?");
-//        query.setParameter(0, idOrder);
-//        return query.list();
     }
 }

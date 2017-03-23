@@ -21,7 +21,7 @@ public class Orderm extends ABaseMoikaEntity {
     private Date executiontionDate;
     private boolean is_prepaid;
     private boolean is_made;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrdermDetail> ordersDetails = new ArrayList<>();
 
     public Orderm() {
