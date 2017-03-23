@@ -1,18 +1,14 @@
 package io.khasang.moika.controller;
 
-import io.khasang.moika.dao.MoikaDaoException;
 import io.khasang.moika.entity.Client;
-import io.khasang.moika.util.BindingResultToMapParser;
 import io.khasang.moika.validator.CarValidator;
 import io.khasang.moika.validator.ClientValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/client")

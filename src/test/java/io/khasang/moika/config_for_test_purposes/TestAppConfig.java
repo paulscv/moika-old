@@ -4,7 +4,9 @@ import io.khasang.moika.config.AppConfig;
 
 import io.khasang.moika.service.impl.RostislavDataAccessServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -68,16 +70,30 @@ public class TestAppConfig {
         return jdbcTemplate;
     }
 
-
-    @Bean
-    public Validator validator() {
-        return new LocalValidatorFactoryBean();
+    /**
+     * DRS JSR380(JSR303) Validator setup
+     *
+     * @return validator
+     */
+    @Bean(name="validator")
+    @Primary
+    public javax.validation.Validator localValidatorFactoryBean() {
+        LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
+        validator.setValidationMessageSource(messageSource());
+        return validator;
     }
-/* DRS
+
+    /**
+     * DRS JSR380(JSR303) Validator message sources location  setup
+     *
+     * @return message sources location
+     */
     @Bean
-    public MethodValidationPostProcessor methodValidationPostProcessor() {
-        MethodValidationPostProcessor methodValidationPostProcessor = new MethodValidationPostProcessor();
-        methodValidationPostProcessor.setValidator(validator());
-        return methodValidationPostProcessor;
-    }*/
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setUseCodeAsDefaultMessage(false);
+        messageSource.setBasename("messages/messages");
+        return messageSource;
+    }
 }

@@ -2,12 +2,8 @@ package io.khasang.moika.dao;
 
 import io.khasang.moika.entity.Orderm;
 
-import java.util.List;
 
-public interface OrdermDao {
-    Orderm addOrderm(Orderm orderm);
-    Orderm updateOrderm(Orderm orderm);
-    void deleteOrderm(Orderm orderm);
-    Orderm getOrderm(long id);
-    List<Orderm> getAllOrderm();
+public interface OrdermDao  extends IMoikaDaoCrud<Orderm>   {
+    Orderm getOrderm(String number);
+
 }

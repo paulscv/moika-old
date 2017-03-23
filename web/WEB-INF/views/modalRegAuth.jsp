@@ -19,12 +19,12 @@
                         <div class="form-group">
                             <label for="loginInputLogin">Логин</label>
                             <input type="text" class="form-control" name="login" id="loginInputLogin"
-                                   placeholder="Login">
+                                   placeholder="Логин">
                         </div>
                         <div class="form-group">
                             <label for="loginInputPassword">Пароль</label>
                             <input type="password" class="form-control" name="password" id="loginInputPassword"
-                                   placeholder="Password">
+                                   placeholder="Пароль">
                         </div>
                             <%--TODO добавить checkbox "remeber me" для Spring Secucurity--%>
                     </form>
@@ -78,7 +78,7 @@
                         <div class="form-group has-feedback">
                             <label for="regInputPassword">Пароль</label>
                             <input type="password" class="form-control" name="password" id="regInputPassword"
-                                   placeholder="Password">
+                                   placeholder="Пароль">
                             <span class="glyphicon glyphicon-ok hide form-control-feedback" aria-hidden="true"></span>
                         </div>
                         <div class="form-group has-feedback">
@@ -86,7 +86,7 @@
                             <input type="password" class="form-control" id="regInputPassword1" placeholder="Password">
                             <span class="glyphicon glyphicon-ok hide form-control-feedback" aria-hidden="true"></span>
                         </div>
-
+                        <input type="text" name="enabled" id="regInputEnabled"  value="true" style="display:none">
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -104,8 +104,8 @@
         var hasErr = function () {
             var result = false;
             $("#regForm").find('[active]').each(function () {
-                var div =$(this).closest('div.form-group');
-                if(div.hasClass('has-error')){
+                var div = $(this).closest('div.form-group');
+                if (div.hasClass('has-error')) {
                     result = true;
                     return;
                 }
@@ -114,7 +114,7 @@
         };
 
         setChangeListener('#regInputPassword1', 1500, function (elem) {
-            if (elem.val()&&$('#regInputPassword').val() == elem.val()) {
+            if (elem.val() && $('#regInputPassword').val() == elem.val()) {
                 setStatusElement('#regInputPassword1', 'success');
             } else {
                 setStatusElement('#regInputPassword1', 'error', 'Пароли должны совпадать!');
@@ -139,21 +139,22 @@
         setActiveFormInput('<c:url value="/users/validation"/>', '#regInputEmail');
         setActiveFormInput('<c:url value="/users/validation"/>', '#regInputLogin');
         setActiveFormInput('<c:url value="/users/validation"/>', '#regInputPhone');
+        setActiveFormInput('<c:url value="/users/validation"/>', '#regInputPassword');
 
         $("#loginBtn").click(function () {
             var jsonData = parseFormToJSON('#loginForm');
             $.ajax({
                 method: "POST",
                 contentType: 'application/json;charset=UTF-8',
-                url:"<c:url value="/users/login"/>",//TODO добавить актуальные url
+                url: "<c:url value="/users/login"/>",
                 data: jsonData,
                 success: function (data) {
-                    if (data.redirect) {
-                        window.location.replace(data.redirect);
-                    }
-                    if (data.errorMsg) {
+                    if (data.success)
+                        window.location.replace(" ");
+                    else if (data.error) {
                         var div = $('#loginForm').find('div.alert');
-                        div.removeClass('hide'); //TODO Возможно стоит добавить отображение сообщения с бэка?!
+                        $(div).find("p").text(data.error);
+                        div.removeClass('hide');
                     }
                 }
             });
@@ -165,7 +166,7 @@
                 $.ajax({
                     method: "POST",
                     contentType: 'application/json;charset=UTF-8',
-                    url:"<c:url value="/users"/>",//TODO добавить актуальные url
+                    url: "<c:url value="/users"/>",//TODO добавить актуальные url
                     data: jsonData,
                     success: function (data) {
                         if (data.redirect) {

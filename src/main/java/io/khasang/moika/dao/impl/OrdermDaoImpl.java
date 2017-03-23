@@ -2,17 +2,14 @@ package io.khasang.moika.dao.impl;
 
 import io.khasang.moika.dao.OrdermDao;
 import io.khasang.moika.entity.Orderm;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Component
 @Transactional
-public class OrdermDaoImpl implements OrdermDao {
+public class OrdermDaoImpl extends MoikaDaoCrudImpl<Orderm> implements OrdermDao {
     private SessionFactory sessionFactory;
 
     public OrdermDaoImpl() {
@@ -23,32 +20,9 @@ public class OrdermDaoImpl implements OrdermDao {
         this.sessionFactory = sessionFactory;
     }
 
-    @Override
-    public Orderm addOrderm(Orderm orderm) {
-        sessionFactory.getCurrentSession().save(orderm);
-        return orderm;
-    }
 
     @Override
-    public Orderm updateOrderm(Orderm orderm) {
-        sessionFactory.getCurrentSession().update(orderm);
-        return orderm;
-    }
-
-    @Override
-    public void deleteOrderm(Orderm orderm) {
-        final Session session = sessionFactory.getCurrentSession();
-        session.delete(orderm);
-        session.flush();
-    }
-
-    @Override
-    public Orderm getOrderm(long id) {
-        return sessionFactory.getCurrentSession().byId(Orderm.class).load(id);
-    }
-
-    @Override
-    public List<Orderm> getAllOrderm() {
-        return sessionFactory.getCurrentSession().createQuery("from Orderm").list();
+    public Orderm getOrderm(String number) {
+        return  sessionFactory.getCurrentSession().bySimpleNaturalId(Orderm.class).load(number);
     }
 }

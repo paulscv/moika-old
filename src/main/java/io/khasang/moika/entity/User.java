@@ -1,14 +1,15 @@
 package io.khasang.moika.entity;
 
+import io.khasang.moika.validator.common.NotNullLength;
 import io.khasang.moika.validator.user.UserEmailUnique;
 import io.khasang.moika.validator.user.UserLoginUnique;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -27,13 +28,12 @@ public class User extends ABaseMoikaEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
-    @Size(min = 3, max = 16)
+    @NotNullLength(min = 3, max = 16)
     @NaturalId(mutable = true)
     @Column(name = "login", nullable = false, unique = true)
     private String login;
 
-    @NotNull
+    @NotBlank
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -46,23 +46,23 @@ public class User extends ABaseMoikaEntity implements Serializable {
 
     private boolean enabled;
 
-    @NotNull
-    @Size(min = 1, max = 32)
+
+    @NotNullLength(min = 1, max = 32)
     @Column(nullable = false)
     private String firstName;
 
     private String middleName;
-    
+
     private String lastName;
 
     private Date birthday;
 
-    @NotNull
+
+    @NotBlank
     @Pattern(regexp = PHONE_NUMBER_PATTERN, message = "{phone.not_10digits.message}")
     private String phone;
 
-    @NotNull
-    //@Pattern(regexp = EMAIL_PATTERN)
+    @NotBlank
     @Email
     @Column(nullable = false, unique = true)
     private String email;
@@ -84,7 +84,7 @@ public class User extends ABaseMoikaEntity implements Serializable {
     }
 
     public void setLogin(String login) {
-        this.login = login;
+        this.login = trim(login);
     }
 
     public String getPassword() {
@@ -116,7 +116,7 @@ public class User extends ABaseMoikaEntity implements Serializable {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = trim(firstName);
     }
 
     public String getMiddleName() {
@@ -124,7 +124,7 @@ public class User extends ABaseMoikaEntity implements Serializable {
     }
 
     public void setMiddleName(String middleName) {
-        this.middleName = middleName;
+        this.middleName = trim(middleName);
     }
 
     public String getLastName() {
@@ -132,7 +132,7 @@ public class User extends ABaseMoikaEntity implements Serializable {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = trim(lastName);
     }
 
     public Date getBirthday() {
@@ -148,7 +148,7 @@ public class User extends ABaseMoikaEntity implements Serializable {
     }
 
     public void setPhone(String phone) {
-        this.phone = phone;
+        this.phone = trim(phone);
     }
 
     public String getEmail() {
@@ -156,7 +156,7 @@ public class User extends ABaseMoikaEntity implements Serializable {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = trim(email);
     }
 
     @Override
