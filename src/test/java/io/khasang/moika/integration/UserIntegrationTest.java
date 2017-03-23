@@ -17,7 +17,10 @@ import java.util.*;
 public class UserIntegrationTest extends Assert {
 
     static final Logger LOGGER = LoggerFactory.getLogger(UserIntegrationTest.class);
-    DataAccessUtil dataAccessUtil = new DataAccessUtil();
+   // DataAccessUtil dataAccessUtil = new DataAccessUtil();
+    @Autowired
+    DataAccessUtil dataAccessUtil;
+
 
     @Test
     public void userCRUDTest() {
@@ -109,8 +112,7 @@ public class UserIntegrationTest extends Assert {
 
    // @Autowired
    // UserService userService;
-    @Autowired
-    DataAccessUtil dataAccessUtil;
+
 
 
     @Test
