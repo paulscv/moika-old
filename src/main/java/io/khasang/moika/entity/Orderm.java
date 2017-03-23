@@ -3,11 +3,12 @@ package io.khasang.moika.entity;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-public class Orderm extends ABaseMoikaEntity implements Serializable {
+public class Orderm extends ABaseMoikaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,11 +21,16 @@ public class Orderm extends ABaseMoikaEntity implements Serializable {
     private Date executiontionDate;
     private boolean is_prepaid;
     private boolean is_made;
-//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<OrdermDetail> ordersDetails = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrdermDetail> ordersDetails = new ArrayList<>();
 
     public Orderm() {
     }
+
+    public List<OrdermDetail> getOrdersDetails() {
+        return ordersDetails;
+    }
+
     public Orderm(String number) {
         this.number = number;
     }

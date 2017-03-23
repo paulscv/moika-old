@@ -12,18 +12,9 @@ public class OrdermDetail extends ABaseMoikaEntity {
     private BigDecimal quantity;
     @Column(length = 15, scale = 2, unique = true, nullable = false)
     private BigDecimal sumOfWork;
-
-    public Orderm getOrderm() {
-        return orderm;
-    }
-
-    public void setOrderm(Orderm orderm) {
-        this.orderm = orderm;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "orderm_id", foreignKey = @ForeignKey(name = "ORDERM_ID_FK"))
-    private Orderm orderm;
+//    @ManyToOne
+//    @JoinColumn(name = "orderm_id", foreignKey = @ForeignKey(name = "ORDERM_ID_FK"))
+//    private Orderm orderm;
     @ManyToOne
     @JoinColumn(name = "work_id", foreignKey = @ForeignKey(name = "WORK_ID_FK"))
     private Work work;
