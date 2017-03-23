@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-@Repository("ServiveTypeDao")
+@Repository("ServiceTypeDao")
 public class ServiceTypeDaoImpl extends AllTypeDaoImpl<ServiceType> implements ServiceTypeDao {
 
     public ServiceTypeDaoImpl() {

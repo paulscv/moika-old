@@ -31,7 +31,7 @@ public abstract class MoikaDaoCrudImpl<T extends ABaseMoikaEntity> implements IM
      * By defining this class as abstract, we prevent Spring from creating
      * instance of this class If not defined as abstract,
      * getClass().getGenericSuperClass() would return Object. There would be
-     * exception because Object class does not hava constructor with parameters.
+     * exception because Object class does not hav a constructor with parameters.
      */
 
     public MoikaDaoCrudImpl() {

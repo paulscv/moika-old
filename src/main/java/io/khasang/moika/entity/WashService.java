@@ -23,8 +23,12 @@ public class WashService extends ABaseMoikaServiceAdditionalInfo {
     private int idCarType;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "id_type_car", foreignKey = @ForeignKey(name = "fk_car_type"), insertable = false, updatable = false)
+    @JoinColumn(name = "id_type_car",  referencedColumnName = "id_type", insertable = false, updatable = false) //foreignKey = @ForeignKey(name = "fk_car_type"),
     private CarType carTypeEntity;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "id_service",  insertable = false, updatable = false) //foreignKey = @ForeignKey(name = "fk_car_type"),
+    private MoikaService ServiceEntity;
 
     public WashService() {
        // setAdditionalServiceInfo(carTypeEntity.getTypeName());
@@ -47,4 +51,25 @@ public class WashService extends ABaseMoikaServiceAdditionalInfo {
         this.setIdCarType(carTypeEntity.getId());
     }
 
+    public MoikaService getServiceEntity() {
+        return ServiceEntity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof WashService)) return false;
+
+        WashService that = (WashService) o;
+
+        if (id != that.id) return false;
+        return getIdCarType() == that.getIdCarType();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + carTypeEntity.hashCode();
+        return result;
+    }
 }

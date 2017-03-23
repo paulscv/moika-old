@@ -1,8 +1,11 @@
 package io.khasang.moika.controller;
 
 import io.khasang.moika.entity.Car;
+import io.khasang.moika.entity.CarType;
 import io.khasang.moika.service.CarService;
+import io.khasang.moika.service.CarTypesDataAccessService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +17,13 @@ import java.util.List;
  * @author Nikolay Ilichev, Lyubarev Aleksandr
  * @since 2017-03-01
  */
-//@Controller
+@Controller
 public class CarController {
     @Autowired
     private CarService carService;
+
+    @Autowired
+    private CarTypesDataAccessService carTypeService;
 
     /**
      * Добавления автомобиля
@@ -32,6 +38,33 @@ public class CarController {
         carService.addCar(car);
         return car;
     }
+
+    /**
+     * Обновление автомобиля
+     * @param car автомобиль для добавления
+     * @return сохранённый автомобиль
+     */
+    @RequestMapping(value = "/car/update/",
+            method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public Object updateCar(@ModelAttribute(value = "company") Car car, @PathVariable("id") String id){
+        car = carService.updateCar(car);
+        return car;
+    }
+
+    /**
+     * Удаления автомобиля
+     * @param id автомобиля для удаления
+     * @return redirect
+     */
+    @RequestMapping(value = "/car/delete/{id}",
+            method = RequestMethod.DELETE, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String deleteCar(@PathVariable("id") String id){
+        carService.deleteCar(Long.parseLong(id));
+        return "redirect:/car";
+    }
+
     /**
      * Возвращение автомобиля по id
      * @param id автомобиль для добавления
@@ -86,23 +119,15 @@ public class CarController {
         return "cars";
     }
 
-//    @RequestMapping(value = "/car/update/${id}",
-//            method = RequestMethod.PUT, produces = "application/json; charset=UTF-8")
-//    @ResponseBody
-//    public Object updateCar(@ModelAttribute(value = "company") Car car, @PathVariable("id") String id){
-//        carService.updateCar(car, id);
-//        return car;
-//    }
-
-
-
-    @RequestMapping(value = "/car/delete/{id}",
-            method = RequestMethod.DELETE, produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/carType/{code}/", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String deleteCar(@PathVariable("id") String id){
-        carService.deleteCar(Long.parseLong(id));
-        return "redirect:/car";
+    public CarType getCarTypes(@PathVariable(value = "code") String code) {
+        return (CarType)carTypeService.getTypeByCode(code);
     }
 
-
+    @RequestMapping(value = "/carTypeList/", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public List<CarType> getCarTypesList(@PathVariable(value = "code") String code) {
+        return carTypeService.getAllTypes();
+    }
 }

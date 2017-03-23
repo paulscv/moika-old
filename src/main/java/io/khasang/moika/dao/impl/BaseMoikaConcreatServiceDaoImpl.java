@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Абстрактный класс для всех потомков моечный услуг BaseMoikaService
+ * Абстрактный класс для всех потомков моечных услуг BaseMoikaService
  *
  * @param <T>
  */
@@ -24,10 +24,10 @@ public abstract class BaseMoikaConcreatServiceDaoImpl<T extends ABaseMoikaServic
 
     public List<T> getConcreatServiceById(int idService) {
         final Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = session.createCriteria(getDaoType());
+        Class entityClass = getDaoType();
+        Criteria criteria = session.createCriteria(entityClass);
         criteria.add(Restrictions.eq("id", idService));
-        Class t = getDaoType();
-        List<T> list = session.createCriteria(t).list();
+        List<T> list = criteria.list();
         return list;
     }
 

@@ -25,7 +25,7 @@ public class PsServiceTypeController {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         List<ServiceType> serviceTypeList = null;
         try {
-            serviceTypeList = serviceTypeService.getAllServiceTypes();
+            serviceTypeList =  serviceTypeService.getAllTypes();
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
@@ -39,7 +39,7 @@ public class PsServiceTypeController {
     public Object addServiceType(@RequestBody ServiceType serviceType, Model model) {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         try {
-            serviceTypeService.addServiceType(serviceType);
+            serviceTypeService.addType(serviceType);
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
@@ -54,7 +54,7 @@ public class PsServiceTypeController {
     @ResponseBody
     public Object updateServiceType(@RequestBody ServiceType serviceType) {
         try {
-            serviceTypeService.updateServiceType(serviceType);
+            serviceTypeService.updateType(serviceType);
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
@@ -65,7 +65,7 @@ public class PsServiceTypeController {
     public String getServiceType(@PathVariable(value = "id") String inputId, Model model) {
         ServiceType serviceType = null;
         try {
-            serviceType = serviceTypeService.getServiceTypeByID(Integer.valueOf(inputId));
+            serviceType = (ServiceType)serviceTypeService.getTypeByID(Integer.valueOf(inputId));
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
@@ -84,14 +84,14 @@ public class PsServiceTypeController {
     public String deleteServiceType(@PathVariable(value = "id") String inputId, HttpServletResponse response) {
         ServiceType serviceType = null;
         try {
-            serviceType = serviceTypeService.getServiceTypeByID(Integer.valueOf(inputId));
+            serviceType = (ServiceType)serviceTypeService.getTypeByID(Integer.valueOf(inputId));
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
         if (serviceType != null) {
             int id = serviceType.getId();
             try {
-                serviceTypeService.deleteServiceType(serviceType);
+                serviceTypeService.deleteType(serviceType);
             } catch (MoikaDaoException e) {
                 e.printStackTrace();
             }
@@ -104,7 +104,7 @@ public class PsServiceTypeController {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         ServiceType serviceType = null;
         try {
-            serviceType = serviceTypeService.getServiceTypeByCode(code);
+            serviceType = (ServiceType)serviceTypeService.getTypeByCode(code);
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
