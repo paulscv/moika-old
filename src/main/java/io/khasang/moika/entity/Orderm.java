@@ -12,7 +12,7 @@ public class Orderm extends ABaseMoikaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 15, unique = true,nullable = false)
+    @Column(length = 15, unique = true, nullable = false)
     @NaturalId(mutable = true)
     private String number;
     @Temporal(TemporalType.DATE)
