@@ -44,12 +44,13 @@
                     </c:when>
                     <c:otherwise>
                         <%--TODO Вставить ссылку на личный кабинет пользователя--%>
-                        <li><a href="<c:url value="/user"/>"><span class="glyphicon glyphicon-user"
-                                                                   aria-hidden="true"></span>${userFirstName}
-                        </a></li>
+                        <li id="userPersonalAreaBtn" style="cursor:pointer;">
+                            <a><span class="glyphicon glyphicon-user" aria-hidden="true"/>${userFirstName}</a>
+                        </li>
                         <%--TODO Вставить ссылку на logout--%>
-                        <li><a href="<c:url value="/user/logout"/>"><span
-                                class="glyphicon glyphicon-log-out" aria-hidden="true"></span>Выйти</a></li>
+                        <li id="userLogoutBtn" style="cursor:pointer;">
+                            <a><span class="glyphicon glyphicon-log-out" aria-hidden="true"/>Выйти</a>
+                        </li>
                     </c:otherwise>
                 </c:choose>
                 <%--li><button type="button" class="btn btn-default navbar-btn">Войти
@@ -64,3 +65,13 @@
     <%-- /.container-fluid --%>
 </nav>
 
+<script language="JavaScript">
+    $("#userPersonalAreaBtn").click(function () {
+        alert("Раздел \"Личный кабинет\" скоро будет добавлен.")
+    });
+    $("#userLogoutBtn").click(function () {
+        $.get("<c:url value="/users/logout"/>", function (data) {
+            if (data.success) window.location.replace(" ");
+        })
+    });
+</script>

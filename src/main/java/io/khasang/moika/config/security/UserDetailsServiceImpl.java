@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 /**
  * Реализация UserDetailsService для работы SpringSecurity
  *
- * @since 2017-03-01
  * @author Rostislav Dublin
+ * @since 2017-03-01
  */
 
 @Service("userDetailsService")
@@ -32,7 +32,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("User " + username + " not found");
         }
 
-        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), userDAO.getAuthorities(user));
+        return new org.springframework.security.core.userdetails.User(
+                user.getLogin(),
+                user.getPassword(),
+                user.isEnabled(),
+                true, true, true,
+                userDAO.getAuthorities(user)
+        );
     }
 
 }

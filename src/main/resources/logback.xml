@@ -28,7 +28,7 @@
         <appender-ref ref="FILE" />   <!-- Every log will apear on file -->
     </root>
 
-    <root level="warn">
+    <root level="debug">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>
