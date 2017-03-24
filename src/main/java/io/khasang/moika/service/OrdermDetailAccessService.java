@@ -1,14 +1,7 @@
 package io.khasang.moika.service;
 
-import io.khasang.moika.entity.Orderm;
-import io.khasang.moika.entity.OrdermDetail;
+import io.khasang.moika.dao.OrdermDetailDao;
 
-import java.util.List;
+public interface OrdermDetailAccessService extends OrdermDetailDao {
 
-public interface OrdermDetailAccessService {
-    Orderm addOrdermDetail(OrdermDetail ordermDetail);
-    Orderm updateOrdermDetail(OrdermDetail ordermDetail);
-    void deleteOrdermDetail(OrdermDetail ordermDetail);
-    Orderm getOrdermDetail(long id);
-    List<OrdermDetail> getAllOrdermDetail();
 }
