@@ -23,7 +23,7 @@ public class OrdermController {
 
     @RequestMapping(value = "list/", method = RequestMethod.GET)
     public String List(Model model) {
-        List<Orderm> listOrderm = ordermAccessService.getAllOrderm();
+        List<Orderm> listOrderm = ordermAccessService.getAll();
         model.addAttribute("listOrderm", listOrderm);
         model.addAttribute("nrows", "Количество заказов " + listOrderm.size());
         return "orderm-list";
@@ -39,7 +39,7 @@ public class OrdermController {
         if (result.hasErrors()) {
             return "error";
         }
-        ordermAccessService.addOrderm(orderm);
+        ordermAccessService.create(orderm);
         return "redirect:/orderm/list/";
     }
 }
