@@ -42,10 +42,6 @@ public class CatsController {
            }
         }
         Cats resCat = catsService.addCat(cat);
-
-        //  model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
-        //   model.addAttribute("resCat", resCat);
-        //  System.out.println(cat.toString());
         return "redirect:/cats/list";
     }
 
