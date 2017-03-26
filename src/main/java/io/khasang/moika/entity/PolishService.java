@@ -30,4 +30,12 @@ public class PolishService extends ABaseMoikaServiceAdditionalInfo {
     public void setAddInfo(String addInfo) {
         this.addInfo = addInfo;
     }
+
+    @Override
+    public String getAdditionalServiceInfo() {
+        if (addInfo != null ) {
+            AdditionalServiceInfo = addInfo;
+        }
+        return AdditionalServiceInfo;
+    }
 }

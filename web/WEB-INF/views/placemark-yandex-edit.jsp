@@ -26,7 +26,7 @@
             <td><form:input path="hintContent" /></td>
         </tr>
         <tr>
-            <td><form:label path="hintContent">Описание</form:label></td>
+            <td><form:label path="balloonContent">Описание</form:label></td>
             <td><form:input path="balloonContent" /></td>
         </tr>
 

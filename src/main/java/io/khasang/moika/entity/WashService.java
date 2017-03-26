@@ -56,6 +56,14 @@ public class WashService extends ABaseMoikaServiceAdditionalInfo {
     }
 
     @Override
+    public String getAdditionalServiceInfo() {
+        if (carTypeEntity != null ) {
+            AdditionalServiceInfo = carTypeEntity.getTypeName();
+        }
+        return AdditionalServiceInfo;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof WashService)) return false;

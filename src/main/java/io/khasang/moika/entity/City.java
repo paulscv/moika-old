@@ -1,14 +1,13 @@
 package io.khasang.moika.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name= "cities")
 public class City extends ABaseMoikaEntity {
     @Id
     @Column(name = "id_city", columnDefinition = "serial")
-    private long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     @Column(name = "name", nullable = false)
     private String name;
     @Column
@@ -21,7 +20,7 @@ public class City extends ABaseMoikaEntity {
     public City(String city) {
         name = city;
     }
-    public long getId() {
+    public int getId() {
         return id;
     }
 

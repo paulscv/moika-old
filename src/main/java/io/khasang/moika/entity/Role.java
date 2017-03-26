@@ -9,7 +9,7 @@ public class Role extends ABaseMoikaEntity implements Serializable  {
     @Id
     @Column(name = "id_role")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
     @Column(name = "role_name", nullable = false, unique = true)
     private String name;
     @Column(name = "description", nullable = false, unique = true)
@@ -27,9 +27,9 @@ public class Role extends ABaseMoikaEntity implements Serializable  {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+  //  public void setId(long id) {
+  //      this.id = id;
+  //  }
 
     public String getName() {
         return name;

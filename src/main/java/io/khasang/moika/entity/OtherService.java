@@ -31,4 +31,12 @@ public class OtherService extends ABaseMoikaServiceAdditionalInfo {
         this.addInfo = addInfo;
         setAdditionalServiceInfo(addInfo);
     }
+
+    @Override
+    public String getAdditionalServiceInfo() {
+        if (addInfo != null ) {
+            AdditionalServiceInfo = addInfo;
+        }
+        return AdditionalServiceInfo;
+    }
 }

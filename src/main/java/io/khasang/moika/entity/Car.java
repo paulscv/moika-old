@@ -19,12 +19,13 @@ public class Car extends ABaseMoikaEntity {
     @Id
     @Column(name = "id_car")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
     @Column(name = "id_car_type")
     private Short idCarType;
     @ManyToOne
     @JoinColumn(name = "id_car_type", foreignKey = @ForeignKey(name = "fk_car_type"), insertable = false, updatable = false)
     private CarType CarTypeEntity;
+    @Column (name = "carnum")
     private String carNumber;
     @Column(name = "carmodel")
     private String carModel;
@@ -134,12 +135,12 @@ public class Car extends ABaseMoikaEntity {
         clients.add(newClient);
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+  //  public void setId(long id) {
+  //      this.id = id;
+  //  }
 
 }
