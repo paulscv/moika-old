@@ -144,7 +144,7 @@ public class PskvorWashFacilityDaoServiceImpl implements PskvorWashFacilityDaoSe
     @Override
     public WashFacility getWashFacilityByAddres(WashAddr washAddr) {
         try {
-            WashFacility fclt = washFacilityDao.getWashFacilityByAddres(washAddr);
+            WashFacility fclt = washFacilityDao.getWashFacilityByAddress(washAddr);
             return fclt;
         } catch (MoikaDaoException e) {
             e.printStackTrace();

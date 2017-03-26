@@ -1,14 +1,13 @@
 package io.khasang.moika.dao;
 
 import io.khasang.moika.entity.Cats;
+import io.khasang.moika.entity.CatsColor;
 
 import java.util.List;
 
-public interface CatsDAO {
-    void addCat(Cats cat);
-    void updateCat(Cats cat);
-    List<Cats> getAllCats();
-    Cats getCatById(long id);
-    void deleteCatById(Cats cat);
-    boolean containCatById(long id);
+public interface CatsDAO extends IMoikaDaoCrud<Cats>{
+    boolean containCat(Cats cat);
+    List<Cats> getCatsByName(String name);
+    List<Cats> getCatsByColor(CatsColor color);
+    List<Cats> getCatsByAge(int ageFrom, int ageTo);
 }

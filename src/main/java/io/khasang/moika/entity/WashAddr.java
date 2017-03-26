@@ -16,7 +16,7 @@ public class WashAddr extends ABaseMoikaEntity {
     @Id
     @Column(name = "id_addr", columnDefinition = "serial")
    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "id_city", referencedColumnName = "id_city")
@@ -46,7 +46,7 @@ public class WashAddr extends ABaseMoikaEntity {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
