@@ -3,6 +3,8 @@ package io.khasang.moika.controller;
 import io.khasang.moika.dao.MoikaDaoException;
 import io.khasang.moika.entity.ServiceType;
 import io.khasang.moika.service.MoikaServiceTypesService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,10 +18,13 @@ import java.util.List;
 
 /**
  * Контроллер для типов услу моесного сервиса
+ *
  * @author Pauls
  */
+@RequestMapping(value = "/serviceType")
 @Controller
 public class PsServiceTypeController {
+    private static final Logger logger = LoggerFactory.getLogger(PsServiceTypeController.class);
     @Autowired
     MoikaServiceTypesService serviceTypeService;
 
@@ -29,17 +34,23 @@ public class PsServiceTypeController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/serviceTypelist", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String getServiceTypeList(Model model) {
-        model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
-        List<ServiceType> serviceTypeList = null;
+        logger.info("Запрошен сервис по адресу \"/serviceType/list\". Готовим аттрибуты ");
         try {
-            serviceTypeList = serviceTypeService.getAllTypes();
-        } catch (MoikaDaoException e) {
+            model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
+            List<ServiceType> serviceTypeList = null;
+            try {
+                serviceTypeList = serviceTypeService.getAllTypes();
+            } catch (MoikaDaoException e) {
+                e.printStackTrace();
+            }
+            model.addAttribute("retList", serviceTypeList);
+            model.addAttribute("nrows", serviceTypeList.size() + " rows affected");
+        } catch (Exception e) {
+            logger.error("Ошибка при запросе \"/serviceType/list\" ", e);
             e.printStackTrace();
         }
-        model.addAttribute("retList", serviceTypeList);
-        model.addAttribute("nrows", serviceTypeList.size() + " rows affected");
         return "ps-dao-service-types";
     }
 
@@ -50,19 +61,25 @@ public class PsServiceTypeController {
      * @param model
      * @return - новый тип
      */
-    @RequestMapping(value = "/serviceType/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     //@ResponseBody
     public Object addServiceType(@RequestBody ServiceType serviceType, Model model) {
-        model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
+        logger.info("Запрошен сервис по адресу \"/serviceType/add\". Готовим аттрибуты ");
         try {
-            serviceTypeService.addType(serviceType);
-        } catch (MoikaDaoException e) {
+            model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
+            try {
+                serviceTypeService.addType(serviceType);
+            } catch (MoikaDaoException e) {
+                e.printStackTrace();
+            }
+            List<ServiceType> serviceTypeList = new ArrayList<>();
+            serviceTypeList.add(serviceType);
+            model.addAttribute("retList", serviceTypeList);
+            model.addAttribute("nrows", "ID: " + serviceType.getId() + " added");
+        } catch (Exception e) {
+            logger.error("Ошибка при запросе \"/serviceType/add\" ", e);
             e.printStackTrace();
         }
-        List<ServiceType> serviceTypeList = new ArrayList<>();
-        serviceTypeList.add(serviceType);
-        model.addAttribute("retList", serviceTypeList);
-        model.addAttribute("nrows", "ID: " + serviceType.getId() + " added");
         return "ps-dao-service-types";
     }
 
@@ -72,12 +89,14 @@ public class PsServiceTypeController {
      * @param serviceType
      * @return
      */
-    @RequestMapping(value = "/serviceType/update", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public Object updateServiceType(@RequestBody ServiceType serviceType) {
+        logger.info("Запрошен сервис по адресу \"/serviceType/update\". Готовим аттрибуты ");
         try {
             serviceTypeService.updateType(serviceType);
         } catch (MoikaDaoException e) {
+            logger.error("Ошибка при запросе \"/serviceType/update\" ", e);
             e.printStackTrace();
         }
         return serviceType;
@@ -90,12 +109,14 @@ public class PsServiceTypeController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/serviceType/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/byId/{id}", method = RequestMethod.GET)
     public String getServiceType(@PathVariable(value = "id") String inputId, Model model) {
+        logger.info("Запрошен сервис по адресу \"/serviceType/byId/{" + inputId + "}\". Готовим аттрибуты ");
         ServiceType serviceType = null;
         try {
             serviceType = (ServiceType) serviceTypeService.getTypeByID(Integer.valueOf(inputId));
         } catch (MoikaDaoException e) {
+            logger.error("Ошибка при запросе \"/serviceType/byId/{" + inputId + "}\" ", e);
             e.printStackTrace();
         }
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
@@ -114,13 +135,15 @@ public class PsServiceTypeController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/serviceType/{code}", method = RequestMethod.GET)
+    @RequestMapping(value = "/byCode/{code}", method = RequestMethod.GET)
     public String getServiceTypeListbyType(@PathVariable(value = "type") String code, Model model) {
+        logger.info("Запрошен сервис по адресу \"/serviceType/byCode/{" + code + "}\". Готовим аттрибуты ");
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         ServiceType serviceType = null;
         try {
             serviceType = (ServiceType) serviceTypeService.getTypeByCode(code);
         } catch (MoikaDaoException e) {
+            logger.error("Ошибка при запросе \"/serviceType/byCode/{" + code + "}\" ", e);
             e.printStackTrace();
         }
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
@@ -139,13 +162,15 @@ public class PsServiceTypeController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/serviceType/delete/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     @ResponseBody
     public String deleteServiceType(@PathVariable(value = "id") String inputId, HttpServletResponse response) {
+        logger.info("Запрошен сервис по адресу \"/serviceType/delete/{" + inputId + "}\". Готовим аттрибуты ");
         ServiceType serviceType = null;
         try {
             serviceType = (ServiceType) serviceTypeService.getTypeByID(Integer.valueOf(inputId));
         } catch (MoikaDaoException e) {
+            logger.error("Ошибка при запросе \"/serviceType/delete/{" + inputId + "}\" ", e);
             e.printStackTrace();
         }
         if (serviceType != null) {
@@ -153,6 +178,7 @@ public class PsServiceTypeController {
             try {
                 serviceTypeService.deleteType(serviceType);
             } catch (MoikaDaoException e) {
+                logger.error("Ошибка при запросе \"/serviceType/delete/{" + inputId + "}\" ", e);
                 e.printStackTrace();
             }
             return String.valueOf(response.SC_OK);
