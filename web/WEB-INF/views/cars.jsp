@@ -4,6 +4,8 @@
 <html>
 <head>
     <title>Cars</title>
+    <%-- HEAD --%>
+    <jsp:include page="head.jsp"/>
 </head>
 <body>
 <table>

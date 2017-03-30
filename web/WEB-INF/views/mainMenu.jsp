@@ -14,7 +14,7 @@
             <%--${pageContext.request.contextPath}--%>
             <a class="navbar-brand" href="<c:url value="/" />">
                                 <span><img class="logo-car" alt="CarWash" height="40" width="32"
-                                           src="<c:url value="images/logo1.svg" />">
+                                           src="<c:url value="/images/logo1.svg" />">
                                  </span> CarWash</a>
         </div>
 

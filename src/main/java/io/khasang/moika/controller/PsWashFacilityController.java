@@ -1,9 +1,9 @@
 package io.khasang.moika.controller;
 
-import io.khasang.moika.entity.City;
-import io.khasang.moika.entity.Coordinate;
-import io.khasang.moika.entity.WashAddr;
-import io.khasang.moika.entity.WashFacility;
+import io.khasang.moika.dao.CityDao;
+import io.khasang.moika.entity.*;
+import io.khasang.moika.service.BoxStatusDataAccessService;
+import io.khasang.moika.service.BoxTypesDataAccessService;
 import io.khasang.moika.service.PskvorWashFacilityDaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,15 @@ import java.util.List;
 public class PsWashFacilityController {
 
     @Autowired
-    PskvorWashFacilityDaoService pskvorWashFacilityDaoService;
+    private PskvorWashFacilityDaoService pskvorWashFacilityDaoService;
+    @Autowired
+    private CityDao cityDaol;
+
+    @Autowired
+    private BoxStatusDataAccessService boxStatusDataAccessService;
+    @Autowired
+    private BoxTypesDataAccessService boxTypesDataAccessService;
+
 
     /**
      * Список всех моек
@@ -36,8 +44,13 @@ public class PsWashFacilityController {
     public Object getWashFacilityList(Model model) {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         List<WashFacility> washFacilityList = pskvorWashFacilityDaoService.getAllWashFacilities();
+       List<City>  citiesList = cityDaol.getAll();
+       List<BoxStatus> boxStatusList = boxStatusDataAccessService.getAllStatuses();
+       List<BoxType> boxTypeList = boxTypesDataAccessService.getAllTypes();
         model.addAttribute("fcltlist", washFacilityList);
-        model.addAttribute("nrows", washFacilityList.size() + " rows affected");
+        model.addAttribute("citiesList", citiesList);
+        model.addAttribute("boxStatusList", boxStatusList);
+        model.addAttribute("boxTypeList", boxTypeList);
         return "ps-dao-carwashfacilities"; //washFacilityList;
     }
 

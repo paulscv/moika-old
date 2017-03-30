@@ -9,10 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service(value = "moikaServiceStatussServiceImpl")
 @Transactional
 public class MoikaServiceStatusServiceImpl extends  AStatusDataAccessServiceImpl implements MoikaServiceStatusService {
-    final
+    @Autowired()
     ServiceStatusDao serviceStatusDao;
 
-    @Autowired()
+
+    public MoikaServiceStatusServiceImpl() {
+    }
+
+
     public MoikaServiceStatusServiceImpl(ServiceStatusDao serviceStatusDao) {
         this.serviceStatusDao = serviceStatusDao;
         setStatusDao(this.serviceStatusDao);

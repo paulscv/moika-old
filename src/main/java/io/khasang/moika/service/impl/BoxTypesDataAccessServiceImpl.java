@@ -9,10 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service(value = "boxTypesDataAccessService")
 @Transactional
 public class BoxTypesDataAccessServiceImpl extends  ATypeDataAccessServiceImpl implements BoxTypesDataAccessService {
-    final
+    @Autowired()
     BoxTypeDao boxTypeDao;
 
-    @Autowired()
+    public BoxTypesDataAccessServiceImpl() {
+    }
+
     public BoxTypesDataAccessServiceImpl(BoxTypeDao boxTypeDao) {
         this.boxTypeDao = boxTypeDao;
         setTypeDao(this.boxTypeDao);

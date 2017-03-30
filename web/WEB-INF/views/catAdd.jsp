@@ -49,16 +49,10 @@
             method: "POST",
             contentType: 'application/json;charset=UTF-8',
             url: "/cats/catAdd",
-            data: jsonData,
-            success: function (data) {
-                //  if (data.success)
-                // window.location.replace(" ");
-                alert('Записано!');
-                //   else if (data.error) {
-                //     alert('Ошибка!');
-                // }
-            }
+            data: jsonData
         });
+        alert('Записано!');
+        window.location.href ="/cats/list";
     });
 </script>
 </body>

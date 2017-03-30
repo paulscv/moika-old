@@ -82,6 +82,12 @@ public class WashAddr extends ABaseMoikaEntity {
         this.letter = letter;
     }
 
+    public String getAddrString() {
+        return "г."+ city +
+                ", ул. " + street +
+                ", д." + building +
+                ((!letter.isEmpty()) ? " лит. "+letter :"");
+    }
 
     @Override
     public String toString() {
@@ -91,8 +97,8 @@ public class WashAddr extends ABaseMoikaEntity {
                 ", street='" + street + '\'' +
                 ", building='" + building + '\'' +
                 ", letter='" + letter + '\'' +
-                ", latitude=" + coordinate.getLat() +
-                ", longitude=" + coordinate.getLong() +
+                ", latitude=" + coordinate.getLat().toString() +
+                ", longitude=" + coordinate.getLong().toString() +
                 '}';
     }
 

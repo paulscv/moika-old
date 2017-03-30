@@ -62,6 +62,7 @@ function formSubmitAjax(toURL, selector, method) {
     $.ajax({
         method: (method == undefined ? "POST" : method),
         url: toURL,
+        contentType: 'application/json;charset=UTF-8',
         data: obj
     });
 }
