@@ -1,14 +1,17 @@
 package io.khasang.moika.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity (name = "service_status")
 public class ServiceStatus extends ABaseMoikaStatusReference{
 
-    @OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_status",  insertable = false, updatable = false)
-    private List<MoikaService> moiksServices;
+    @JsonIgnore
+    private List<MoikaService> moikaServices;
 
     public ServiceStatus() {
     }
@@ -18,7 +21,7 @@ public class ServiceStatus extends ABaseMoikaStatusReference{
         this.name = name;
     }
 
-    public List<MoikaService> getMoiksServices() {
-        return moiksServices;
+    public List<MoikaService> getMoikaServices() {
+        return moikaServices;
     }
 }

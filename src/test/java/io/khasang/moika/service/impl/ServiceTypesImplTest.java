@@ -31,7 +31,7 @@ public class ServiceTypesImplTest {
     public void testGetServiceStatusList(){
         List<ServiceType> serviceTypesList = null;
         try {
-            serviceTypesList = serviceTypesService.getAllServiceTypes();
+            serviceTypesList = serviceTypesService.getAllTypes();
         } catch (MoikaDaoException e) {
             Assert.fail( e.getMessage());
         }
@@ -51,7 +51,7 @@ public class ServiceTypesImplTest {
     public void testGetServiceTypeByCode(){
         ServiceType servicetype = null;
         try {
-            servicetype = serviceTypesService.getServiceTypeByCode("WASH");
+            servicetype = (ServiceType)serviceTypesService.getTypeByCode("WASH");
         } catch (MoikaDaoException e) {
             Assert.fail( e.getMessage());
         }

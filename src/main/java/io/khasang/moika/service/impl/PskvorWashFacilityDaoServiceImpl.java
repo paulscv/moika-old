@@ -2,6 +2,8 @@ package io.khasang.moika.service.impl;
 
 
 import io.khasang.moika.dao.*;
+import io.khasang.moika.entity.City;
+import io.khasang.moika.entity.WashAddr;
 import io.khasang.moika.entity.WashBox;
 import io.khasang.moika.entity.WashFacility;
 import io.khasang.moika.service.PskvorWashFacilityDaoService;
@@ -128,4 +130,25 @@ public class PskvorWashFacilityDaoServiceImpl implements PskvorWashFacilityDaoSe
         }
     }
 
+    @Override
+    public List<WashFacility> getWashFacilitiesInCity(City city) {
+        try {
+             List<WashFacility> fcltList = washFacilityDao.getWashFacilitiesInCity(city);
+            return fcltList;
+        } catch (MoikaDaoException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public WashFacility getWashFacilityByAddres(WashAddr washAddr) {
+        try {
+            WashFacility fclt = washFacilityDao.getWashFacilityByAddress(washAddr);
+            return fclt;
+        } catch (MoikaDaoException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

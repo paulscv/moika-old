@@ -15,6 +15,7 @@ public class CarServiceImpl implements CarService {
     @Autowired
     private CarDao carDao;
 
+
     public CarServiceImpl() {
     }
 
@@ -50,9 +51,8 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public void deleteCar(long id) {
-        Car car = new Car();
-        car.setId(id);
-        carDao.delete(car);
+        Car car = carDao.get(id);
+        if (car != null)  carDao.delete(car);
     }
 
     @Override

@@ -15,7 +15,7 @@ import javax.persistence.Id;
 public class CarModel extends ABaseMoikaEntity {
     @Id
     @GeneratedValue
-    private  Long id;
+    private  long id;
     @Column(name = "model")
     private String model;
 
@@ -26,11 +26,11 @@ public class CarModel extends ABaseMoikaEntity {
         this.model = model;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

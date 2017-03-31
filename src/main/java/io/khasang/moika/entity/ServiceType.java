@@ -1,15 +1,21 @@
 package io.khasang.moika.entity;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 @Entity(name = "service_types")
 public class ServiceType extends ABaseMoikaTypeReference {
 
     //@OneToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @OneToMany(mappedBy="serviceTypeEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy="serviceTypeEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     //@JoinColumn(name = "id_type",  insertable = false, updatable = false)
-    private List<MoikaService> moiksServices;
+    @JsonIgnore
+    private List<MoikaService> moikaServices;
 
     public ServiceType() {
     }
@@ -19,7 +25,7 @@ public class ServiceType extends ABaseMoikaTypeReference {
         this.name = name;
     }
 
-    public List<MoikaService> getMoiksServices() {
-        return moiksServices;
+    public List<MoikaService> getMoikaServices() {
+        return moikaServices;
     }
 }

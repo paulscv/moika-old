@@ -11,34 +11,34 @@ public abstract class ABaseMoikaService extends ABaseMoikaEntity {
     @Id
     @Column(name = "id_service", columnDefinition = "serial")
     @GeneratedValue(strategy = GenerationType.AUTO) //не IDENTITY, а тот что в таблицах
-    private int id;
+    protected int id;
 
     @Column(name = "id_fclt", insertable = false, updatable = false)
-    private int idFacility;
+    protected int idFacility;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "id_fclt", foreignKey = @ForeignKey(name = "fk_service_id_fclt"), insertable = false, updatable = false)
-    private WashFacility washFacility;
+    protected WashFacility washFacility;
 
     @Column(name = "id_type", insertable = false, updatable = false)
-    private int idType;
+    protected int idType;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "id_type", foreignKey = @ForeignKey(name = "fk_service_type"), insertable = false, updatable = false)
-    private ServiceType serviceTypeEntity;
+    protected ServiceType serviceTypeEntity;
 
     @Column(name = "id_status",insertable = false, updatable = false)
-    private Short idStatus;
+    protected Short idStatus;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "id_status", foreignKey = @ForeignKey(name = "fk_service_status"), insertable = false, updatable = false)
-    private ServiceStatus serviceStatusEntity;
+    protected ServiceStatus serviceStatusEntity;
 
     @Column(name = "name", unique = true)
-    private String name;
+    protected String name;
 
     @Column(name = "description")
-    private String description;
+    protected String description;
 
 
     protected ABaseMoikaService() {

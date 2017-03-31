@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,7 +17,10 @@ import java.util.*;
 public class UserIntegrationTest extends Assert {
 
     static final Logger LOGGER = LoggerFactory.getLogger(UserIntegrationTest.class);
-    DataAccessUtil dataAccessUtil = new DataAccessUtil();
+   // DataAccessUtil dataAccessUtil = new DataAccessUtil();
+    @Autowired
+    DataAccessUtil dataAccessUtil;
+
 
     @Test
     public void userCRUDTest() {
@@ -104,6 +108,11 @@ public class UserIntegrationTest extends Assert {
         createdUser = t.getForObject("http://localhost:8080/users/{id}", User.class, createdUserId);
         assertTrue(createdUser == null);
     }
+
+
+   // @Autowired
+   // UserService userService;
+
 
 
     @Test

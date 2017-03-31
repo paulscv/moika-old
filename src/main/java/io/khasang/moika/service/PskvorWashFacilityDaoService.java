@@ -1,5 +1,7 @@
 package io.khasang.moika.service;
 
+import io.khasang.moika.entity.City;
+import io.khasang.moika.entity.WashAddr;
 import io.khasang.moika.entity.WashBox;
 import io.khasang.moika.entity.WashFacility;
 
@@ -14,4 +16,6 @@ public interface PskvorWashFacilityDaoService {
     List<WashFacility> getWashFacilitiesOnNet(int idNet);
     List<WashBox> getWashBoxesOnFacility(int idFacility);
     List<WashBox> getWashBoxesOnFacility(WashFacility washFacility);
+    List<WashFacility> getWashFacilitiesInCity(City city);
+    WashFacility getWashFacilityByAddres(WashAddr washAddr);
 }

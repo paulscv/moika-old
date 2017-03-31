@@ -26,7 +26,7 @@ public class RoleDAOImpl extends MoikaDaoCrudImpl<Role> implements RoleDAO {
         //String hql = "select id from Role where name = 'ROLE_CLIENT' or name = 'ROLE_ADMIN'";
         String hql = "select id from Role where name = 'ROLE_CLIENT' or name = 'ROLE_ADMIN'";
 
-        if(getCurrentSession().createQuery(hql, Long.class).list().size()==0){
+        if(getCurrentSession().createQuery(hql, Integer.class).list().size()==0){
             System.out.println("All good");
             Role[] roleArr = new Role[]{new Role("ROLE_CLIENT","Base client role"),
                     new Role("ROLE_ADMIN","Base admin role")};

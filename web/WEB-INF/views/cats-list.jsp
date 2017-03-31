@@ -2,13 +2,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Cats</title>
 </head>
 <body>
 <h3>Cats list</h3>
 <ul>
     <c:forEach items="${cats}" var="cat">
-        <li>${cat.id}: ${cat.additionalInfo} ${cat.description}</li>
+        <li>${cat.id}: ${cat.name}, ${cat.description}, возраст ${cat.age}</li>
     </c:forEach>
 </ul>
 </body>

@@ -13,7 +13,6 @@ public class WashServiceDaoImpl extends BaseMoikaConcreatServiceDaoImpl<WashServ
     public WashServiceDaoImpl() {
     }
 
-
     public WashServiceDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }

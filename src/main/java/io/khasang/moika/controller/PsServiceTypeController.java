@@ -14,18 +14,27 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Контроллер для типов услу моесного сервиса
+ * @author Pauls
+ */
 @Controller
 public class PsServiceTypeController {
     @Autowired
     MoikaServiceTypesService serviceTypeService;
 
-
+    /**
+     * Список типов услуг
+     *
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/serviceTypelist", method = RequestMethod.GET)
     public String getServiceTypeList(Model model) {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         List<ServiceType> serviceTypeList = null;
         try {
-            serviceTypeList = serviceTypeService.getAllServiceTypes();
+            serviceTypeList = serviceTypeService.getAllTypes();
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
@@ -34,12 +43,19 @@ public class PsServiceTypeController {
         return "ps-dao-service-types";
     }
 
+    /**
+     * Добавление нового типа услуг
+     *
+     * @param serviceType
+     * @param model
+     * @return - новый тип
+     */
     @RequestMapping(value = "/serviceType/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     //@ResponseBody
     public Object addServiceType(@RequestBody ServiceType serviceType, Model model) {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
         try {
-            serviceTypeService.addServiceType(serviceType);
+            serviceTypeService.addType(serviceType);
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
@@ -50,22 +66,35 @@ public class PsServiceTypeController {
         return "ps-dao-service-types";
     }
 
+    /**
+     * Обновление информауии о типе услуг
+     *
+     * @param serviceType
+     * @return
+     */
     @RequestMapping(value = "/serviceType/update", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public Object updateServiceType(@RequestBody ServiceType serviceType) {
         try {
-            serviceTypeService.updateServiceType(serviceType);
+            serviceTypeService.updateType(serviceType);
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
         return serviceType;
     }
 
+    /**
+     * Вывод типа услуг по id
+     *
+     * @param inputId
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/serviceType/{id}", method = RequestMethod.GET)
     public String getServiceType(@PathVariable(value = "id") String inputId, Model model) {
         ServiceType serviceType = null;
         try {
-            serviceType = serviceTypeService.getServiceTypeByID(Integer.valueOf(inputId));
+            serviceType = (ServiceType) serviceTypeService.getTypeByID(Integer.valueOf(inputId));
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
@@ -74,49 +103,61 @@ public class PsServiceTypeController {
             List<ServiceType> serviceTypeList = new ArrayList<>();
             serviceTypeList.add(serviceType);
             model.addAttribute("retList", serviceTypeList);
-        } else {model.addAttribute("nrows", "ID: "+inputId + " doesn`t exists ");}
+        } else {model.addAttribute("nrows", "ID: " + inputId + " doesn`t exists ");}
         return "ps-dao-service-types";
     }
-    
 
+    /**
+     * Вывод типа услуг по коду
+     *
+     * @param code
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/serviceType/{code}", method = RequestMethod.GET)
+    public String getServiceTypeListbyType(@PathVariable(value = "type") String code, Model model) {
+        model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
+        ServiceType serviceType = null;
+        try {
+            serviceType = (ServiceType) serviceTypeService.getTypeByCode(code);
+        } catch (MoikaDaoException e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
+        if (serviceType != null) {
+            List<ServiceType> serviceTypeList = new ArrayList<>();
+            serviceTypeList.add(serviceType);
+            model.addAttribute("retList", serviceTypeList);
+        } else {model.addAttribute("nrows", "code: " + code + " doesn`t exists ");}
+        return "ps-dao-service-types";
+    }
+
+    /**
+     * удаление типа  услуг
+     *
+     * @param inputId
+     * @param response
+     * @return
+     */
     @RequestMapping(value = "/serviceType/delete/{id}", method = RequestMethod.POST)
     @ResponseBody
     public String deleteServiceType(@PathVariable(value = "id") String inputId, HttpServletResponse response) {
         ServiceType serviceType = null;
         try {
-            serviceType = serviceTypeService.getServiceTypeByID(Integer.valueOf(inputId));
+            serviceType = (ServiceType) serviceTypeService.getTypeByID(Integer.valueOf(inputId));
         } catch (MoikaDaoException e) {
             e.printStackTrace();
         }
         if (serviceType != null) {
             int id = serviceType.getId();
             try {
-                serviceTypeService.deleteServiceType(serviceType);
+                serviceTypeService.deleteType(serviceType);
             } catch (MoikaDaoException e) {
                 e.printStackTrace();
             }
             return String.valueOf(response.SC_OK);
-        } else {return  String.valueOf(response.SC_NOT_FOUND);}
+        } else {return String.valueOf(response.SC_NOT_FOUND);}
     }
 
-    @RequestMapping(value = "/serviceType/{code}", method = RequestMethod.GET)
-    public String getServiceTypeListbyType(@PathVariable(value = "type") String code, Model model) {
-        model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
-        ServiceType serviceType = null;
-        try {
-            serviceType = serviceTypeService.getServiceTypeByCode(code);
-        } catch (MoikaDaoException e) {
-            e.printStackTrace();
-        }
-        model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
-        if (serviceType != null) {
-            List<ServiceType> serviceTypeList = new ArrayList<>();
-            serviceTypeList.add(serviceType);
-            model.addAttribute("retList", serviceTypeList);
-        } else {model.addAttribute("nrows", "code: "+code + " doesn`t exists ");}
-        return "ps-dao-service-types";
-    }
-    
-    
 
 }

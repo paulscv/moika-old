@@ -7,6 +7,7 @@
 </head>
 <body>
 <p>Текущее время ${currentTime}</p>
+<p>Текущее время скриптлета: <%= new java.util.Date () %> </p>
 <table>
     <tr >
         <td>ID  бокса</td>

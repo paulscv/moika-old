@@ -57,12 +57,13 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void deleteCompany(long id) {
-        Company company = new Company();
-        company.setId(id);
-        try {
-            companyDao.delete(company);
-        } catch (MoikaDaoException e) {
-            e.printStackTrace();
+        Company company = companyDao.get(id);
+        if (company == null) {
+            try {
+                companyDao.delete(company);
+            } catch (MoikaDaoException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -15,14 +15,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Контроллер для управления боксами автомоек
+ *
+ * @author Pauls
+ */
 @Controller
 public class PsWashBoxController {
 
     @Autowired
     PskvorWashBoxDaoService pskvorWashBoxDaoService;
 
-
-
+    /**
+     * Вывод информации о всех боксах
+     *
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/washBoxlist", method = RequestMethod.GET)
     public String getWashBoxList(Model model) {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
@@ -32,6 +41,13 @@ public class PsWashBoxController {
         return "ps-dao-carwashbox";
     }
 
+    /**
+     * Добавление бокса
+     *
+     * @param washBox
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/washBox/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     //@ResponseBody
     public Object addWashBox(@RequestBody WashBox washBox, Model model) {
@@ -44,6 +60,12 @@ public class PsWashBoxController {
         return "ps-dao-carwashbox";
     }
 
+    /**
+     * Обновление информации о боксе
+     *
+     * @param washBox
+     * @return
+     */
     @RequestMapping(value = "/washBox/update", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public Object updateWashBox(@RequestBody WashBox washBox) {
@@ -51,6 +73,13 @@ public class PsWashBoxController {
         return washBox;
     }
 
+    /**
+     * Выаод информаии о боксе по id
+     *
+     * @param inputId
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/washBox/{id}", method = RequestMethod.GET)
     public String getWashBox(@PathVariable(value = "id") String inputId, Model model) {
         WashBox washBox = pskvorWashBoxDaoService.getWashBoxByID(Integer.valueOf(inputId));
@@ -59,10 +88,19 @@ public class PsWashBoxController {
             List<WashBox> washBoxList = new ArrayList<>();
             washBoxList.add(washBox);
             model.addAttribute("boxlist", washBoxList);
-        } else {model.addAttribute("nrows", "ID: "+inputId + " doesn`t exists ");}
+        } else {model.addAttribute("nrows", "ID: " + inputId + " doesn`t exists ");}
         return "ps-dao-carwashbox";
     }
 
+    /**
+     * Вывод информации о боксе по имени на конкретной мойке
+     *
+     * @param idFclt   - id мойки
+     * @param boxName  - имя бокса
+     * @param response
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/washBox/{idFacility}/{boxName}", method = RequestMethod.GET)
     public String getWashBoxesOnFacility(@PathVariable(value = "idFacility") String idFclt, @PathVariable(value = "boxName") String boxName,
                                          HttpServletResponse response, Model model) {
@@ -72,11 +110,17 @@ public class PsWashBoxController {
             List<WashBox> washBoxList = new ArrayList<>();
             washBoxList.add(washBox);
             model.addAttribute("boxlist", washBoxList);
-        } else {model.addAttribute("nrows", "Box name: "+boxName + "on facility "+idFclt+" doesn`t exists ");}
+        } else {model.addAttribute("nrows", "Box name: " + boxName + "on facility " + idFclt + " doesn`t exists ");}
         return "ps-dao-carwashbox";
     }
 
-
+    /**
+     * Удаление бокса по id
+     *
+     * @param inputId
+     * @param response
+     * @return
+     */
     @RequestMapping(value = "/washBox/delete/{id}", method = RequestMethod.POST)
     @ResponseBody
     public String deleteWashBox(@PathVariable(value = "id") String inputId, HttpServletResponse response) {
@@ -85,9 +129,16 @@ public class PsWashBoxController {
             int id = washBox.getId();
             pskvorWashBoxDaoService.deleteWashBox(washBox);
             return String.valueOf(response.SC_OK);
-        } else {return  String.valueOf(response.SC_NOT_FOUND);}
+        } else {return String.valueOf(response.SC_NOT_FOUND);}
     }
 
+    /**
+     * вывод списка типов боксов
+     *
+     * @param typeId
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/wasBoxByType/{type}", method = RequestMethod.GET)
     public String getWashBoxListbyType(@PathVariable(value = "type") String typeId, Model model) {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
@@ -97,6 +148,13 @@ public class PsWashBoxController {
         return "ps-dao-carwashbox";
     }
 
+    /**
+     * вывод списка боксов по их статусам
+     *
+     * @param status
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/wasBoxByStatus/{status}", method = RequestMethod.GET)
     public String getWashBoxListbyStatus(@PathVariable(value = "status") String status, Model model) {
         model.addAttribute("currentTime", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date()));
@@ -106,30 +164,54 @@ public class PsWashBoxController {
         return "ps-dao-carwashbox";
     }
 
+    /**
+     * выод статутсов боксов
+     *
+     * @param boxStatus
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/boxStatus/list/", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public List<BoxStatus> getBoxStatusList(@RequestBody BoxStatus boxStatus) {
+    public List<BoxStatus> getBoxStatusList(@RequestBody BoxStatus boxStatus, Model model) {
         return pskvorWashBoxDaoService.getWashBoxesStatuses();//"ps-dao-carwashfacilities";
     }
 
+    /**
+     * Список типов боксов
+     *
+     * @param boxtypel
+     * @return
+     */
     @RequestMapping(value = "/boxType/list/", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public List<BoxType> getBoxTypesList(@RequestBody BoxType boxtypel) {
         return pskvorWashBoxDaoService.getWashBoxesTypes();//"ps-dao-carwashfacilities";
     }
 
+    /**
+     * статус бокса по коду
+     *
+     * @param code
+     * @return
+     */
     @RequestMapping(value = "/boxStatus/{code}/", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public BoxStatus getBoxStatusByCode(@PathVariable(value = "code") String code) {
         return pskvorWashBoxDaoService.getWashBoxesStatusByCode(code);//"ps-dao-carwashfacilities";
     }
 
+    /**
+     * тип бокса по коду
+     *
+     * @param code
+     * @return
+     */
     @RequestMapping(value = "/boxType/{code}/", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
     public BoxType getBoxTypesList(@PathVariable(value = "code") String code) {
         return pskvorWashBoxDaoService.getWashBoxesTypeByCode(code);//"ps-dao-carwashfacilities";
     }
-
 
 
 }

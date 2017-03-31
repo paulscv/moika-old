@@ -57,13 +57,22 @@ public  class MoikaServiceDataAccessServiceImpl implements MoikaServiceDataAcces
 
 
     @Override
-    public List<MoikaService> getAllervicesByStatus(int IdStatus) throws MoikaDaoException {
-            return moikaServiceDao.getServicesByStatus(IdStatus);
+    public List<MoikaService> getAllervicesByStatus(int idStatus) throws MoikaDaoException {
+            return moikaServiceDao.getServicesByStatus(idStatus);
     }
 
     @Override
+    public List<MoikaService> getAllervicesByStatus(String status) throws MoikaDaoException {
+        return moikaServiceDao.getServicesByStatus(status);
+    }
+    @Override
     public List<MoikaService> getServicesByType(int idType) throws MoikaDaoException {
         return moikaServiceDao.getServicesByType(idType);
+    }
+
+    @Override
+    public List<MoikaService> getServicesByType(String code) throws MoikaDaoException {
+        return moikaServiceDao.getServicesByType(code);
     }
 
     @Override
