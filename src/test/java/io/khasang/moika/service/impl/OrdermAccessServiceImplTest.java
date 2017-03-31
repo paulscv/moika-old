@@ -24,17 +24,18 @@ public class OrdermAccessServiceImplTest {
     @Test
     public void commonOrderm() throws Exception {
         Orderm orderm = new Orderm("1");
-        ordermAccessService.addOrderm(orderm);
+        ordermAccessService.create(orderm);
         long id = orderm.getId();
         orderm = new Orderm("2");
-        ordermAccessService.addOrderm(orderm);
-        orderm = ordermAccessService.getOrderm(id);
+        ordermAccessService.create(orderm);
+        orderm = ordermAccessService.getOrderm("2");
+        orderm = ordermAccessService.get(id);
         orderm.setNumber("11");
-        ordermAccessService.updateOrderm(orderm);
+        ordermAccessService.update(orderm);
         orderm = new Orderm("33");
-        orderm = ordermAccessService.addOrderm(orderm);
-        ordermAccessService.deleteOrderm(orderm);
-        List<Orderm> l = ordermAccessService.getAllOrderm();
+        orderm = ordermAccessService.create(orderm);
+        ordermAccessService.delete(orderm);
+        List<Orderm> l = ordermAccessService.getAll();
     }
 
 }

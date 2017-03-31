@@ -3,13 +3,10 @@ package io.khasang.moika.entity;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-public class Work extends ABaseMoikaEntity implements Serializable {
+public class Work extends ABaseMoikaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,8 +19,6 @@ public class Work extends ABaseMoikaEntity implements Serializable {
 время в минутах для проведения работ в боксе
 */
     private int timeInBox;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrdermDetail> ordersDetails = new ArrayList<>();
 
     public Work() {
     }
@@ -66,13 +61,6 @@ public class Work extends ABaseMoikaEntity implements Serializable {
         this.timeInBox = timeInBox;
     }
 
-//    public List<OrdermDetail> getOrdersDetails() {
-//        return ordersDetails;
-//    }
-//
-//    public void setOrdersDetails(List<OrdermDetail> ordersDetails) {
-//        this.ordersDetails = ordersDetails;
-//    }
     @Override
     public String toString(){
         System.out.format("id = %d name= %s price = %f timeInBox =%d",
