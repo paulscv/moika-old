@@ -31,11 +31,15 @@
         .fancy-theme-bootstrap .fancy-checkbox-expander {
             margin-top: 10px;
         }
-
         .fancy-grid-expand-row .fancy-grid {
             border-top: 1px solid #d3dbe1 !important;
         }
-
+        .fancy-theme-fclt .fancy-grid-cell-inner {
+            margin-top: 20px;
+        }
+        .fancy-theme-fclt .fancy-grid-column-sparkline  .fancy-grid-cell-inner {
+            margin-top: 9px;
+        }
     </style>
 </head>
 <body>
@@ -120,13 +124,15 @@
                 name: '${fclty.name}',
                 description: '${fclty.description}',
                 addr: {
-                    id: '${fclty.facilityAddr.id_addr}',
-                    city: {id: '${fclty.facilityAddr.id_city}', name: '${fclty.facilityAddr.city.name}'},
+                    id: '${fclty.facilityAddr.id}',
+                    city: {id: '${fclty.facilityAddr.id}', name: '${fclty.facilityAddr.city.name}'},
                     street: '${fclty.facilityAddr.street}',
                     building: '${fclty.facilityAddr.building}',
                     letter: '${fclty.facilityAddr.letter}',
-                    longitude: '${fclty.facilityAddr.longitude}',
-                    lattitude: '${fclty.facilityAddr.lattitude}'
+                    coordinate: {
+                        longitude: '${fclty.facilityAddr.coordinate.lon.toString()}',
+                        lattitude: '${fclty.facilityAddr.coordinate.lat.toString()}'
+                    }
                 },
                 boxData: [
                     <c:forEach items="${fclty.washBoxes}" var="box">
@@ -149,18 +155,24 @@
         ],
         boxStatusList = [
             <c:forEach items="${boxStatusList}" var="boxStatusList">
-            {id: '${boxStatusList.id}', name: '${boxStatusList.statusCode}', region: '${boxStatusList.statusName}'},
+            {id: '${boxStatusList.id}', code: '${boxStatusList.statusCode}', name: '${boxStatusList.statusName}'},
             </c:forEach>
         ],
         boxTypeList = [
             <c:forEach items="${boxTypeList}" var="boxTypeList">
-            {id: '${boxTypeList.id}', name: '${boxTypeList.typeCode}', region: '${boxTypeList.typeName}'},
+            {id: '${boxTypeList.id}', code: '${boxTypeList.typeCode}', name: '${boxTypeList.typeName}'},
             </c:forEach>
         ]
         ;
 
 
     window.onload = function () {
+
+        Fancy.defineTheme('fclt', {
+            config: {
+                cellHeight: 50
+            }
+        });
         var facilityGrid = new FancyGrid({
             theme: 'bootstrap',
             title: '<img src = "/images/logo1.svg" alt="CarWash" height="40" width="32">  Мойки',
@@ -283,22 +295,35 @@
                 locked: true,
                 title: 'ID',
                 type: 'number',
-                width: 50,
+                width: 30,
                 editable: false
             }, {
                 index: 'name',
                 title: 'Наименование',
-                width: 300,
+                width: 200,
                 editable: false
             }, {
-                index: 'addr',
-                title: 'Адрес',
-                width: 300,
-                editable: false
+                text : 'Адрес',
+                columns:[{
+                    index: 'addr.city.name',
+                    title: 'Город',
+                    width: 200,
+                    editable: false
+                },{
+                    index: 'addr.street',
+                    title: 'Улица',
+                    width: 200,
+                    editable: false
+                },{
+                    index: 'addr.building',
+                    title: 'Дом',
+                    width: 50,
+                    editable: false
+                } ]
             }, {
                 index: 'description',
                 title: 'Дополнительная информация',
-                width: 400,
+                width: 300,
                 editable: false
             }]
         });
@@ -318,82 +343,101 @@
                 }
             },
             onClearSelect: function (grid) {
-                deleteButton.disable();
+                grid.deleteButton.disable();
             },
-
             onRowDBLClick: function (grid, o) {
-                editFacility(grid, o.data);
+                grid.editFacility(o.data);
+            },
+            editFacility:  function (item) {
+                var me = this,  facilityEditForm = me.facilityEditForm;
+
+                if (facilityEditForm) {
+                    facilityEditForm.set(item);
+                    facilityEditForm.setTitle(item.name);
+                    facilityEditForm.show();
+                }
+                else {
+                    facilityEditForm = new FancyForm({
+                        title: {
+                            text: item.name,
+                            tools: [{
+                                text: 'Close',
+                                handler: function () {
+                                    this.hide();
+                                }
+                            }]
+                        },
+                        window: true,
+                        draggable: true,
+                        width: 300,
+                        height: 370,
+                        defaults: {
+                            type: 'string'
+                        },
+                        items: [{
+                            name: 'name',
+                            label: 'Наименование',
+                            value: item.name
+                        }, {
+                            type: 'textarea',
+                            name: 'description',
+                            label: 'Описание',
+                            value: item.description
+                        }, {
+                            name: 'address',
+                            label: 'Адрес',
+                            type: 'set',
+                            items: [{
+                                name: 'city',
+                                label: 'Город',
+                                type: 'combo',
+                                data: cities
+                            }, {
+                                name: 'street',
+                                label: 'Улица',
+                                value: item.addr.street
+                            }, {
+                                name: 'building',
+                                label: 'Строение/Дом',
+                                value: item.addr.building
+                            }, {
+                                name: 'coordinate',
+                                label: 'Координаты',
+                                type: 'set',
+                                items: [{
+                                    name: 'long',
+                                    label: 'Долгота',
+                                    type: 'numeric',
+                                    value: item.addr.coordinate.longitude
+                                }, {
+                                    name: 'lat',
+                                    label: 'Широта',
+                                    type: 'numeric',
+                                    value: item.addr.coordinate.lattitude
+                                }]
+                            }]}],
+                            buttons: ['side', {
+                                text: 'Закрыть',
+                                handler: function () {
+                                    this.hide();
+                                }
+                            }, {
+                                text: 'Сохранить',
+                                handler: function () {
+                                    me.getById(this.get('id')).set(this.get());
+                                    me.update();
+                                }
+                            }],
+                            events: [{
+                                init: function () {
+                                    this.show();
+                                }
+                            }]
+                        });
+                    me.facilityEditForm = facilityEditForm;
+                }
             }
         });
-
-        function editFacility(grid, item) {
-            var me = this;
-
-            if (facilityEditForm) {
-                facilityEditForm.set(item);
-            }
-        }
-
-        var facilityEditForm = new FancyForm({
-            title: {
-                text: item.name + ' ' + item.surname,
-                tools: [{
-                    text: 'Close',
-                    handler: function () {
-                        this.hide();
-                    }
-                }]
-            },
-            window: true,
-            draggable: true,
-            width: 300,
-            height: 370,
-            defaults: {
-                type: 'string'
-            },
-            items: [{
-                name: 'name',
-                label: 'Наименование',
-                value: item.name
-            }, {
-                type: 'textarea',
-                name: 'description',
-                label: 'Описание',
-                value: item.description
-            }, {
-                name: 'address',
-                label: 'Адрес',
-                type: 'set',
-                items: [{
-                    name: 'city',
-                    label: 'Город',
-                    type: 'combo',
-                    data: cities
-                }, {
-                    name: 'street',
-                    label: 'Улица',
-                    value: item.addr.street
-                },
-                    , {
-                        name: 'building',
-                        label: 'Строение/Дом',
-                        value: item.addr.building
-                    }
-                ]
-            }],
-            buttons: ['side', {
-                text: 'Закрыть',
-                handler: function () {
-                    this.hide();
-                }
-            }, {
-                text: 'Сохранить',
-                handler: function () {
-                    me.getById(this.get('id')).set(this.get());
-                    me.update();
-                }
-            }]
-        });
-    };
+    }
 </script>
 </html>

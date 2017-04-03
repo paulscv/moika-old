@@ -24,7 +24,7 @@ public class WashFacility  extends ABaseMoikaEntity  {
 
     @Column(name = "id_addr")
     private int  idAddr;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_addr", insertable = false, updatable = false)
     private WashAddr facilityAddr;
 

@@ -21,11 +21,11 @@ public class Coordinate {
         this.latitude = latitude;
     }
 
-    public BigDecimal getLong() {
+    public BigDecimal getLon() {
         return longitude;
     }
 
-    public void setLong(BigDecimal longitude) {
+    public void setLon(BigDecimal longitude) {
         this.longitude = longitude;
     }
 

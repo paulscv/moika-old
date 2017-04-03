@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Expand Row: Sub Grid | jQuery Grid and Form | AngularJS Grid And Form</title>
+
+<script src="js/jquery-3.1.1.min.js"></script>
+
+<link href="http://code.fancygrid.com/fancy.min.css" rel="stylesheet">
+<script src="http://code.fancygrid.com/fancy.min.js"></script>
+  
+<style>
+.image-staff img {
+  margin-top: -5px;
+  margin-left: -5px;
+  margin-right: 5px;
+  border-radius: 2px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.image-car img {
+  width: 180px;
+  margin-top: -9px;
+  border-radius: 2px;
+  height: 90px;
+}
+
+.fancy-theme-gray.fancy-panel .fancy-panel-header {
+  background-color: white;
+  border-bottom: 2px solid #e3223a;
+}
+
+.fancy-theme-gray .fancy-checkbox-expander {
+  margin-top: 10px;
+}
+
+.fancy-grid-expand-row .fancy-grid {
+  border-top: 1px solid #d3dbe1 !important;
+}
+
+body {
+  background: #f9f9f9 url(http://fancygrid.com/dashboards/dealer/bg_body.gif) 0 0 repeat;
+}
+</style>
+</head>
+
+<body>
+
+<div style="margin: 10px auto 10px;width: 750px;">
+  <div style="position:relative">
+    <div id="grid" style=""></div>
+  </div>
+</div>
+
+<script>
+var data = [{
+  "position": "CEO",
+  "name": "Nick",
+  "surname": "Thomson",
+  "id": "1",
+  "hour": 70,
+  "image": "http://fancygrid.com/images/staff/boy-4.png",
+  "phone": "858-490-5000",
+  "sold": [
+    {image: 'imgs/img_new_granbird.png', name: 'New GranBird', price: 250000, color: '#CDC2B5'},
+    {image: 'imgs/img_k7_hybrid.png', name: 'K7 700 Hybrid', price: 38000, color: '#E8EAEE'},
+    {image: 'imgs/img_truck.png', name: 'Bongo 3', price: 18000, color: '#B4AB9E'}
+  ],
+  "birthday": "1961.10.01"
+}, {
+  "position": "Sales Director",
+  "name": "Peter",
+  "surname": "West",
+  "id": "2",
+  "hour": 40,
+  "image": "http://fancygrid.com/images/staff/boy-2.png",
+  "phone": "858-490-5001",
+  "sold": [
+    {image: 'imgs/1c78b081182dc1842f1170e77d249efd.png', name: 'Kia Sportage', price: 18000, color: '#DCDDDD'},
+    {name: 'KIA Sportage 2.0 L 6MT', color: '#9d927e', price: 19000, image: 'imgs/bd71de8a5679f3d8d43b687d74b04107.jpg'}
+  ],
+  "birthday": "1965.1.5"
+}, {
+  "position": "Tech Director",
+  "name": "Alexander",
+  "surname": "Brown",
+  "id": "3",
+  "hour": 35,
+  "image": "http://fancygrid.com/images/staff/boy-3.png",
+  "phone": "858-490-5002",
+  "sold": [
+    {name: 'KIA Sorento Prime Prestige 2.2 L 6AT', color: '#474a52', price: 37500, image: 'imgs/2cc39e6e4626f45571a30d595f6ee41a.png'}
+  ],
+  "birthday": "1966.8.21"  
+}, {
+  "position": "Clients Manager",
+  "name": "Nicholas",
+  "surname": "Miller",
+  "id": "4",
+  "hour": 35,
+  "image": "http://fancygrid.com/images/staff/boy-5.png",
+  "phone": "858-490-5003",
+  "sold": [    
+    {name: "KIA cee'd Comfort 1.6 L 6AT", color: '#D9D9D9', price: 14400, image: 'imgs/8337340d5a57dbaeb1cd595acbc1be4a.png'},
+    {name: "KIA cee'd Comfort 1.6 L 6AT", color: '#393D43', price: 14400, image: 'imgs/3ed373e214d18b7c10fbfa4ca73217ac.png'}
+  ],
+  "birthday": "1967.9.17"
+}, {
+  "position": "Staff Director",
+  "name": "Sophia",
+  "surname": "Smith",
+  "id": "5",
+  "hour": 30,
+  "image": "http://fancygrid.com/images/staff/girl.png",
+  "phone": "858-490-5004",
+  "sold": [
+    {name: 'KIA Picanto 1.2 L 4AT', color: '#860b0b', price: 13000, image: 'imgs/d347ee550a344d6b40b8498995fd9fe7.png'},
+    {name: "KIA cee'd Classic 1.4 L 6MT", color: '#393D43', price: 12500, image: 'imgs/c100aa2526bc26af57269c889ce16a91.png'}
+  ],
+  "birthday": "1970.2.1"
+}, {
+  "position": "Manager",
+  "name": "Emma",
+  "surname": "Walker",
+  "id": "6",
+  "hour": 30,
+  "image": "http://fancygrid.com/images/staff/girl-1.png",
+  "phone": "858-490-5005",
+  "sold": [
+    {name: "KIA cee'd Luxe 1.6 L 6AT", color: '#D9D9D9', price: 15000, image: 'imgs/8337340d5a57dbaeb1cd595acbc1be4a.png'},
+    {name: "KIA cee'd Luxe 1.6 L 6AT", color: '#D9D9D9', price: 15000, image: 'imgs/8337340d5a57dbaeb1cd595acbc1be4a.png'}
+  ],
+  "birthday": "1965.1.7"
+}, {
+  "position": "Manager",
+  "name": "Ted",
+  "surname": "Smith",
+  "id": "7",
+  "hour": 30,
+  "image": "http://fancygrid.com/images/staff/boy.png",
+  "phone": "858-490-5006",
+  "sold": [
+    {name: 'KIA Sportage 2.0 L 6AT', color: '#9d927e', price: 19000 , image: 'imgs/bd71de8a5679f3d8d43b687d74b04107.jpg'},
+    {name: 'KIA Sportage 2.0 L 6AT', color: '#e0e0e0', price: 19000 , image: 'imgs/bd71de8a5679f3d8d43b687d74b04107.jpg'}
+  ],
+  "birthday": "1970.8.11"
+}, {
+  "position": "Manager",
+  "name": "Ryan",
+  "surname": "Walker",
+  "id": "8",
+  "hour": 30,
+  "image": "http://fancygrid.com/images/staff/boy-1.png",
+  "phone": "858-490-5007",
+  "sold": [
+    {name: 'KIA Sportage 2.0 L 6AT', color: '#d4d4d4', price: 20000 , image: 'imgs/c3d612db1ef982cbc6391c966e44945a.jpg'},
+    {name: 'KIA Sportage 2.0 L 6AT', color: '#9d927e', price: 20000, image: 'imgs/bd71de8a5679f3d8d43b687d74b04107.jpg'}
+  ],
+  "birthday": "1975.11.7"
+}, {
+  "position": "Manager",
+  "name": "Lily",
+  "surname": "Richardson",
+  "id": "9",
+  "hour": 30,
+  "image": "http://fancygrid.com/images/staff/girl-2.png",
+  "phone": "858-490-5008",
+  "sold": [
+    {name: "KIA cee'd Comfort 1.6 L 6AT", color: '#D9D9D9', price: 14400, image: 'imgs/8337340d5a57dbaeb1cd595acbc1be4a.png'},
+    {name: "KIA cee'd Comfort 1.6 L 6AT", color: '#393D43', price: 14400, image: 'imgs/3ed373e214d18b7c10fbfa4ca73217ac.png'}
+  ],
+  "birthday": "1977.10.1"
+}, {
+  "position": "Manager",
+  "name": "Mia",
+  "surname": "Grant",
+  "id": "10",
+  "hour": 30,
+  "image": "http://fancygrid.com/images/staff/girl-3.png",
+  "phone": "858-490-5009",
+  "sold": [],
+  "birthday": "1978.8.3"
+}, {
+  "position": "Manager",
+  "name": "Olivia",
+  "surname": "Edwards",
+  "id": "11",
+  "hour": 30,
+  "image": "http://fancygrid.com/images/staff/girl-4.png",
+  "phone": "858-490-5020",
+  "sold": [
+    {name: 'KIA Sportage 2.0 L 6AT', color: '#d4d4d4', price: 21000, image: 'imgs/c3d612db1ef982cbc6391c966e44945a.jpg'},
+    {name: 'KIA Sorento 2.4 L 6AT', color: '#e1e1e1', price: 28000, image: 'imgs/af011c3afcc4571a8587ff8f7c5fcf4d.png'}
+  ],
+  "birthday": "1979.9.8"
+}, {
+  "position": "Manager",
+  "name": "Katie",
+  "surname": "Gardner",
+  "id": "12",
+  "hour": 30,
+  "image": "http://fancygrid.com/images/staff/girl-5.png",
+  "phone": "858-490-5021",
+  "sold": [    
+    {name: "KIA cee'd Prestige 1.6 L 6AT", color: 'white', price: 17000, image: 'imgs/bdc7a3970e45109439af2bf2ff0910f2.png'}
+  ],
+  "birthday": "1988.7.7"
+}, {
+  "position": "Manager",
+  "name": "Ivan",
+  "surname": "Woods",
+  "id": "13",
+  "hour": 30,
+  "image": "http://fancygrid.com/images/staff/man-1.png",
+  "phone": "858-490-5022",
+  "sold": [
+    {name: "KIA cee'd Classic 1.6 L 6MT", color: '#393D43', price: 13700, image: 'imgs/c100aa2526bc26af57269c889ce16a91.png'},
+    {name: 'KIA Sportage 2.0 L 6MT', color: '#9d927e', price: 19000, image: 'imgs/bd71de8a5679f3d8d43b687d74b04107.jpg'}
+  ],
+  "birthday": "1990.1.1"
+}, {
+  "position": "Junior Manager",
+  "name": "Lorenzo",
+  "surname": "Simpson",
+  "id": "14",
+  "hour": 20,
+  "image": "http://fancygrid.com/images/staff/man.png",
+  "phone": "858-490-5023",
+  "sold": [],
+  "birthday": "1995.2.5"
+}];
+  
+window.onload = function(){
+
+new FancyGrid({
+  title: '<img src="http://fancygrid.com/dashboards/dealer/logo.png" alt="KIA MOTORS"> <span style="color:#bb162b;position: relative;top: -12px;font-size: 22px;left: 4px;"> - KIA MOTORS Dealer Week Sales</span>', 
+  renderTo: 'grid',
+  width: 600,
+  height: 600,
+  data: data,
+  selModel: 'rows',
+  trackOver: true,
+  theme: 'gray',
+  titleHeight: 65,
+  cellHeight: 60,
+  columnLines: false,
+  defaults: {
+    type: 'string',
+    width: 100,
+    sortable: true,
+    resizable: true,
+    vtype: 'notempty'
+  },
+  expander: {
+    render: function(renderTo, data, columnsWidth){
+      new FancyGrid({
+        renderTo: renderTo,
+        width: columnsWidth - 20,
+        height: 'fit',
+        minHeight: 100,
+        trackOver: true,
+        selModel: 'rows',
+        theme: 'gray',
+        cellHeight: 92,
+        data: data.sold,
+        emptyText: 'Nothing to display',
+        defaults: {
+          type: 'string'
+        },
+        columns: [{
+          index: 'image',
+          width: 180,
+          type: 'image',
+          cls: 'image-car',
+          title: '',
+          locked: true
+        },{
+          index: 'name',
+          width: 140,
+          title: 'Name'
+        },{
+          index: 'price',
+          width: 79,
+          type: 'currency',
+          title: 'price',
+        },{
+          title: 'Color',
+          index: 'color',
+          width: 70,
+          type: 'color',
+          cls: 'color-column'
+        }]
+      });
+    }
+  },
+  columns: [{
+    type: 'expand',
+    locked: true
+  },{
+    type: 'image',
+    index: 'image',
+    title: 'Photo',
+    cls: 'image-staff',
+    width: 100
+  },{
+    title: 'Name',
+    sortable: false,
+    render: function(o){
+      o.value = o.data.name + ' ' + o.data.surname;
+    
+      return o;
+    }
+  },{
+    index: 'position',
+    title: 'Position',    
+    width: 100
+  },{
+    index: 'phone',
+    title: 'Phone',
+    width: 90    
+  },{
+    width: 100,
+    index: ''
+  }]
+});
+ 
+}
+
+</script>
+
+</body>
+</html>

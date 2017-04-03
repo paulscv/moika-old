@@ -9,12 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service(value = "boxStatusDataAccessService")
 @Transactional
 public class BoxStatusDataAccessServiceImpl extends  AStatusDataAccessServiceImpl implements BoxStatusDataAccessService {
-    @Autowired()
+
     BoxStatusDao boxStatusDao;
 
-    public BoxStatusDataAccessServiceImpl() {
-    }
-
+    @Autowired()
     public BoxStatusDataAccessServiceImpl(BoxStatusDao boxStatusDao) {
         this.boxStatusDao = boxStatusDao;
         setStatusDao(this.boxStatusDao);

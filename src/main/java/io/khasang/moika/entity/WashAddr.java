@@ -39,7 +39,7 @@ public class WashAddr extends ABaseMoikaEntity {
 
     public WashAddr(BigDecimal latitude, BigDecimal longitude) {
         this.coordinate.setLat(latitude);
-        this.coordinate.setLong(longitude);
+        this.coordinate.setLon(longitude);
     }
 
     public long getId() {
@@ -82,6 +82,10 @@ public class WashAddr extends ABaseMoikaEntity {
         this.letter = letter;
     }
 
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+
     public String getAddrString() {
         return "г."+ city +
                 ", ул. " + street +
@@ -98,7 +102,7 @@ public class WashAddr extends ABaseMoikaEntity {
                 ", building='" + building + '\'' +
                 ", letter='" + letter + '\'' +
                 ", latitude=" + coordinate.getLat().toString() +
-                ", longitude=" + coordinate.getLong().toString() +
+                ", longitude=" + coordinate.getLon().toString() +
                 '}';
     }
 
@@ -111,14 +115,14 @@ public class WashAddr extends ABaseMoikaEntity {
 
         if (getId() != washAddr.getId()) return false;
         if (!coordinate.getLat().equals(washAddr.coordinate.getLat())) return false;
-        return coordinate.getLong().equals(washAddr.coordinate.getLong());
+        return coordinate.getLon().equals(washAddr.coordinate.getLon());
     }
 
     @Override
     public int hashCode() {
         int result = (int) (getId() ^ (getId() >>> 32));
         result = 31 * result + coordinate.getLat().hashCode();
-        result = 31 * result + coordinate.getLong().hashCode();
+        result = 31 * result + coordinate.getLon().hashCode();
         return result;
     }
 

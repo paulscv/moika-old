@@ -14,12 +14,6 @@ public abstract class AStatusDataAccessServiceImpl<T extends ABaseMoikaStatusRef
 
     private BaseMoikaStatusDao statusDao;
 
-    public AStatusDataAccessServiceImpl() {
-    }
-
-    public AStatusDataAccessServiceImpl(BaseMoikaStatusDao statusDao) {
-        this.statusDao = statusDao;
-    }
 
     public BaseMoikaStatusDao getStatusDao() {
         return statusDao;
